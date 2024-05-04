@@ -83,4 +83,4 @@ export default () => {
             <App/>
         </NavigationContainer>
     )
-}
+} // Meu parabens caro leitor!
