@@ -30,9 +30,6 @@ const Cadastro = () => {
           email
         })
       //})
-      .catch((error) => { //error
-        alert(error.message) //error.message
-      })
     })
     .catch((error) => {
       alert(error.message)

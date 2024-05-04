@@ -14,7 +14,7 @@ function App() {
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
 
-    // Handle user state changes
+    // Lidar com alterações de estado do usuário
     function onAuthStateChanged(user) {
         setUser(user);
         if (initializing) setInitializing(false);

@@ -15,18 +15,16 @@ const Login = () => {
       alert(error.message)
     }
   }
-
-
   
-    // forget password
-    const forgetPassword = () => {
-      firebase.auth().sendPasswordResetEmail(email)
-      .then( () => {
-        alert("Email para troca de senha enviado")
-      }).catch((error) => {
-        alert("Digite seu email no campo acima")
-      })
-    }
+  // forget password
+  const forgetPassword = () => {
+    firebase.auth().sendPasswordResetEmail(email)
+    .then( () => {
+      alert("Email para troca de senha enviado")
+    }).catch((error) => {
+      alert("Digite seu email no campo acima")
+    })
+  }
 
   return (
     <View style={styles.container}>
