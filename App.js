@@ -83,4 +83,4 @@ export default () => {
             <App/>
         </NavigationContainer>
     )
-} //Comentário
+} // Meu parabens caro leitor!
