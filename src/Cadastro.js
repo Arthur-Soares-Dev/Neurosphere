@@ -22,7 +22,6 @@ const Cadastro = () => {
             })
               .then(() => {
                 alert('Cadastro realizado com sucesso!')
-                navigation.navigate('Login')
               })
               .catch((error) => {
                 alert(error.message)
