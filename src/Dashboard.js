@@ -39,7 +39,7 @@ const Dashboard = () => {
         style={styles.button}
       >
         <Text style={{fontSize:22, fontWeight: 'bold'}}>
-          Trocar senha
+          Trocar Senha
         </Text>
       </TouchableOpacity>
 
