@@ -6,6 +6,7 @@ import { firebase } from "./config";
 import Login from "./src/Login";
 import Cadastro from "./src/Cadastro";
 import Dashboard from "./src/Dashboard";
+import MainMenu from "./src/MainMenu";
 
 const Stack = createStackNavigator();
 
@@ -28,26 +29,29 @@ function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                screenOptions={{ headerShown: false }} // Tem configurar headerShown como false para cada tela no Stack.Navigator (Isso faz com que suma a Header Feia)
-
+                screenOptions={{ headerShown: false }}
             >
                 {!user ? (
-                    <>
-                        <Stack.Screen
-                            name="Login"
-                            component={Login}
-                        />
-                        <Stack.Screen
-                            name="Cadastro"
-                            component={Cadastro}
-                        />
-                    </>
+                    // Se o usuário não estiver logado, mostra a tela MainMenu
+                    <Stack.Screen
+                        name="MainMenu"
+                        component={MainMenu}
+                    />
                 ) : (
+                    // Se o usuário estiver logado, mostra o painel do Dashboard
                     <Stack.Screen
                         name="Dashboard"
                         component={Dashboard}
                     />
                 )}
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                />
+                <Stack.Screen
+                    name="Cadastro"
+                    component={Cadastro}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
