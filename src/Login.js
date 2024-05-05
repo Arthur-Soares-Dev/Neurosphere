@@ -10,16 +10,16 @@ const Login = () => {
 
   loginUser = async (email, password) => {
     try {
-      await firebase.auth().signInWithEmailAndPassword (email, password)
+      await firebase.auth().signInWithEmailAndPassword(email, password)
     } catch (error) {
       alert(error.message)
     }
   }
-  
+
   // forget password
   const forgetPassword = () => {
     firebase.auth().sendPasswordResetEmail(email)
-    .then( () => {
+    .then(() => {
       alert("Email para troca de senha enviado")
     }).catch((error) => {
       alert("Digite seu email no campo acima")
@@ -28,11 +28,11 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontWeight: 'bold', fontSize:26}} >
-        Login
+      <Text style={styles.headerText}>
+        Welcome back.
       </Text>
 
-      <View style={{marginTop:40}}>
+      <View style={styles.inputContainer}>
           <TextInput
             style={styles.textInput}
             placeholder="Email"
@@ -42,7 +42,7 @@ const Login = () => {
           />
           <TextInput
             style={styles.textInput}
-            placeholder="Senha"
+            placeholder="Password"
             onChangeText={(password) => setPassword(password)}
             autoCapitalize="none"
             autoCorrect={false}
@@ -53,23 +53,23 @@ const Login = () => {
         onPress={() => loginUser(email, password)}
         style={styles.button}
       >
-        <Text style={{fontWeight: 'bold', fontSize: 22}}>Login</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Cadastro')}
+        onPress={() => navigation.navigate('ResetPasswordScreen')}
         style={{marginTop: 20}}
       >
-        <Text style={{fontWeight: 'bold', fontSize: 16}}>
-          Não tem uma conta? Clique aqui para se registrar!
+        <Text style={styles.linkText}>
+          Forgot your password?
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => {forgetPassword()}}
-        style={{marginTop: 20,}}>
-            <Text style={{fontSize:16, fontWeight: 'bold' }}>
-            Esqueci minha senha.
-            </Text>
+        onPress={() => navigation.navigate('Cadastro')}
+        style={{marginTop: 20}}>
+        <Text style={styles.linkText}>
+          Don’t have an account? Sign up
+        </Text>
       </TouchableOpacity>
     </View>
   )
@@ -77,31 +77,45 @@ const Login = () => {
 
 export default Login
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 100,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  inputContainer: {
+    marginBottom: 20,
+    width: '100%',
   },
   textInput: {
-    paddingTop: 20,
-    paddingBottom:10,
-    width: 400,
-    fontSize:20,
-    borderBottomWidth:1,
-    borderBottomColor: '#3000',
-    marginBottom:10,
-    textAlign: 'center'
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+    width: '100%',
   },
-  button:{
-    marginTop:50,
-    height: 70,
-    width:250,
+  button: {
     backgroundColor: '#026efd',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius:50,
-    }
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 25,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  linkText: {
+    color: '#026efd',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 })
