@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NeuroSphereScreen;
+export default NeuroSphereScreen;  // Finalizou
