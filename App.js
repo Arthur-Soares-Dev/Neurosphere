@@ -30,11 +30,30 @@ function App() {
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={{ headerShown: false }}
-                initialRouteName={user ? "Dashboard" : "Login"}
             >
-                <Stack.Screen name="Dashboard" component={Dashboard} />
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Cadastro" component={Cadastro} />
+                {!user ? (
+                    // Se o usuário não estiver logado, mostra a tela MainMenu
+                    /*<Stack.Screen
+                        name="MainMenu"
+                        component={MainMenu}
+                    />*/
+                    <Stack.Screen
+                        name="Login"
+                        component={Login}
+                    />
+
+                ) : (
+                    // Se o usuário estiver logado, mostra o painel do Dashboard
+                    <Stack.Screen
+                        name="Dashboard"
+                        component={Dashboard}
+                    />
+                )}
+
+                <Stack.Screen
+                    name="Cadastro"
+                    component={Cadastro}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
