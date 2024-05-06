@@ -33,10 +33,15 @@ function App() {
             >
                 {!user ? (
                     // Se o usuário não estiver logado, mostra a tela MainMenu
-                    <Stack.Screen
+                    /*<Stack.Screen
                         name="MainMenu"
                         component={MainMenu}
+                    />*/
+                    <Stack.Screen
+                        name="Login"
+                        component={Login}
                     />
+
                 ) : (
                     // Se o usuário estiver logado, mostra o painel do Dashboard
                     <Stack.Screen
@@ -44,10 +49,7 @@ function App() {
                         component={Dashboard}
                     />
                 )}
-                <Stack.Screen
-                    name="Login"
-                    component={Login}
-                />
+                
                 <Stack.Screen
                     name="Cadastro"
                     component={Cadastro}
