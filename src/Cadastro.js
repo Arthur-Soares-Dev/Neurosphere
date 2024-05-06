@@ -1,14 +1,14 @@
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
-import { firebase } from '../config'
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { firebase } from '../config';
 
 const Cadastro = () => {
-  const navigation = useNavigation()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const registerUser = async (email, password, firstName, lastName) => {
     try {
@@ -21,26 +21,27 @@ const Cadastro = () => {
               email
             })
               .then(() => {
-                alert('Cadastro realizado com sucesso!')
+                alert('Cadastro realizado com sucesso!');
+                navigation.navigate('Login');
               })
               .catch((error) => {
-                alert(error.message)
+                alert(error.message);
               })
           })
           .catch((error) => {
-            alert(error.message)
+            alert(error.message);
           })
       } else {
-        alert('Por favor, preencha todos os campos')
+        alert('Por favor, preencha todos os campos');
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     }
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.backButton}>
         <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#026efd', marginTop: 20 }}>Voltar</Text>
       </TouchableOpacity>
 
@@ -122,4 +123,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Cadastro
+export default Cadastro;
