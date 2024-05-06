@@ -56,7 +56,7 @@ const Login = () => {
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ResetPasswordScreen')}
+        onPress={() => forgetPassword()}
         style={{marginTop: 20}}
       >
         <Text style={styles.linkText}>
