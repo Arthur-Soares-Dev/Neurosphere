@@ -5,7 +5,7 @@ import { firebase } from '../config'
 const Dashboard = ({ navigation }) => {
   const [usuario, setUsuario] = useState(null);
 
-  // troca de senha
+  // troca de senha avançada
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
       .then(() => {
