@@ -4,15 +4,18 @@ import { useNavigation } from '@react-navigation/native'
 import { firebase } from '../config'
 
 const Login = () => {
+    const [text, setText] = useState(null);
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    
     const loginUser = async (email, password) => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password);
             // Após o login bem-sucedido, redirecione para o Dashboard
             navigation.navigate('Dashboard');
+            setEmail('')
+            setPassword('')
         } catch (error) {
             alert(error.message);
         }
@@ -40,6 +43,7 @@ const Login = () => {
                     onChangeText={(email) => setEmail(email)}
                     autoCapitalize="none"
                     autoCorrect={false}
+                    value={email}
                 />
                 <TextInput
                     style={styles.textInput}
@@ -48,6 +52,7 @@ const Login = () => {
                     autoCapitalize="none"
                     autoCorrect={false}
                     secureTextEntry={true}
+                    value={password}
                 />
             </View>
             <TouchableOpacity
