@@ -8,6 +8,9 @@ Aplicativo de acessibilidade para pessoas neurodivergentes
 
 - [@GregoryRodrigues](https://github.com/GregoryRFGMS)
 - [@ArthurSoares](https://github.com/Arthur-Soares-Dev)
+- [@Kai-Ofc](https://github.com/Kai-Ofc)
+- [@DaviBMiranda](https://github.com/DaviBMiranda)
+- [@Lucaswilsondev ](https://github.com/lucaswilsondev)
 
 
 
