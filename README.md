@@ -1,6 +1,6 @@
 
 # NeuroSphere
-
+*Aplicação em desenvolvimento*
 Aplicativo de acessibilidade para pessoas neurodivergentes
 
 
