@@ -6,6 +6,8 @@ import { firebase } from "./config";
 import Login from "./src/Login";
 import Cadastro from "./src/Cadastro";
 import Dashboard from "./src/Dashboard";
+import TelaDasCrianca from "./src/TelaDasCrianca";
+import TelaDosPais from "./src/TelaDosPais";
 import MainMenu from "./src/MainMenu";
 
 const Stack = createStackNavigator();
@@ -35,6 +37,8 @@ function App() {
                 <Stack.Screen name="Dashboard" component={Dashboard} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Cadastro" component={Cadastro} />
+                <Stack.Screen name="TelaDasCrianca" component={TelaDasCrianca} />
+                <Stack.Screen name="TelaDosPais" component={TelaDosPais} />
             </Stack.Navigator>
         </NavigationContainer>
     );

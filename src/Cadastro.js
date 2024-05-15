@@ -9,16 +9,19 @@ const Cadastro = () => {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [childName, setChildName] = useState('');
+  const [childAge, setChildAge] = useState('');
 
-  const registerUser = async (email, password, firstName, lastName) => {
+  const registerUser = async (email, password, firstName, lastName, childName, childAge) => {
     try {
-      if (email && password && firstName && lastName) {
+      if (email && password && firstName && lastName && childName && childAge) {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(() => {
             firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set({
               firstName,
               lastName,
-              email
+              email,
+              childName
             })
               .then(() => {
                 alert('Cadastro realizado com sucesso!');
@@ -76,10 +79,22 @@ const Cadastro = () => {
           autoCorrect={false}
           secureTextEntry={true}
         />
+        <TextInput
+          style={styles.textInput}
+          placeholder='Nome da criança'
+          onChangeText={(childName) => setChildName(childName)}
+          autoCorrect={false}
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder='Idade da criança'
+          onChangeText={(childAge) => setChildAge(childAge)}
+          autoCorrect={false}
+        />
       </View>
 
       <TouchableOpacity
-        onPress={() => registerUser(email, password, firstName, lastName)}
+        onPress={() => registerUser(email, password, firstName, lastName, childName, childAge)}
         style={styles.button}
       >
         <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#fff' }}>Cadastrar</Text>
