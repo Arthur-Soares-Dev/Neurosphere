@@ -5,7 +5,7 @@ import { firebase } from '../config'
 const Dashboard = ({ navigation }) => {
   const [usuario, setUsuario] = useState(null);
 
-  // troca de senha
+  // troca de senha avançada
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
       .then(() => {
@@ -64,6 +64,24 @@ const Dashboard = ({ navigation }) => {
           Sair
         </Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+      onPress={() => navigation.navigate('TelaDosPais')}
+      style={styles.button}>
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+          Tela dos Pais
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('TelaDasCrianca')}
+
+        style={styles.button}>
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+          Tela das Crianças
+        </Text>
+      </TouchableOpacity>
+
     </SafeAreaView>
   )
 }
