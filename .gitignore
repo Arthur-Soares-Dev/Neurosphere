@@ -34,5 +34,5 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# configuração banco de dados
+# banco de dados
 config.js
