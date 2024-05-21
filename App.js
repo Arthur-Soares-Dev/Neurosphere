@@ -8,7 +8,7 @@ import Cadastro from "./src/Cadastro";
 import Dashboard from "./src/Dashboard";
 import TelaDasCrianca from "./src/TelaDasCrianca";
 import TelaDosPais from "./src/TelaDosPais";
-import MainMenu from "./src/MainMenu";
+import Profile from "./src/Profile"; // Certifique-se de que o caminho está correto
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,6 @@ function App() {
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
 
-    // Lidar com alterações do estado do usuário.
     function onAuthStateChanged(user) {
         setUser(user);
         if (initializing) setInitializing(false);
@@ -25,20 +24,22 @@ function App() {
     useEffect(() => {
         const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
         return subscriber;
-    }, [])
+    }, []);
+    
     if (initializing) return null;
 
     return (
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={{ headerShown: false }}
-                initialRouteName={user ? "Dashboard" : "Login"} // Aqui define a tela inicial com base na autenticação do usuário
+                initialRouteName={user ? "Dashboard" : "Login"}
             >
                 <Stack.Screen name="Dashboard" component={Dashboard} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Cadastro" component={Cadastro} />
                 <Stack.Screen name="TelaDasCrianca" component={TelaDasCrianca} />
                 <Stack.Screen name="TelaDosPais" component={TelaDosPais} />
+                <Stack.Screen name="Profile" component={Profile} />
             </Stack.Navigator>
         </NavigationContainer>
     );

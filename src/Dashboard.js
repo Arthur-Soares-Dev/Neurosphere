@@ -1,11 +1,10 @@
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { firebase } from '../config'
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { firebase } from '../config';
 
 const Dashboard = ({ navigation }) => {
   const [usuario, setUsuario] = useState(null);
 
-  // troca de senha avançada
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
       .then(() => {
@@ -35,15 +34,23 @@ const Dashboard = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-        Olá, {usuario?.firstName} {usuario?.lastName}!
-      </Text>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.profileButton}
+          onPress={() => navigation.navigate('Profile')}
+        >
+          <View style={styles.profileIcon} />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>
+          Olá, {usuario?.firstName} {usuario?.lastName}!
+        </Text>
+      </View>
 
       <TouchableOpacity
         onPress={() => changePassword()}
         style={styles.button}
       >
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+        <Text style={styles.buttonText}>
           Trocar Senha
         </Text>
       </TouchableOpacity>
@@ -60,47 +67,74 @@ const Dashboard = ({ navigation }) => {
         }}
         style={styles.button}
       >
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+        <Text style={styles.buttonText}>
           Sair
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-      onPress={() => navigation.navigate('TelaDosPais')}
-      style={styles.button}>
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+        onPress={() => navigation.navigate('TelaDosPais')}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>
           Tela dos Pais
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => navigation.navigate('TelaDasCrianca')}
-
-        style={styles.button}>
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>
           Tela das Crianças
         </Text>
       </TouchableOpacity>
-
     </SafeAreaView>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 100,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    backgroundColor: '#f0f0f0',
+  },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  profileButton: {
+    padding: 10,
+  },
+  profileIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#fff', // bola branca
   },
   button: {
-    marginTop: 50,
+    marginTop: 20,
     height: 70,
-    width: 250,
+    width: '100%',
     backgroundColor: '#026efd',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 50,
+    borderRadius: 15,
+  },
+  buttonText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#fff',
   }
-})
+});
