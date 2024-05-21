@@ -1,21 +1,19 @@
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
-import { firebase } from '../config'
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { firebase } from '../config';
 
 const Login = () => {
-    const [text, setText] = useState(null);
-    const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigation = useNavigation();
     
     const loginUser = async (email, password) => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password);
-            // Após o login bem-sucedido, redirecione para o Dashboard
             navigation.navigate('Dashboard');
-            setEmail('')
-            setPassword('')
+            setEmail('');
+            setPassword('');
         } catch (error) {
             alert(error.message);
         }
@@ -31,52 +29,58 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.headerText}>
-                Welcome back.
-            </Text>
+        <View style={styles.outerContainer}>
+            <Text style={styles.headerText}>Hello!</Text>
+            <Text style={styles.subHeaderText}>Sign Up</Text>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputTitle}>Email</Text>
+                    <View style={styles.inputWrapper}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Email"
+                            placeholderTextColor="#999"
+                            onChangeText={(email) => setEmail(email)}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            value={email}
+                        />
+                    </View>
+                    <Text style={styles.inputTitle}>Password</Text>
+                    <View style={styles.inputWrapper}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Password"
+                            placeholderTextColor="#999"
+                            onChangeText={(password) => setPassword(password)}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            secureTextEntry={true}
+                            value={password}
+                        />
+                    </View>
+                </View>
 
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Email"
-                    onChangeText={(email) => setEmail(email)}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    value={email}
-                />
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Password"
-                    onChangeText={(password) => setPassword(password)}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    value={password}
-                />
-            </View>
-            <TouchableOpacity
-                onPress={() => loginUser(email, password)}
-                style={styles.button}
-            >
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={forgetPassword}
-                style={{marginTop: 20}}
-            >
-                <Text style={styles.linkText}>
-                    Forgot your password?
-                </Text>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
+                    <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate('Cadastro')}
-                style={{marginTop: 20}}>
-                <Text style={styles.linkText}>
-                    Don’t have an account? Sign up
-                </Text>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => loginUser(email, password)} style={styles.button}>
+                    <Text style={styles.buttonText}>Sign Up</Text>
+                </TouchableOpacity>
+
+                <View style={styles.separatorContainer}>
+                    <View style={styles.separator} />
+                    <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+                        <Text style={styles.separatorText}>Don't have an account?</Text>
+                    </TouchableOpacity>
+                    <View style={styles.separator} />
+                </View>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Cadastro')} style={styles.signInLinkContainer}>
+                    <Text style={styles.signInLinkText}>Sign In</Text>
+                </TouchableOpacity>
+            </KeyboardAvoidingView>
         </View>
     );
 };
@@ -84,43 +88,108 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-    container: {
+    outerContainer: {
         flex: 1,
-        alignItems: 'center',
+        backgroundColor: '#ff5e78',
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        alignItems: 'center',
     },
     headerText: {
+        fontSize: 32,
         fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: 10,
+        marginTop: 50,
+    },
+    subHeaderText: {
         fontSize: 24,
-        marginBottom: 20,
+        color: '#fff',
+        marginBottom: 30,
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        paddingTop: 20,
+        paddingHorizontal: 20,
+        width: '100%',
+        paddingBottom: 30, 
+        marginTop: 50,  
     },
     inputContainer: {
-        marginBottom: 20,
         width: '100%',
+        marginBottom: 20,
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
+        borderRadius: 25,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        borderColor: '#ccc',
+        borderWidth: 1,
     },
     textInput: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
+        flex: 1,
+        height: 50,
+        color: '#000',
         paddingHorizontal: 10,
-        marginBottom: 10,
-        borderRadius: 5,
-        width: '100%',
+    },
+    inputTitle: {
+        alignSelf: 'flex-start',
+        marginBottom: 5,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#ff5e78', 
+    },
+    forgotPasswordContainer: {
+        alignSelf: 'flex-end',
+        marginBottom: 20,
+    },
+    forgotPasswordText: {
+        color: '#999',
+        fontSize: 14,
     },
     button: {
-        backgroundColor: '#026efd',
+        backgroundColor: '#87cefa',
         paddingVertical: 15,
-        paddingHorizontal: 50,
+        paddingHorizontal: 90,
         borderRadius: 25,
+        marginTop: 20,
+        alignItems: 'center',
     },
     buttonText: {
-        color: 'white',
+        color: '#fff',
         fontWeight: 'bold',
         fontSize: 18,
     },
-    linkText: {
-        color: '#026efd',
+    separatorContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 20,
+        width: '100%',
+        justifyContent: 'center',
+    },
+    separator: {
+        height: 1,
+        backgroundColor: '#000',
+        flex: 1,
+    },
+    separatorText: {
+        marginHorizontal: 10,
+        color: '#000',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    signInLinkContainer: {
+        marginTop: 10,
+    },
+    signInLinkText: {
+        color: '#ff5e78',
         fontSize: 16,
         fontWeight: 'bold',
     },
