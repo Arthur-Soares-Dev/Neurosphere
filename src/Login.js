@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
 
@@ -7,7 +7,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
-    
+
     const loginUser = async (email, password) => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password);
@@ -29,59 +29,68 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.outerContainer}>
-            <Text style={styles.headerText}>Hello!</Text>
-            <Text style={styles.subHeaderText}>Sign Up</Text>
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.inputTitle}>Email</Text>
-                    <View style={styles.inputWrapper}>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Email"
-                            placeholderTextColor="#999"
-                            onChangeText={(email) => setEmail(email)}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            value={email}
-                        />
-                    </View>
-                    <Text style={styles.inputTitle}>Password</Text>
-                    <View style={styles.inputWrapper}>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Password"
-                            placeholderTextColor="#999"
-                            onChangeText={(password) => setPassword(password)}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            secureTextEntry={true}
-                            value={password}
-                        />
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            style={styles.outerContainer}
+        >
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>Hello!</Text>
+                    <Text style={styles.subHeaderText}>Sign Up</Text>
+                </View>
+                <View style={styles.container}>
+                    <View style={styles.innerContainer}>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.inputTitle}>Email</Text>
+                            <View style={styles.inputWrapper}>
+                                <TextInput
+                                    style={styles.textInput}
+                                    placeholder="Email"
+                                    placeholderTextColor="#999"
+                                    onChangeText={(email) => setEmail(email)}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    value={email}
+                                />
+                            </View>
+                            <Text style={styles.inputTitle}>Password</Text>
+                            <View style={styles.inputWrapper}>
+                                <TextInput
+                                    style={styles.textInput}
+                                    placeholder="Password"
+                                    placeholderTextColor="#999"
+                                    onChangeText={(password) => setPassword(password)}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    secureTextEntry={true}
+                                    value={password}
+                                />
+                            </View>
+                        </View>
+
+                        <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
+                            <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => loginUser(email, password)} style={styles.button}>
+                            <Text style={styles.buttonText}>Sign Up</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.separatorContainer}>
+                            <View style={styles.separator} />
+                            <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+                                <Text style={styles.separatorText}>Don't have an account?</Text>
+                            </TouchableOpacity>
+                            <View style={styles.separator} />
+                        </View>
+
+                        <TouchableOpacity onPress={() => navigation.navigate('Cadastro')} style={styles.signInLinkContainer}>
+                            <Text style={styles.signInLinkText}>Sign In</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-
-                <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
-                    <Text style={styles.forgotPasswordText}>Forgot Password</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => loginUser(email, password)} style={styles.button}>
-                    <Text style={styles.buttonText}>Sign Up</Text>
-                </TouchableOpacity>
-
-                <View style={styles.separatorContainer}>
-                    <View style={styles.separator} />
-                    <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
-                        <Text style={styles.separatorText}>Don't have an account?</Text>
-                    </TouchableOpacity>
-                    <View style={styles.separator} />
-                </View>
-
-                <TouchableOpacity onPress={() => navigation.navigate('Cadastro')} style={styles.signInLinkContainer}>
-                    <Text style={styles.signInLinkText}>Sign In</Text>
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
-        </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
@@ -91,15 +100,20 @@ const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
         backgroundColor: '#ff5e78',
+    },
+    scrollContainer: {
+        flexGrow: 1,
+    },
+    headerContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+        paddingVertical: 30,
     },
     headerText: {
         fontSize: 32,
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 10,
-        marginTop: 50,
     },
     subHeaderText: {
         fontSize: 24,
@@ -108,16 +122,24 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        width: '100%',
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    innerContainer: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        paddingTop: 20,
-        paddingHorizontal: 20,
         width: '100%',
-        paddingBottom: 30, 
-        marginTop: 50,  
+        paddingHorizontal: 20,
+        paddingVertical: 50,
     },
     inputContainer: {
         width: '100%',
@@ -144,7 +166,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#ff5e78', 
+        color: '#ff5e78',
     },
     forgotPasswordContainer: {
         alignSelf: 'flex-end',
@@ -157,10 +179,11 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#87cefa',
         paddingVertical: 15,
-        paddingHorizontal: 90,
+        paddingHorizontal: 30,
         borderRadius: 25,
         marginTop: 20,
         alignItems: 'center',
+        width: '80%',
     },
     buttonText: {
         color: '#fff',

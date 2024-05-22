@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React, { useState, useEffect } from "react";
 import { firebase } from "./config";
 
+
 import Login from "./src/Login";
 import Cadastro from "./src/Cadastro";
 import Dashboard from "./src/Dashboard";
