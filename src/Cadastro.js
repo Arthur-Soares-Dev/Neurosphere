@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
 import Botao from './components/botao';
@@ -24,7 +24,7 @@ const Cadastro = () => {
             })
               .then(() => {
                 alert('Cadastro realizado com sucesso!');
-                navigation.navigate('Login');
+                navigation.navigate('Dashboard');
               })
               .catch((error) => {
                 alert(error.message);
@@ -58,16 +58,45 @@ const Cadastro = () => {
           <View style={styles.container}>
               <View style={styles.innerContainer}>
                   <View style={styles.inputContainer}>
-                      <Input texto="Nome" placeholder="Primeiro Nome"  onChangeText={(firstName) => setFirstName(firstName)}  value={firstName}/>
+                  <TextInput
+                    style = {styles.textInput}
+                    placeholder='Primeiro nome'
+                    onChangeText={(firstName) => setFirstName(firstName)}
+                    autoCorrect = {false}
+                  />
 
-                      <Input texto="Sobrenome" placeholder="Sobrenome"  onChangeText={(lastName) => setLastName(lastName)} value={lastName}/>
+                  <TextInput
+                    style = {styles.textInput}
+                    placeholder='Sobrenome'
+                    onChangeText={(lastName) => setLastName(lastName)}
+                    autoCorrect = {false}
+                  />
 
-                      <Input texto="Email" placeholder="Email"  onChangeText={(email) => setEmail(email)} value={email}/>
+                  <TextInput
+                    style = {styles.textInput}
+                    placeholder='Email'
+                    onChangeText={(email) => setEmail(email)}
+                    autoCorrect = {false}
+                    autoCapitalize='none'
+                    keyboardType='email-address'
+                  />
 
-                      <Input texto="Senha" placeholder="Senha"  onChangeText={(password) => setPassword(password)} value={password}/>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Senha"
+                    onChangeText={(password) => setPassword(password)}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                  />        
                   </View>
 
-                  <Botao texto="Cadastrar" onPress={() => registerUser(email, password, firstName, lastName)}/>
+                  <TouchableOpacity
+                      onPress={() => registerUser(email, password, firstName, lastName)}
+                      style={styles.button}
+                  >
+                    <Text style={{fontWeight:'bold', fontSize: 22}}>Cadastrar</Text>
+                  </TouchableOpacity>
 
                   <View style={styles.separatorContainer}>
                       <View style={styles.separator} />

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
 import Botao from './components/botao';
 import Input from './components/input';
+import { TextInput } from 'react-native-gesture-handler';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const Login = () => {
     const navigation = useNavigation();
 
     const loginUser = async (email, password) => {
+        console.log("Email:" + email + ". Senha:" + password+".")
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password);
             navigation.navigate('Dashboard');
@@ -19,7 +21,7 @@ const Login = () => {
         } catch (error) {
             alert(error.message);
         }
-    };
+    };  
 
     const forgetPassword = () => {
         firebase.auth().sendPasswordResetEmail(email)
@@ -44,16 +46,19 @@ const Login = () => {
                     <View style={styles.innerContainer}>
                         <View style={styles.inputContainer}>
 
-                            <Input texto="Email" placeholder="Email"  onChangeText={(email) => setEmail(email)}  autoCapitalize="none"  secureTextEntry={true} value={password}/>
+                            <TextInput texto="Email" placeholder="Email"  onChangeText={(email) => setEmail(email)}  autoCapitalize="none" value={email}/>
 
-                            <Input texto="Senha" placeholder="Senha"  onChangeText={(password) => setPassword(password)}  autoCapitalize="none"  secureTextEntry={true} value={password}/>
+                            <TextInput texto="Senha" placeholder="Senha"  onChangeText={(password) => setPassword(password)}  autoCapitalize="none"  secureTextEntry={true} value={password}/>
+
                         </View>
 
                         <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
                             <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
                         </TouchableOpacity>
 
-                        <Botao texto="Logar" onPress={() => loginUser(email, password)}/> 
+                        <TouchableOpacity onPress={() => loginUser(email, password)} style={styles.button}>
+                            <Text style={styles.buttonText}>Sign Up</Text>
+                        </TouchableOpacity>
 
                         <View style={styles.separatorContainer}>
                             <View style={styles.separator} />
