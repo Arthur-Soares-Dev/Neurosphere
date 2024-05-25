@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
-import Botao from './components/botao';
-import Input from './components/input';
+import StyleBotao from './components/Styles/botao';
+import StyleInput from './components/Styles/input';
 
 const Cadastro = () => {
   const navigation = useNavigation();
@@ -24,7 +24,7 @@ const Cadastro = () => {
             })
               .then(() => {
                 alert('Cadastro realizado com sucesso!');
-                navigation.navigate('Dashboard');
+                navigation.navigate('Login');
               })
               .catch((error) => {
                 alert(error.message);
@@ -58,44 +58,61 @@ const Cadastro = () => {
           <View style={styles.container}>
               <View style={styles.innerContainer}>
                   <View style={styles.inputContainer}>
-                  <TextInput
-                    style = {styles.textInput}
-                    placeholder='Primeiro nome'
-                    onChangeText={(firstName) => setFirstName(firstName)}
-                    autoCorrect = {false}
-                  />
+                    <Text style={StyleInput.inputTitle}>Nome</Text>
+                      <View style={StyleInput.inputWrapper}>
+                        <TextInput
+                            style={StyleInput.textInput}
+                            placeholder='Primeiro nome'
+                            placeholderTextColor="rgba(53,53,53,.6)"
+                            onChangeText={(firstName) => setFirstName(firstName)}
+                            autoCorrect={false}
+                        />
+                      </View>
 
-                  <TextInput
-                    style = {styles.textInput}
-                    placeholder='Sobrenome'
-                    onChangeText={(lastName) => setLastName(lastName)}
-                    autoCorrect = {false}
-                  />
+                    <Text style={StyleInput.inputTitle}>Sobrenome</Text>
+                    <View style={StyleInput.inputWrapper}>
+                      <TextInput
+                        style={StyleInput.textInput}
+                        placeholder='Sobrenome'
+                        placeholderTextColor="rgba(53,53,53,.6)"
+                        onChangeText={(lastName) => setLastName(lastName)}
+                        autoCorrect={false}
+                      />
+                    </View>
 
-                  <TextInput
-                    style = {styles.textInput}
-                    placeholder='Email'
-                    onChangeText={(email) => setEmail(email)}
-                    autoCorrect = {false}
-                    autoCapitalize='none'
-                    keyboardType='email-address'
-                  />
-
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder="Senha"
-                    onChangeText={(password) => setPassword(password)}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                  />        
+                    <Text style={StyleInput.inputTitle}>Email</Text>
+                    <View style={StyleInput.inputWrapper}>
+                        <TextInput
+                            style={StyleInput.textInput}
+                            placeholder="Email"
+                            placeholderTextColor="rgba(53,53,53,.6)"
+                            onChangeText={(email) => setEmail(email)}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            value={email}
+                        />
+                    </View>
+              
+                    <Text style={StyleInput.inputTitle}>Senha</Text>
+                    <View style={StyleInput.inputWrapper}>
+                        <TextInput
+                            style={StyleInput.textInput}
+                            placeholder="Senha"
+                            placeholderTextColor="rgba(53,53,53,.6)"
+                            onChangeText={(password) => setPassword(password)}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            secureTextEntry={true}
+                            value={password}
+                        />
+                    </View> 
                   </View>
 
                   <TouchableOpacity
-                      onPress={() => registerUser(email, password, firstName, lastName)}
-                      style={styles.button}
-                  >
-                    <Text style={{fontWeight:'bold', fontSize: 22}}>Cadastrar</Text>
+                    onPress={() => registerUser(email, password, firstName, lastName)}
+                    style={StyleBotao.button}
+                    >
+                    <Text style={StyleBotao.buttonText}>Cadastrar</Text>
                   </TouchableOpacity>
 
                   <View style={styles.separatorContainer}>

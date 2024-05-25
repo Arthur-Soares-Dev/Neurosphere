@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
-import Botao from './components/botao';
-import Input from './components/input';
-import { TextInput } from 'react-native-gesture-handler';
+import StyleBotao from './components/Styles/botao';
+import StyleInput from './components/Styles/input';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -12,7 +11,6 @@ const Login = () => {
     const navigation = useNavigation();
 
     const loginUser = async (email, password) => {
-        console.log("Email:" + email + ". Senha:" + password+".")
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password);
             navigation.navigate('Dashboard');
@@ -21,7 +19,7 @@ const Login = () => {
         } catch (error) {
             alert(error.message);
         }
-    };  
+    };
 
     const forgetPassword = () => {
         firebase.auth().sendPasswordResetEmail(email)
@@ -46,18 +44,43 @@ const Login = () => {
                     <View style={styles.innerContainer}>
                         <View style={styles.inputContainer}>
 
-                            <TextInput texto="Email" placeholder="Email"  onChangeText={(email) => setEmail(email)}  autoCapitalize="none" value={email}/>
-
-                            <TextInput texto="Senha" placeholder="Senha"  onChangeText={(password) => setPassword(password)}  autoCapitalize="none"  secureTextEntry={true} value={password}/>
-
+                        <Text style={StyleInput.inputTitle}>Email</Text>
+                        <View style={StyleInput.inputWrapper}>
+                        <TextInput
+                            style={StyleInput.textInput}
+                            placeholder="Email"
+                            placeholderTextColor="rgba(53,53,53,.6)"
+                            onChangeText={(email) => setEmail(email)}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            value={email}
+                        />
+                    </View>
+            
+                    <Text style={StyleInput.inputTitle}>Senha</Text>
+                    <View style={StyleInput.inputWrapper}>
+                        <TextInput
+                            style={StyleInput.textInput}
+                            placeholder="Senha"
+                            placeholderTextColor="rgba(53,53,53,.6)"
+                            onChangeText={(password) => setPassword(password)}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            secureTextEntry={true}
+                            value={password}
+                        />
+                    </View> 
                         </View>
 
                         <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
                             <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => loginUser(email, password)} style={styles.button}>
-                            <Text style={styles.buttonText}>Sign Up</Text>
+                        <TouchableOpacity
+                            onPress={() => loginUser(email, password)}
+                            style={StyleBotao.button}
+                            >
+                            <Text style={StyleBotao.buttonText}>Login</Text>
                         </TouchableOpacity>
 
                         <View style={styles.separatorContainer}>
