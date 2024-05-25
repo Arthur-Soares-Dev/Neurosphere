@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Text,TextInput, StyleSheet, SafeAreaView, TouchableOpacity, Button } from 'react-native'
 import { firebase } from '../config'
 
+import { addDoc, collection, doc, getDocs } from "firebase/firestore";
+
 const TelaDosPais = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const user = firebase.auth().currentUser;
 
     useEffect(() => {
-        const user = firebase.auth().currentUser;
+        
         if (user) {
             firebase.firestore().collection('users')
                 .doc(user.uid).get()
@@ -23,6 +28,28 @@ const TelaDosPais = ({ navigation }) => {
         }
     }, []);
 
+
+
+    const addTask = async (name, description) => {
+        const newCollectionRef = collection(firebase.firestore(), 'users', user.uid, 'Tasks')
+
+        await addDoc(newCollectionRef, {
+            name: name,
+            description: description,
+        }).then(()=>{
+            setName("")
+            setDescription("")
+            
+        })
+        
+
+        /*firebase.firestore().collection('users').doc(user.uid).update({
+            name: name,
+            description: description,
+        })*/
+
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={{fontSize: 22, fontWeight: 'bold'}}>
@@ -30,9 +57,24 @@ const TelaDosPais = ({ navigation }) => {
             </Text>
         <TextInput 
           style={styles.textInput}
-          placeholder="Name">
-
+          placeholder="Name"
+          onChangeText={(name) => setName(name)}
+          value={name}>
         </TextInput>
+        <TextInput 
+          style={styles.textInput}
+          placeholder="Description"
+          onChangeText={(description) => setDescription(description)}
+          value={description}>
+        </TextInput>
+
+        <TouchableOpacity 
+        onPress={() => addTask(name, description)}
+        style={styles.button}>
+            <Text style={{fontSize: 22, fontWeight: 'bold'}}> 
+                Adiconar Task
+            </Text>
+        </TouchableOpacity>
 
         <TouchableOpacity 
         onPress={() => navigation.navigate('Dashboard')}
@@ -41,6 +83,8 @@ const TelaDosPais = ({ navigation }) => {
                 Voltar
             </Text>
         </TouchableOpacity>
+
+        
 
         </SafeAreaView>
 
