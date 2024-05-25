@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
+import Botao from './components/botao';
+import Input from './components/input';
 
 const Cadastro = () => {
   const navigation = useNavigation();
@@ -9,19 +11,16 @@ const Cadastro = () => {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [childName, setChildName] = useState('');
-  const [childAge, setChildAge] = useState('');
 
-  const registerUser = async (email, password, firstName, lastName, childName, childAge) => {
+  const registerUser = async (email, password, firstName, lastName) => {
     try {
-      if (email && password && firstName && lastName && childName && childAge) {
+      if (email && password && firstName && lastName) {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(() => {
             firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set({
               firstName,
               lastName,
-              email,
-              childName
+              email
             })
               .then(() => {
                 alert('Cadastro realizado com sucesso!');
@@ -43,99 +42,139 @@ const Cadastro = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.backButton}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#026efd', marginTop: 20 }}>Voltar</Text>
-      </TouchableOpacity>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={styles.outerContainer}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.backButton}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#fff', marginTop: 20 }}>Voltar</Text>
+        </TouchableOpacity>
 
-      <Text style={{ fontWeight: 'bold', fontSize: 26 }}>Cadastro</Text>
+          <View style={styles.headerContainer}>
+              <Text style={styles.headerText}>Olá!</Text>
+              <Text style={styles.subHeaderText}>Cadastrar</Text>
+          </View>
+          <View style={styles.container}>
+              <View style={styles.innerContainer}>
+                  <View style={styles.inputContainer}>
+                      <Input texto="Nome" placeholder="Primeiro Nome"  onChangeText={(firstName) => setFirstName(firstName)}  value={firstName}/>
 
-      <View style={{ marginTop: 40 }}>
-        <TextInput
-          style={styles.textInput}
-          placeholder='Primeiro nome'
-          onChangeText={(firstName) => setFirstName(firstName)}
-          autoCorrect={false}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder='Sobrenome'
-          onChangeText={(lastName) => setLastName(lastName)}
-          autoCorrect={false}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder='Email'
-          onChangeText={(email) => setEmail(email)}
-          autoCorrect={false}
-          autoCapitalize='none'
-          keyboardType='email-address'
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Senha"
-          onChangeText={(password) => setPassword(password)}
-          autoCapitalize="none"
-          autoCorrect={false}
-          secureTextEntry={true}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder='Nome da criança'
-          onChangeText={(childName) => setChildName(childName)}
-          autoCorrect={false}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder='Idade da criança'
-          onChangeText={(childAge) => setChildAge(childAge)}
-          autoCorrect={false}
-        />
-      </View>
+                      <Input texto="Sobrenome" placeholder="Sobrenome"  onChangeText={(lastName) => setLastName(lastName)} value={lastName}/>
 
-      <TouchableOpacity
-        onPress={() => registerUser(email, password, firstName, lastName, childName, childAge)}
-        style={styles.button}
-      >
-        <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#fff' }}>Cadastrar</Text>
-      </TouchableOpacity>
-    </View>
+                      <Input texto="Email" placeholder="Email"  onChangeText={(email) => setEmail(email)} value={email}/>
+
+                      <Input texto="Senha" placeholder="Senha"  onChangeText={(password) => setPassword(password)} value={password}/>
+                  </View>
+
+                  <Botao texto="Cadastrar" onPress={() => registerUser(email, password, firstName, lastName)}/>
+
+                  <View style={styles.separatorContainer}>
+                      <View style={styles.separator} />
+                      <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+                          <Text style={styles.separatorText}>Já possui uma conta?</Text>
+                      </TouchableOpacity>
+                      <View style={styles.separator} />
+                  </View>
+
+                  <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.signInLinkContainer}>
+                      <Text style={styles.signInLinkText}>Logar</Text>
+                  </TouchableOpacity>
+              </View>
+          </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#ff5e78',
   },
   backButton: {
     position: 'absolute',
     top: 40,
     left: 20,
   },
-  textInput: {
-    paddingTop: 20,
-    paddingBottom: 10,
-    width: 300,
-    fontSize: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#026efd',
-    marginBottom: 10,
-    textAlign: 'center',
-    borderRadius: 5,
-    borderColor: '#ccc',
+  scrollContainer: {
+      flexGrow: 1,
   },
-  button: {
-    marginTop: 30,
-    height: 50,
-    width: 300,
-    backgroundColor: '#026efd',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-  }
+  headerContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 30,
+  },
+  headerText: {
+      fontSize: 32,
+      fontWeight: 'bold',
+      color: '#fff',
+      marginBottom: 10,
+  },
+  subHeaderText: {
+      fontSize: 24,
+      color: '#fff',
+      marginBottom: 30,
+  },
+  container: {
+      flex: 1,
+      width: '100%',
+      backgroundColor: '#fff',
+      borderTopLeftRadius: 50,
+      borderTopRightRadius: 50,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+  },
+  innerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      paddingHorizontal: 20,
+      paddingVertical: 50,
+  },
+  inputContainer: {
+      width: '100%',
+      marginBottom: 20,
+  },
+  forgotPasswordContainer: {
+      alignSelf: 'flex-end',
+      marginBottom: 20,
+  },
+  forgotPasswordText: {
+      color: '#999',
+      fontSize: 14,
+  },
+  separatorContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 20,
+      width: '100%',
+      justifyContent: 'center',
+  },
+  separator: {
+      height: 1,
+      backgroundColor: '#353535',
+      flex: 1,
+  },
+  separatorText: {
+      marginHorizontal: 10,
+      color: '#353535',
+      fontSize: 16,
+      fontWeight: 'bold',
+  },
+  signInLinkContainer: {
+      marginTop: 10,
+  },
+  signInLinkText: {
+      color: '#FD7FAC',
+      fontSize: 16,
+      fontWeight: 'bold',
+  },
 })
 
 export default Cadastro;

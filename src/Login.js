@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
+import Botao from './components/botao';
+import Input from './components/input';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -35,57 +37,34 @@ const Login = () => {
         >
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Hello!</Text>
-                    <Text style={styles.subHeaderText}>Sign Up</Text>
+                    <Text style={styles.headerText}>Olá!</Text>
+                    <Text style={styles.subHeaderText}>Logar</Text>
                 </View>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.inputTitle}>Email</Text>
-                            <View style={styles.inputWrapper}>
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder="Email"
-                                    placeholderTextColor="#999"
-                                    onChangeText={(email) => setEmail(email)}
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    value={email}
-                                />
-                            </View>
-                            <Text style={styles.inputTitle}>Password</Text>
-                            <View style={styles.inputWrapper}>
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder="Password"
-                                    placeholderTextColor="#999"
-                                    onChangeText={(password) => setPassword(password)}
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    secureTextEntry={true}
-                                    value={password}
-                                />
-                            </View>
+
+                            <Input texto="Email" placeholder="Email"  onChangeText={(email) => setEmail(email)}  autoCapitalize="none"  secureTextEntry={true} value={password}/>
+
+                            <Input texto="Senha" placeholder="Senha"  onChangeText={(password) => setPassword(password)}  autoCapitalize="none"  secureTextEntry={true} value={password}/>
                         </View>
 
                         <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
-                            <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+                            <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => loginUser(email, password)} style={styles.button}>
-                            <Text style={styles.buttonText}>Sign Up</Text>
-                        </TouchableOpacity>
+                        <Botao texto="Logar" onPress={() => loginUser(email, password)}/> 
 
                         <View style={styles.separatorContainer}>
                             <View style={styles.separator} />
                             <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
-                                <Text style={styles.separatorText}>Don't have an account?</Text>
+                                <Text style={styles.separatorText}>Não possui uma conta?</Text>
                             </TouchableOpacity>
                             <View style={styles.separator} />
                         </View>
 
                         <TouchableOpacity onPress={() => navigation.navigate('Cadastro')} style={styles.signInLinkContainer}>
-                            <Text style={styles.signInLinkText}>Sign In</Text>
+                            <Text style={styles.signInLinkText}>Cadastrar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -145,29 +124,6 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 20,
     },
-    inputWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#f0f0f0',
-        borderRadius: 25,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        borderColor: '#ccc',
-        borderWidth: 1,
-    },
-    textInput: {
-        flex: 1,
-        height: 50,
-        color: '#000',
-        paddingHorizontal: 10,
-    },
-    inputTitle: {
-        alignSelf: 'flex-start',
-        marginBottom: 5,
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#ff5e78',
-    },
     forgotPasswordContainer: {
         alignSelf: 'flex-end',
         marginBottom: 20,
@@ -175,20 +131,6 @@ const styles = StyleSheet.create({
     forgotPasswordText: {
         color: '#999',
         fontSize: 14,
-    },
-    button: {
-        backgroundColor: '#87cefa',
-        paddingVertical: 15,
-        paddingHorizontal: 30,
-        borderRadius: 25,
-        marginTop: 20,
-        alignItems: 'center',
-        width: '80%',
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 18,
     },
     separatorContainer: {
         flexDirection: 'row',
@@ -199,12 +141,12 @@ const styles = StyleSheet.create({
     },
     separator: {
         height: 1,
-        backgroundColor: '#000',
+        backgroundColor: '#353535',
         flex: 1,
     },
     separatorText: {
         marginHorizontal: 10,
-        color: '#000',
+        color: '#353535',
         fontSize: 16,
         fontWeight: 'bold',
     },
@@ -212,8 +154,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     signInLinkText: {
-        color: '#ff5e78',
+        color: '#FD7FAC',
         fontSize: 16,
         fontWeight: 'bold',
-    },
+    }
 });
