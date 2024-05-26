@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { firebase } from '../config';
 import { addDoc, collection } from "firebase/firestore";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const TelaDosPais = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
+    const [startTime, setStartTime] = useState(new Date());
+    const [endTime, setEndTime] = useState(new Date());
+    const [showStartTimePicker, setShowStartTimePicker] = useState(false);
+    const [showEndTimePicker, setShowEndTimePicker] = useState(false);
     const [category, setCategory] = useState('');
     const user = firebase.auth().currentUser;
 
@@ -36,15 +39,15 @@ const TelaDosPais = ({ navigation }) => {
             name: name,
             description: description,
             date: date,
-            startTime: startTime,
-            endTime: endTime,
+            startTime: startTime.toTimeString().substring(0, 5), // Formato HH:MM
+            endTime: endTime.toTimeString().substring(0, 5), // Formato HH:MM
             category: category,
         }).then(() => {
             setName("");
             setDescription("");
             setDate("");
-            setStartTime("");
-            setEndTime("");
+            setStartTime(new Date());
+            setEndTime(new Date());
             setCategory("");
         });
     }
@@ -81,21 +84,41 @@ const TelaDosPais = ({ navigation }) => {
                     <View style={styles.timeContainer}>
                         <View style={styles.timeInputContainer}>
                             <Text style={styles.label}>Start Time</Text>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Start Time"
-                                onChangeText={(startTime) => setStartTime(startTime)}
-                                value={startTime}
-                            />
+                            <TouchableOpacity onPress={() => setShowStartTimePicker(true)}>
+                                <Text style={styles.textInput}>{startTime.toTimeString().substring(0, 5)}</Text>
+                            </TouchableOpacity>
+                            {showStartTimePicker && (
+                                <DateTimePicker
+                                    value={startTime}
+                                    mode="time"
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={(event, selectedDate) => {
+                                        const currentDate = selectedDate || startTime;
+                                        setShowStartTimePicker(Platform.OS === 'ios');
+                                        setStartTime(currentDate);
+                                    }}
+                                />
+                            )}
                         </View>
                         <View style={styles.timeInputContainer}>
                             <Text style={styles.label}>End Time</Text>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="End Time"
-                                onChangeText={(endTime) => setEndTime(endTime)}
-                                value={endTime}
-                            />
+                            <TouchableOpacity onPress={() => setShowEndTimePicker(true)}>
+                                <Text style={styles.textInput}>{endTime.toTimeString().substring(0, 5)}</Text>
+                            </TouchableOpacity>
+                            {showEndTimePicker && (
+                                <DateTimePicker
+                                    value={endTime}
+                                    mode="time"
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={(event, selectedDate) => {
+                                        const currentDate = selectedDate || endTime;
+                                        setShowEndTimePicker(Platform.OS === 'ios');
+                                        setEndTime(currentDate);
+                                    }}
+                                />
+                            )}
                         </View>
                     </View>
                     
@@ -182,6 +205,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 10,
         backgroundColor: '#f9f9f9',
+        textAlignVertical: 'center',
     },
     timeContainer: {
         flexDirection: 'row',
