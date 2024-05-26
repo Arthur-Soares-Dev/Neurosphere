@@ -16,38 +16,50 @@ const Profile = () => {
       </TouchableOpacity>
       
       <Image
-        source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS633GIo1_mV3D9K08VUN6v5_FJClbCt2WT7piEr2JMd4JPGXDCIJBy8b3EqiSCjRlGks' }} // Coloque o URL da imagem do avatar aqui
+        source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS633GIo1_mV3D9K08VUN6v5_FJClbCt2WT7piEr2JMd4JPGXDCIJBy8b3EqiSCjRlGks'}} // Coloque o URL da imagem do avatar aqui
         style={styles.avatar}
       />
       <Text style={styles.changePicture}>Change Picture</Text>
       
-      <TextInput
-        style={styles.input}
-        value={username}
-        onChangeText={setUsername}
-        placeholder="Username"
-      />
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email Id"
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        value={phone}
-        onChangeText={setPhone}
-        placeholder="Phone Number"
-        keyboardType="phone-pad"
-      />
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-      />
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Username</Text>
+        <TextInput
+          style={styles.input}
+          value={username}
+          onChangeText={setUsername}
+          placeholder="Username"
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Email Id</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email Id"
+          keyboardType="email-address"
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Phone Number</Text>
+        <TextInput
+          style={styles.input}
+          value={phone}
+          onChangeText={setPhone}
+          placeholder="Phone Number"
+          keyboardType="phone-pad"
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          secureTextEntry
+        />
+      </View>
       
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Update</Text>
@@ -68,7 +80,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 40,
+    top: 40, // Ajuste conforme necessário para seu layout
     left: 20,
   },
   backButtonCircle: {
@@ -84,22 +96,30 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   changePicture: {
-    color: '#007BFF',
+    color: '#353535',
     marginBottom: 24,
+  },
+  inputContainer: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  label: {
+    marginBottom: 4,
+    color: '#000',
+    fontWeight: 'bold',
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 36,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 16,
   },
   button: {
-    width: '100%',
-    backgroundColor: '#000',
-    paddingVertical: 10,
+    width: '60%',
+    backgroundColor: '#353535',
+    paddingVertical: 8,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 16,
