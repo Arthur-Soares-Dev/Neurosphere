@@ -1,33 +1,95 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { firebase } from '../config';
 
 const Profile = () => {
   const navigation = useNavigation();
-  const [username, setUsername] = useState('NeuroShpere');
-  const [email, setEmail] = useState('neurosphere@gmail.com');
-  const [phone, setPhone] = useState('+553178899999');
-  const [password, setPassword] = useState('evFTbyVVCd');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          setUserId(user.uid);
+          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+          const userData = userDoc.data();
+          if (userData) {
+            setFirstName(userData.firstName || '');
+            setLastName(userData.lastName || '');
+            setEmail(userData.email || '');
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleUpdate = async () => {
+    if (!userId) return;
+
+    const updates = {};
+    if (firstName !== '') updates.firstName = firstName;
+    if (lastName !== '') updates.lastName = lastName;
+    if (email !== '') updates.email = email;
+
+    try {
+      await firebase.firestore().collection('users').doc(userId).update(updates);
+      
+      if (newPassword !== '') {
+        const user = firebase.auth().currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+          user.email,
+          currentPassword
+        );
+        await user.reauthenticateWithCredential(credential);
+        await user.updatePassword(newPassword);
+      }
+
+      Alert.alert('Success', 'Profile updated successfully!');
+    } catch (error) {
+      console.error("Error updating profile: ", error);
+      Alert.alert('Error', 'Failed to update profile!');
+    }
+  };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <View style={styles.backButtonCircle} />
       </TouchableOpacity>
-      
+
       <Image
-        source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS633GIo1_mV3D9K08VUN6v5_FJClbCt2WT7piEr2JMd4JPGXDCIJBy8b3EqiSCjRlGks'}} // Coloque o URL da imagem do avatar aqui
+        source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS633GIo1_mV3D9K08VUN6v5_FJClbCt2WT7piEr2JMd4JPGXDCIJBy8b3EqiSCjRlGks' }}
         style={styles.avatar}
       />
       <Text style={styles.changePicture}>Change Picture</Text>
-      
+
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Username</Text>
+        <Text style={styles.label}>First Name</Text>
         <TextInput
           style={styles.input}
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Username"
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholder="First Name"
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Last Name</Text>
+        <TextInput
+          style={styles.input}
+          value={lastName}
+          onChangeText={setLastName}
+          placeholder="Last Name"
         />
       </View>
       <View style={styles.inputContainer}>
@@ -41,27 +103,27 @@ const Profile = () => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Phone Number</Text>
+        <Text style={styles.label}>Current Password</Text>
         <TextInput
           style={styles.input}
-          value={phone}
-          onChangeText={setPhone}
-          placeholder="Phone Number"
-          keyboardType="phone-pad"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Password</Text>
-        <TextInput
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
+          value={currentPassword}
+          onChangeText={setCurrentPassword}
+          placeholder="Current Password"
           secureTextEntry
         />
       </View>
-      
-      <TouchableOpacity style={styles.button}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>New Password</Text>
+        <TextInput
+          style={styles.input}
+          value={newPassword}
+          onChangeText={setNewPassword}
+          placeholder="New Password"
+          secureTextEntry
+        />
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleUpdate}>
         <Text style={styles.buttonText}>Update</Text>
       </TouchableOpacity>
     </View>
@@ -80,7 +142,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 40, // Ajuste conforme necessário para seu layout
+    top: 40,
     left: 20,
   },
   backButtonCircle: {

@@ -8,9 +8,10 @@ const TelaDosPais = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(new Date());
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const [showStartTimePicker, setShowStartTimePicker] = useState(false);
     const [showEndTimePicker, setShowEndTimePicker] = useState(false);
     const [category, setCategory] = useState('');
@@ -36,16 +37,16 @@ const TelaDosPais = ({ navigation }) => {
     const addTask = async (name, description, date, startTime, endTime, category) => {
         const newCollectionRef = collection(firebase.firestore(), 'users', user.uid, 'Tasks');
         await addDoc(newCollectionRef, {
-            name: name,
-            description: description,
-            date: date,
-            startTime: startTime.toTimeString().substring(0, 5), // Formato HH:MM
-            endTime: endTime.toTimeString().substring(0, 5), // Formato HH:MM
-            category: category,
+            name,
+            description,
+            date: date.toISOString(), // Salvar como string ISO 8601
+            startTime: startTime.toISOString(), // Salvar como string ISO 8601
+            endTime: endTime.toISOString(), // Salvar como string ISO 8601
+            category,
         }).then(() => {
             setName("");
             setDescription("");
-            setDate("");
+            setDate(new Date());
             setStartTime(new Date());
             setEndTime(new Date());
             setCategory("");
@@ -73,12 +74,21 @@ const TelaDosPais = ({ navigation }) => {
                     
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Date</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Date"
-                            onChangeText={(date) => setDate(date)}
-                            value={date}
-                        />
+                        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                            <Text style={styles.textInput}>{date.toDateString()}</Text>
+                        </TouchableOpacity>
+                        {showDatePicker && (
+                            <DateTimePicker
+                                value={date}
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                    const currentDate = selectedDate || date;
+                                    setShowDatePicker(Platform.OS === 'ios');
+                                    setDate(currentDate);
+                                }}
+                            />
+                        )}
                     </View>
                     
                     <View style={styles.timeContainer}>
