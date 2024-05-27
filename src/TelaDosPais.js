@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, Scro
 import { firebase } from '../config';
 import { addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import StyleTask from './components/Styles/task';
 
 const TelaDosPais = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
@@ -16,6 +17,8 @@ const TelaDosPais = ({ navigation }) => {
     const [showEndTimePicker, setShowEndTimePicker] = useState(false);
     const [category, setCategory] = useState('');
     const user = firebase.auth().currentUser;
+    const [task, setTask] = useState([]);
+
 
     useEffect(() => {
         if (user) {
@@ -51,6 +54,21 @@ const TelaDosPais = ({ navigation }) => {
             setEndTime(new Date());
             setCategory("");
         });
+
+        
+    }
+
+    const Task = () => {
+        useEffect(() =>{
+            firebase.firestore().collection("Tasks").onSnapshot((query)=>{
+                const list = []
+                query.forEach((doc) => {
+                    list.push({...doc.data(), id: doc.id})
+                });
+                setTask(list)
+            });
+        }, 
+        [])
     }
 
     return (
@@ -158,6 +176,22 @@ const TelaDosPais = ({ navigation }) => {
                     >
                         <Text style={styles.buttonText}>Create a new task</Text>
                     </TouchableOpacity>
+
+                    <View style = {StyleTask.container}>
+                        <FlatList
+                        showsVerticalScrollIndicator = {false}
+                        data={task}
+                        renderItem={(item) =>{
+                            return(
+                            <View>
+                                <Text style = {StyleTask.textTask} onPress={() => {navigation.navigate("TelaDasCrianca", {id: item.id, description: item.description})}}>
+                                    {item.name}
+                                </Text>
+                            </View>
+                            );
+                        }}/>
+                    </View>
+
                 </View>
             </ScrollView>
         </SafeAreaView>
