@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { firebase } from '../config';
 import { addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import StyleTask from './components/Styles/task';
 
 const TelaDosPais = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
@@ -15,10 +14,9 @@ const TelaDosPais = ({ navigation }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showStartTimePicker, setShowStartTimePicker] = useState(false);
     const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-    const [category, setCategory] = useState('');
+    const [tags, setTags] = useState([]);
+    const [tagInput, setTagInput] = useState('');
     const user = firebase.auth().currentUser;
-    const [task, setTask] = useState([]);
-
 
     useEffect(() => {
         if (user) {
@@ -37,7 +35,7 @@ const TelaDosPais = ({ navigation }) => {
         }
     }, []);
 
-    const addTask = async (name, description, date, startTime, endTime, category) => {
+    const addTask = async (name, description, date, startTime, endTime, tags) => {
         const newCollectionRef = collection(firebase.firestore(), 'users', user.uid, 'Tasks');
         await addDoc(newCollectionRef, {
             name,
@@ -45,31 +43,33 @@ const TelaDosPais = ({ navigation }) => {
             date: date.toISOString(), // Salvar como string ISO 8601
             startTime: startTime.toISOString(), // Salvar como string ISO 8601
             endTime: endTime.toISOString(), // Salvar como string ISO 8601
-            category,
+            tags,
         }).then(() => {
             setName("");
             setDescription("");
             setDate(new Date());
             setStartTime(new Date());
             setEndTime(new Date());
-            setCategory("");
+            setTags([]);
         });
+    };
 
-        
-    }
+    const getRandomColor = () => {
+        const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    };
 
-    const Task = () => {
-        useEffect(() =>{
-            firebase.firestore().collection("Tasks").onSnapshot((query)=>{
-                const list = []
-                query.forEach((doc) => {
-                    list.push({...doc.data(), id: doc.id})
-                });
-                setTask(list)
-            });
-        }, 
-        [])
-    }
+    const handleAddTag = () => {
+        if (tagInput.trim() !== "") {
+            setTags([...tags, { text: tagInput.trim(), color: getRandomColor() }]);
+            setTagInput('');
+        }
+    };
+
+    const handleRemoveTag = (index) => {
+        const newTags = tags.filter((_, i) => i !== index);
+        setTags(newTags);
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -79,7 +79,7 @@ const TelaDosPais = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
                 <View style={styles.innerContainer}>
                     <Text style={styles.title}>Add Tasks</Text>
-                    
+
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Title</Text>
                         <TextInput
@@ -89,7 +89,7 @@ const TelaDosPais = ({ navigation }) => {
                             value={name}
                         />
                     </View>
-                    
+
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Date</Text>
                         <TouchableOpacity onPress={() => setShowDatePicker(true)}>
@@ -108,7 +108,7 @@ const TelaDosPais = ({ navigation }) => {
                             />
                         )}
                     </View>
-                    
+
                     <View style={styles.timeContainer}>
                         <View style={styles.timeInputContainer}>
                             <Text style={styles.label}>Start Time</Text>
@@ -149,7 +149,7 @@ const TelaDosPais = ({ navigation }) => {
                             )}
                         </View>
                     </View>
-                    
+
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Description</Text>
                         <TextInput
@@ -159,39 +159,41 @@ const TelaDosPais = ({ navigation }) => {
                             value={description}
                         />
                     </View>
-                    
+
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Add Category</Text>
+                        <Text style={styles.label}>Tags</Text>
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Category"
-                            onChangeText={(category) => setCategory(category)}
-                            value={category}
+                            placeholder="Add a tag"
+                            onChangeText={(text) => setTagInput(text)}
+                            value={tagInput}
+                            onSubmitEditing={handleAddTag}
+                        />
+                        <FlatList
+                            data={tags}
+                            keyExtractor={(item, index) => index.toString()}
+                            horizontal
+                            renderItem={({ item, index }) => (
+                                <View style={[styles.tag, { backgroundColor: item.color }]}>
+                                    <Text style={styles.tagText}>{item.text}</Text>
+                                    <TouchableOpacity onPress={() => handleRemoveTag(index)} style={styles.removeTagButton}>
+                                        <Text style={styles.removeTagButtonText}>x</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
                         />
                     </View>
 
+                    <TouchableOpacity onPress={handleAddTag} style={styles.addButton}>
+                        <Text style={styles.addButtonText}>Add</Text>
+                    </TouchableOpacity>
+
                     <TouchableOpacity
-                        onPress={() => addTask(name, description, date, startTime, endTime, category)}
+                        onPress={() => addTask(name, description, date, startTime, endTime, tags)}
                         style={styles.button}
                     >
                         <Text style={styles.buttonText}>Create a new task</Text>
                     </TouchableOpacity>
-
-                    <View style = {StyleTask.container}>
-                        <FlatList
-                        showsVerticalScrollIndicator = {false}
-                        data={task}
-                        renderItem={(item) =>{
-                            return(
-                            <View>
-                                <Text style = {StyleTask.textTask} onPress={() => {navigation.navigate("TelaDasCrianca", {id: item.id, description: item.description})}}>
-                                    {item.name}
-                                </Text>
-                            </View>
-                            );
-                        }}/>
-                    </View>
-
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -260,6 +262,41 @@ const styles = StyleSheet.create({
     timeInputContainer: {
         flex: 1,
         marginHorizontal: 5,
+    },
+    addButton: {
+        backgroundColor: '#000',
+        padding: 10,
+        borderRadius: 8,
+        marginTop: 10,
+        alignItems: 'center',
+        width: '100%',
+    },
+    addButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    tag: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 20,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginRight: 10,
+        marginVertical: 5,
+    },
+    tagText: {
+        color: '#000',
+    },
+    removeTagButton: {
+        marginLeft: 5,
+        borderRadius: 12,
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+    },
+    removeTagButtonText: {
+        color: '#000',
+        fontSize: 12,
+        fontWeight: 'bold',
     },
     button: {
         backgroundColor: '#000',
