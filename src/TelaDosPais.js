@@ -102,7 +102,7 @@ const TelaDosPais = ({ navigation }) => {
                                 display="default"
                                 onChange={(event, selectedDate) => {
                                     const currentDate = selectedDate || date;
-                                    setShowDatePicker(Platform.OS === 'ios');
+                                    setShowDatePicker(false);
                                     setDate(currentDate);
                                 }}
                             />
@@ -123,7 +123,7 @@ const TelaDosPais = ({ navigation }) => {
                                     display="default"
                                     onChange={(event, selectedDate) => {
                                         const currentDate = selectedDate || startTime;
-                                        setShowStartTimePicker(Platform.OS === 'ios');
+                                        setShowStartTimePicker(false);
                                         setStartTime(currentDate);
                                     }}
                                 />
@@ -142,7 +142,7 @@ const TelaDosPais = ({ navigation }) => {
                                     display="default"
                                     onChange={(event, selectedDate) => {
                                         const currentDate = selectedDate || endTime;
-                                        setShowEndTimePicker(Platform.OS === 'ios');
+                                        setShowEndTimePicker(false);
                                         setEndTime(currentDate);
                                     }}
                                 />
