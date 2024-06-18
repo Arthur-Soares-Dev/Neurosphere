@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native';
 import { firebase } from '../config';
+import * as Speech from 'expo-speech';
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Undefined'];
 
@@ -53,6 +54,12 @@ const TelaDasCrianca = ({ navigation }) => {
         );
     };
 
+
+    const speakTask = (speakName, speakDescription) => {
+        const thingToSay = `Nome da tarefa: ${speakName}. Descrição da tarefa: ${speakDescription}.`;
+        Speech.speak(thingToSay);
+    }
+
     const renderItem = ({ item }) => {
         const isSelected = item.id === selectedTaskId;
         const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
@@ -77,6 +84,11 @@ const TelaDasCrianca = ({ navigation }) => {
                             )}
                             <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.completeButton}>
                                 <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
+                                <Text style={styles.completeButtonText}>
+                                    Falar
+                                </Text>
                             </TouchableOpacity>
                         </>
                     )}
