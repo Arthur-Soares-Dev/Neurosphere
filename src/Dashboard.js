@@ -91,7 +91,7 @@ const Dashboard = ({ navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('FrasesAudio')}
+        onPress={() => navigation.navigate('AudioDialogue')}
         style={styles.button}
       >
         <Text style={styles.buttonText}>
