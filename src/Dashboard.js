@@ -89,7 +89,17 @@ const Dashboard = ({ navigation }) => {
           Tela das Crianças
         </Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('FrasesAudio')}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>
+          Frases
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
+    
   );
 }
 

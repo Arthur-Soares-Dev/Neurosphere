@@ -10,6 +10,7 @@ import Dashboard from "./src/Dashboard";
 import TelaDasCrianca from "./src/TelaDasCrianca";
 import TelaDosPais from "./src/TelaDosPais";
 import Profile from "./src/Profile"; // Certifique-se de que o caminho está correto
+import FrasesAudio from "./src/FrasesAudio";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ function App() {
                 <Stack.Screen name="TelaDasCrianca" component={TelaDasCrianca} />
                 <Stack.Screen name="TelaDosPais" component={TelaDosPais} />
                 <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="FrasesAudio" component={FrasesAudio} />
             </Stack.Navigator>
         </NavigationContainer>
     );
