@@ -5,7 +5,7 @@ import * as Speech from 'expo-speech';
 import Toast from 'react-native-toast-message';
 
 
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Undefined'];
+const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabádo', 'Sem Data'];
 
 const TelaDasCrianca = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
