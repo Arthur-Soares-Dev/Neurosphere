@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native';
 import { firebase } from '../config';
 import * as Speech from 'expo-speech';
+import Toast from 'react-native-toast-message';
+
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Undefined'];
 
@@ -10,9 +12,9 @@ const TelaDasCrianca = ({ navigation }) => {
     const [tasks, setTasks] = useState([]);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     const [selectedDay, setSelectedDay] = useState(1); // Monday
+    const user = firebase.auth().currentUser;
 
     useEffect(() => {
-        const user = firebase.auth().currentUser;
         if (user) {
             firebase.firestore().collection('users')
                 .doc(user.uid).get()
@@ -40,7 +42,7 @@ const TelaDasCrianca = ({ navigation }) => {
     }, []);
 
     const toggleCompleted = (taskId) => {
-        const user = firebase.auth().currentUser;
+        
         const taskRef = firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(taskId);
         setTasks(prevTasks =>
             prevTasks.map(task => {
@@ -52,6 +54,12 @@ const TelaDasCrianca = ({ navigation }) => {
                 return task;
             })
         );
+        //Alert que peguei do site do npm
+        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
+        Toast.show({
+            type: 'success',
+            text1: 'Tarefa concluída com sucesso',
+          });
     };
 
 
@@ -64,6 +72,16 @@ const TelaDasCrianca = ({ navigation }) => {
             //https://docs.expo.dev/versions/latest/sdk/speech/#speechoptions
         }
         Speech.speak(thingToSay, options);
+    }
+
+    function deleteTask(id) {
+        firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(id).delete();
+        //Alert que peguei do site do npm
+        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
+        Toast.show({
+            type: 'success',
+            text1: 'Tarefa excluída com sucesso',
+          });
     }
 
     const renderItem = ({ item }) => {
@@ -92,9 +110,14 @@ const TelaDasCrianca = ({ navigation }) => {
                                 <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
+                                <TouchableOpacity onPress={() => showToast()} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>
                                         Falar
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.completeButton}>
+                                    <Text style={styles.completeButtonText}>
+                                        Deletar tarefa
                                     </Text>
                                 </TouchableOpacity>
                             </>
@@ -151,6 +174,7 @@ const TelaDasCrianca = ({ navigation }) => {
                 style={styles.list}
                 contentContainerStyle={styles.listContainer}
             />
+            <Toast />
         </SafeAreaView>
     );
 }
