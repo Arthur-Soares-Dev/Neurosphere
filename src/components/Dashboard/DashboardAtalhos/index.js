@@ -9,7 +9,9 @@ export default function Dashboard() {
 
         <View style={styles.menuContainer}>
             <Text style={{fontSize: 20}}>Atalhos Diários</Text>
-            <Text style={{fontSize: 15, color: '#353535'}}>Ver Todos</Text>
+            <TouchableOpacity style={{fontSize: 15, color: '#353535'}}>
+                <Text>Ver Todos</Text>
+            </TouchableOpacity>
         </View>
 
         <ScrollView

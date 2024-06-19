@@ -9,7 +9,6 @@ export default function Card() {
             <Text style={{fontSize: 15, color: '#353535'}}>Usuário</Text>
         </View>
         <View style={styles.card}>
-            <Text> </Text>
         </View>
     </View>
   )
