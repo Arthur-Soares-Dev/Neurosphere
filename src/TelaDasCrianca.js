@@ -67,40 +67,43 @@ const TelaDasCrianca = ({ navigation }) => {
     }
 
     const renderItem = ({ item }) => {
-        const isSelected = item.id === selectedTaskId;
-        const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
-
-        return (
-            <TouchableOpacity onPress={() => setSelectedTaskId(isSelected ? null : item.id)}>
-                <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 100 }]}>
-                    <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
-                    <Text style={styles.taskTitle}>{item.name}</Text>
-                    <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                    {isSelected && (
-                        <>
-                            <Text style={styles.taskDescription}>{item.description}</Text>
-                            {item.tags && item.tags.length > 0 && (
-                                <View style={styles.tagsContainer}>
-                                    {item.tags.map((tag, index) => (
-                                        <View key={index} style={[styles.tag, { backgroundColor: tag.color }]}>
-                                            <Text style={styles.tagText}>{tag.text}</Text>
-                                        </View>
-                                    ))}
-                                </View>
-                            )}
-                            <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.completeButton}>
-                                <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
-                                <Text style={styles.completeButtonText}>
-                                    Falar
-                                </Text>
-                            </TouchableOpacity>
-                        </>
-                    )}
-                </View>
-            </TouchableOpacity>
-        );
+        if(item.completed == false){
+            const isSelected = item.id === selectedTaskId;
+            const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
+    
+            return (
+                <TouchableOpacity onPress={() => setSelectedTaskId(isSelected ? null : item.id)}>
+                    <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 100 }]}>
+                        <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
+                        <Text style={styles.taskTitle}>{item.name}</Text>
+                        <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                        {isSelected && (
+                            <>
+                                <Text style={styles.taskDescription}>{item.description}</Text>
+                                {item.tags && item.tags.length > 0 && (
+                                    <View style={styles.tagsContainer}>
+                                        {item.tags.map((tag, index) => (
+                                            <View key={index} style={[styles.tag, { backgroundColor: tag.color }]}>
+                                                <Text style={styles.tagText}>{tag.text}</Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                )}
+                                <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.completeButton}>
+                                    <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
+                                    <Text style={styles.completeButtonText}>
+                                        Falar
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
+                        )}
+                    </View>
+                </TouchableOpacity>
+            );
+        }
+        
     };
 
     const getColorForTask = (task) => {
