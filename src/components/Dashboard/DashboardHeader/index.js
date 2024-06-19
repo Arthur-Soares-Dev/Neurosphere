@@ -16,11 +16,13 @@ export default function Header() {
 
 const styles = StyleSheet.create({
     header: {
-        width: '100%',
-        height: 30,
-        backgroundColor: '#FD7FAC',
-        paddingLeft: 10,
-        marginBottom: 30,
+      position: 'absolute',
+      top: 0,
+      width: '100%',
+      height: 30,
+      backgroundColor: '#FD7FAC',
+      paddingLeft: 10,
+      marginBottom: 30,
     },
 
     profile: {

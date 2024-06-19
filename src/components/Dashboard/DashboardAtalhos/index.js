@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function Dashboard() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
         <View style={styles.menuContainer}>
             <Text style={{fontSize: 20}}>Atalhos Diários</Text>
@@ -14,6 +15,8 @@ export default function Dashboard() {
         <ScrollView
         horizontal={true}  
         contentContainerStyle={styles.scrollContainer}
+        showsHorizontalScrollIndicator={false}
+        style={{height: 150}}
         >
             <TouchableOpacity style={styles.cardPink}> 
                 <View style={styles.circle}>
@@ -31,7 +34,7 @@ export default function Dashboard() {
                     
                 </View>
                 <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-                    Ver Tarefas
+                    Ver {"\n"} Tarefas
                 </Text>
             </TouchableOpacity>
 
@@ -46,13 +49,13 @@ export default function Dashboard() {
                 </Text>
             </TouchableOpacity>
         </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1, 
+      height: 200
     },
 
     menuContainer: {
@@ -64,7 +67,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 
+    scrollview: {
+        
+    },
+
     scrollContainer: {
+        height: 150,
         flexDirection: "row",
         paddingLeft: 10,
         paddingRight: 10,
