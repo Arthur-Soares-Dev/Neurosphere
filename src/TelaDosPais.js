@@ -44,6 +44,7 @@ const TelaDosPais = ({ navigation }) => {
             startTime: startTime.toISOString(), // Salvar como string ISO 8601
             endTime: endTime.toISOString(), // Salvar como string ISO 8601
             tags,
+            completed: false
         }).then(() => {
             setName("");
             setDescription("");
