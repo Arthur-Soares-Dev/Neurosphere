@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function Card() {
   return (
-    <View style={{width: "95%"}}>
+    <View style={{width: "95%", marginTop: 70}}>
         <View style={styles.menuContainer}>
             <Text style={{fontSize: 25}}>Início</Text>
             <Text style={{fontSize: 15, color: '#353535'}}>Usuário</Text>
