@@ -110,7 +110,7 @@ const TelaDasCrianca = ({ navigation }) => {
                                 <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => showToast()} style={styles.completeButton}>
+                                <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>
                                         Falar
                                     </Text>
