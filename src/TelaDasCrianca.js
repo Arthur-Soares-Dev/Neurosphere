@@ -57,7 +57,13 @@ const TelaDasCrianca = ({ navigation }) => {
 
     const speakTask = (speakName, speakDescription) => {
         const thingToSay = `Nome da tarefa: ${speakName}. Descrição da tarefa: ${speakDescription}.`;
-        Speech.speak(thingToSay);
+        options = {
+            rate: 0.8,
+            language: 'pt-BR'
+            //Documentação com todas as opções, como volume, velocidade, e essas coisas
+            //https://docs.expo.dev/versions/latest/sdk/speech/#speechoptions
+        }
+        Speech.speak(thingToSay, options);
     }
 
     const renderItem = ({ item }) => {
