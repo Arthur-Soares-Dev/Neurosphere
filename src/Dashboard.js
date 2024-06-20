@@ -42,7 +42,7 @@ const Dashboard = ({ navigation }) => {
           <View style={styles.profileIcon} />
         </TouchableOpacity>
         <Text style={styles.headerText}>
-          Olá, {usuario?.firstName} {usuario?.lastName}!
+          Olá, {usuario.name}!
         </Text>
       </View>
 

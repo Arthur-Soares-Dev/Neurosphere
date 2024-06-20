@@ -6,8 +6,7 @@ import { firebase } from '../config';
 
 const Profile = () => {
   const navigation = useNavigation();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -23,8 +22,7 @@ const Profile = () => {
           const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
           if (userDoc.exists) {
             const userData = userDoc.data();
-            setFirstName(userData.firstName || '');
-            setLastName(userData.lastName || '');
+            setName(userData.name || '');
             setEmail(userData.email || '');
             setProfileImage(userData.profileImage || '');
           } else {
@@ -94,8 +92,7 @@ const Profile = () => {
     if (!userId) return;
 
     const updates = {};
-    if (firstName !== '') updates.firstName = firstName;
-    if (lastName !== '') updates.lastName = lastName;
+    if (name !== '') updates.name = name;
     if (email !== '') updates.email = email;
 
     try {
@@ -130,23 +127,15 @@ const Profile = () => {
       <Text style={styles.changePicture}>Change Picture</Text>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>First Name</Text>
+        <Text style={styles.label}>Name</Text>
         <TextInput
           style={styles.input}
-          value={firstName}
-          onChangeText={setFirstName}
-          placeholder="First Name"
+          value={name}
+          onChangeText={setName}
+          placeholder="Name"
         />
       </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Last Name</Text>
-        <TextInput
-          style={styles.input}
-          value={lastName}
-          onChangeText={setLastName}
-          placeholder="Last Name"
-        />
-      </View>
+
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Email Id</Text>
         <TextInput
