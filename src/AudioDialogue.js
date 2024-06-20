@@ -1,6 +1,8 @@
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { firebase } from '../config';
+import * as Speech from 'expo-speech';
+import Card  from './components/AudioDialogue/Card'
 
 const AudioDialogue = () => {
   return (
@@ -8,6 +10,9 @@ const AudioDialogue = () => {
       <Text>
         Frases
       </Text>
+
+      <Card
+      />
 
       <TouchableOpacity>
         
