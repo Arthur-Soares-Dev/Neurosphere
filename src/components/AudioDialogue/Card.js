@@ -12,17 +12,18 @@ const Card = () => {
     const speak = (audio) => {
         const thingToSay = audio;
         options = {
-            language: 'pt-BR'
+            language: 'pt-BR',
+            rate: 0.85
             //Documentação com todas as opções, como volume, velocidade, e essas coisas
             //https://docs.expo.dev/versions/latest/sdk/speech/#speechoptions
         }
         Speech.speak(thingToSay, options);
     }
-    const a = cardTemplates.map(template => {
+    const cardList = cardTemplates.map(template => {
         return (
             <SafeAreaView>
-                <TouchableOpacity onPress={() => speak(template.audio)}>
-                            <Text>{template.title}</Text>
+                <TouchableOpacity style={styles.button} onPress={() => speak(template.audio)}>
+                            <Text style={styles.buttonText}>{template.title}</Text>
                             <Image
                                 style={styles.tinyLogo}
                                 source={template.uri}
@@ -34,7 +35,7 @@ const Card = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {a}
+            {cardList}
         </SafeAreaView>
     )
 
@@ -67,5 +68,5 @@ const styles = StyleSheet.create({
     tinyLogo: {
       width: 50,
       height: 50,
-    },
+    }
     });
