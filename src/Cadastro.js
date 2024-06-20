@@ -9,17 +9,15 @@ const Cadastro = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
 
-  const registerUser = async (email, password, firstName, lastName) => {
+  const registerUser = async (email, password, name) => {
     try {
-      if (email && password && firstName && lastName) {
+      if (email && password && name) {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(() => {
             firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set({
-              firstName,
-              lastName,
+              name,
               email
             })
               .then(() => {
@@ -62,23 +60,12 @@ const Cadastro = () => {
                       <View style={StyleInput.inputWrapper}>
                         <TextInput
                             style={StyleInput.textInput}
-                            placeholder='Primeiro nome'
+                            placeholder='Nome'
                             placeholderTextColor="rgba(53,53,53,.6)"
-                            onChangeText={(firstName) => setFirstName(firstName)}
+                            onChangeText={(name) => setName(name)}
                             autoCorrect={false}
                         />
                       </View>
-
-                    <Text style={StyleInput.inputTitle}>Sobrenome</Text>
-                    <View style={StyleInput.inputWrapper}>
-                      <TextInput
-                        style={StyleInput.textInput}
-                        placeholder='Sobrenome'
-                        placeholderTextColor="rgba(53,53,53,.6)"
-                        onChangeText={(lastName) => setLastName(lastName)}
-                        autoCorrect={false}
-                      />
-                    </View>
 
                     <Text style={StyleInput.inputTitle}>Email</Text>
                     <View style={StyleInput.inputWrapper}>
@@ -109,7 +96,7 @@ const Cadastro = () => {
                   </View>
 
                   <TouchableOpacity
-                    onPress={() => registerUser(email, password, firstName, lastName)}
+                    onPress={() => registerUser(email, password, name)}
                     style={StyleBotao.button}
                     >
                     <Text style={StyleBotao.buttonText}>Cadastrar</Text>
