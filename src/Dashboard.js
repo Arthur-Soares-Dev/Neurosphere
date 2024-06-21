@@ -1,6 +1,7 @@
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { firebase } from '../config';
+import TaskList from './components/Dashboard/DashboardTasks/index'
 
 const Dashboard = ({ navigation }) => {
   const [usuario, setUsuario] = useState(null);
@@ -42,7 +43,7 @@ const Dashboard = ({ navigation }) => {
           <View style={styles.profileIcon} />
         </TouchableOpacity>
         <Text style={styles.headerText}>
-          Olá, {usuario.name}!
+          Olá, {usuario?.name}!
         </Text>
       </View>
 
@@ -98,6 +99,12 @@ const Dashboard = ({ navigation }) => {
           Frases
         </Text>
       </TouchableOpacity>
+
+      <TaskList
+
+      />
+
+
     </SafeAreaView>
     
   );
