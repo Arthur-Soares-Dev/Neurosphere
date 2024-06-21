@@ -9,9 +9,6 @@ export default function Dashboard() {
 
         <View style={styles.menuContainer}>
             <Text style={{fontSize: 20}}>Atalhos Diários</Text>
-            <TouchableOpacity style={{fontSize: 15, color: '#353535'}}>
-                <Text>Ver Todos</Text>
-            </TouchableOpacity>
         </View>
 
         <ScrollView
@@ -67,10 +64,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         marginBottom: 10,
-    },
-
-    scrollview: {
-        
     },
 
     scrollContainer: {
