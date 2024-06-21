@@ -83,6 +83,13 @@ const Login = () => {
                             <Text style={StyleBotao.buttonText}>Login</Text>
                         </TouchableOpacity>
 
+                        <TouchableOpacity
+                            onPress={() => loginUser('12201839@aluno.cotemig.com.br', 'senha123')}
+                            style={StyleBotao.button}
+                            >
+                            <Text style={StyleBotao.buttonText}>Login Rápido</Text>
+                        </TouchableOpacity>
+
                         
 
                         <View style={styles.separatorContainer}>
