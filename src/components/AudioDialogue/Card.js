@@ -19,9 +19,9 @@ const Card = () => {
         }
         Speech.speak(thingToSay, options);
     }
-    const cardList = cardTemplates.map(template => {
+    const cardList = cardTemplates.map((template, index) => {
         return (
-            <SafeAreaView>
+            <SafeAreaView key={index}>
                 <TouchableOpacity style={styles.button} onPress={() => speak(template.audio)}>
                             <Text style={styles.buttonText}>{template.title}</Text>
                             <Image
