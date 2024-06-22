@@ -71,7 +71,7 @@ export default function Tasks() {
             const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
             return (
                 <TouchableOpacity onPress={() => setSelectedTaskId(isSelected ? null : item.id)}>
-                    <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 100 }]}>
+                    <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 100, width: 368, marginRight: 20 }]}>
                         <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
                         <Text style={styles.taskTitle}>{item.name}</Text>
                         <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
@@ -118,17 +118,17 @@ export default function Tasks() {
     };
 
     //Opção com apenas as tarefas do dia, com horário posterior ao atual, ordenadas por horário de início
-    const filteredTasks = tasks.filter(task => {
-        const now = new Date();
-        const taskStartTime = new Date(task.startTime);
-        return taskStartTime.toDateString() === now.toDateString() && taskStartTime > now;
-    }).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+    // const filteredTasks = tasks.filter(task => {
+    //     const now = new Date();
+    //     const taskStartTime = new Date(task.startTime);
+    //     return taskStartTime.toDateString() === now.toDateString() && taskStartTime > now;
+    // }).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
     //Opção com todas as tasks do dia para teste de layout
-    /*const filteredTasks = tasks.filter(task => {
+    const filteredTasks = tasks.filter(task => {
             const taskDate = new Date(task.date);
             return taskDate.getDay();
-    });*/
+    });
 
 
   /*return (
@@ -192,9 +192,14 @@ export default function Tasks() {
   )*/
 
     return (
+        <SafeAreaView style={{width: "95%", minHeight: 180, marginTop: 10}}>
+            <View style={styles.menuContainer}>
+            <Text style={{fontSize: 20}}>Tarefas Diárias</Text>
+        </View>
         <SafeAreaView style={styles.container}>
             <FlatList
                 horizontal={true}
+                showsHorizontalScrollIndicator={false}
                 data={filteredTasks}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
@@ -203,6 +208,8 @@ export default function Tasks() {
             />
             <Toast />
         </SafeAreaView>
+        </SafeAreaView>
+        
     );
 }
 /*
@@ -247,46 +254,31 @@ const styles = StyleSheet.create({
 
 
 const styles = StyleSheet.create({
+
+    menuContainer: {
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+    },
+
     container: {
+        width: '100%',
         flex: 1,
         backgroundColor: '#fff',
-    },
-    backButton: {
-        position: 'absolute',
-        top: 10,
-        left: 10,
-        padding: 10,
-        backgroundColor: '#f8f8f8',
-        borderRadius: 20,
-        zIndex: 1,
-    },
-    backButtonText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    header: {
-        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: '#E3E3E3',
+        marginBottom: 17,
+        borderRadius: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        justifyContent: 'center',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 60,
-        marginBottom: 20,
-        paddingHorizontal: 20,
-    },
-    arrowButton: {
-        padding: 10,
-    },
-    arrowButtonText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    greeting: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
     },
     list: {
         flex: 1,
-        paddingHorizontal: 20,
+        paddingLeft: 10,
+        paddingRight: 20,
     },
     listContainer: {
         paddingBottom: 20,
