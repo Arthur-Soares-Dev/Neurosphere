@@ -118,7 +118,8 @@ const Dashboard = ({ navigation }) => {
         showsHorizontalScrollIndicator={false}
         style={{height: 150}}
         >
-            <TouchableOpacity style={styles.cardPink}> 
+            <TouchableOpacity style={styles.cardPink}
+            onPress={() => navigation.navigate('TelaDosPais')}> 
                 <View style={styles.circle}>
                     <Text style={styles.textCircle}>
                         +
