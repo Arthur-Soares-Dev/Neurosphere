@@ -42,7 +42,7 @@ export const cardProps = [
     {
         title: "TRISTE",
         audio: "Eu estou triste.",
-        uri: require('./CardImages/check.png')
+        uri: require('./CardImages/triste.png')
     },
     {
         title: "FELIZ",
