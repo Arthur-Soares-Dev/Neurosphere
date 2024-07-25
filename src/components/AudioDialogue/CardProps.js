@@ -7,7 +7,7 @@ export const cardProps = [
     {
         title: "NÃO",
         audio: "Não.",
-        uri: require('./CardImages/check.png')
+        uri: require('./CardImages/x.png')
     },
     {
         title: "QUERO",
@@ -52,7 +52,7 @@ export const cardProps = [
     {
         title: "BANHEIRO",
         audio: "Eu preciso ir ao banheiro.",
-        uri: require('./CardImages/check.png')
+        uri: require('./CardImages/banheiro.png')
     },
     {
         title: "DOR",
