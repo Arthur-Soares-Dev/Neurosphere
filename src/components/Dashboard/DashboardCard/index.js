@@ -43,16 +43,16 @@ export default Card;
 
 const styles = StyleSheet.create({
     menuContainer: {
-        alignItems: 'flex-end',
-        flexDirection: 'row',
-        justifyContent:'space-between',
-        marginBottom: 10,
+      alignItems: 'flex-end',
+      flexDirection: 'row',
+      justifyContent:'space-between',
+      marginBottom: 10,
     },
 
     card: {
-        height: 200,
-        backgroundColor: '#E3E3E3',
-        marginBottom: 17,
-        borderRadius: 10,
+      height: 200,
+      backgroundColor: '#E3E3E3',
+      marginBottom: 17,
+      borderRadius: 10,
     },
 });

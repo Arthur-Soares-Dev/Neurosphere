@@ -7,28 +7,36 @@ import Card  from './components/AudioDialogue/Card'
 const AudioDialogue = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>
-        Frases
+      <Text style={styles.menuContainer}>
+        Painel de Frases
       </Text>
 
-      <Card
-      />
+        <Card/>
 
       <TouchableOpacity>
-        
       </TouchableOpacity>
     </SafeAreaView>
   )
 }
 
+export default AudioDialogue
+
 const styles = StyleSheet.create({
 container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    backgroundColor: '#f0f0f0',
+  flex: 1,
+  paddingTop: 50,
+  paddingHorizontal: 10,
+  backgroundColor: '#f0f0f0',
 },
+
+menuContainer: {
+  paddingLeft: 10,
+  paddingRight: 10,
+  alignItems: 'flex-end',
+  flexDirection: 'row',
+  fontSize: 25,
+},
+
 button: {
     marginTop: 20,
     height: 70,
@@ -44,4 +52,3 @@ buttonText: {
     color: '#fff',
 }
 });
-export default AudioDialogue
