@@ -7,7 +7,7 @@ export const cardProps = [
     {
         title: "NÃO",
         audio: "Não.",
-        uri: require('./CardImages/check.png')
+        uri: require('./CardImages/x.png')
     },
     {
         title: "QUERO",
