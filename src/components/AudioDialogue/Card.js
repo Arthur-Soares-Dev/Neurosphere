@@ -71,7 +71,6 @@ import * as Speech from 'expo-speech';
 import { cardProps } from './CardProps';
 
 const Card = () => {
-    // Defina as cores da borda em ordem
     const borderColors = ['#FD7FAC', '#7FACD6', '#353535'];
 
     const speak = (audio) => {
@@ -83,9 +82,7 @@ const Card = () => {
         Speech.speak(thingToSay, options);
     };
 
-    // Define o layout dos itens para ter 2 colunas
     const renderItem = ({ item, index }) => {
-        // Determine a cor da borda com base no índice do item
         const borderColor = borderColors[index % borderColors.length];
 
         return (
