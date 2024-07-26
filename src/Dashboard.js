@@ -52,59 +52,6 @@ const Dashboard = ({ navigation }) => {
 
       <Card/>
 
-      {/*<TouchableOpacity
-        onPress={() => changePassword()}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>
-          Trocar Senha
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          firebase.auth().signOut()
-            .then(() => {
-              navigation.navigate('Login');
-            })
-            .catch((error) => {
-              console.error("Erro ao fazer logout:", error);
-            });
-        }}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>
-          Sair
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('TelaDosPais')}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>
-          Tela dos Pais
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('TelaDasCrianca')}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>
-          Tela das Crianças
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('AudioDialogue')}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>
-          Frases
-        </Text>
-      </TouchableOpacity>*/}
-
 
       <SafeAreaView style={styles.containerAtalhos}>
 

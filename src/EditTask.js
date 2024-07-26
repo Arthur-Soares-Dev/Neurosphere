@@ -3,9 +3,8 @@ import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, Scro
 import { firebase } from '../config';
 import { addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { setPersistence } from 'firebase/auth/web-extension';
 
-const TelaDosPais = ({ route, navigation }) => {
+const EditTask = ({ route, navigation }) => {
     const [usuario, setUsuario] = useState(null);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -18,11 +17,11 @@ const TelaDosPais = ({ route, navigation }) => {
     const [tags, setTags] = useState([]);
     const [tagInput, setTagInput] = useState('');
     const user = firebase.auth().currentUser;
-    const [edit, setEdit] = useState(false);
 
-    
+    const [descriptionEdit, setDescriptionEdit] = useState(route.params.description)
+    const idTask = route.params.id
 
-    
+    console.log('descriptionEdit')
 
     useEffect(() => {
         if (user) {
@@ -39,17 +38,6 @@ const TelaDosPais = ({ route, navigation }) => {
                     console.error("Erro ao obter usuário:", error);
                 });
         }
-
-        if(route.params)
-            {
-                setEdit(true);
-                setDescription(route.params.description);
-                setName(route.params.name);
-                setDate(route.params.date);
-                setTags(route.params.tags);
-                setStartTime(route.params.startTime);
-                setEndTime(route.params.endTime);
-            }
     }, []);
 
     const addTask = async (name, description, date, startTime, endTime, tags) => {
@@ -96,9 +84,7 @@ const TelaDosPais = ({ route, navigation }) => {
             </TouchableOpacity>
             <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
                 <View style={styles.innerContainer}>
-                    <Text style={styles.title}>
-                        {(edit ? 'Edit Tasks' : 'Add Tasks')}
-                    </Text>
+                    <Text style={styles.title}>Edit Task</Text>
 
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Title</Text>
@@ -212,10 +198,7 @@ const TelaDosPais = ({ route, navigation }) => {
                         onPress={() => addTask(name, description, date, startTime, endTime, tags)}
                         style={styles.button}
                     >
-                        <Text style={styles.buttonText}>
-                            
-                            {(edit ? 'Edit the Task' : 'Create a new task')}
-                            </Text>
+                        <Text style={styles.buttonText}>Create a new task</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -223,7 +206,7 @@ const TelaDosPais = ({ route, navigation }) => {
     );
 }
 
-export default TelaDosPais;
+export default EditTask;
 
 const styles = StyleSheet.create({
     container: {
