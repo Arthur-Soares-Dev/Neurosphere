@@ -9,8 +9,9 @@ import Cadastro from "./src/Cadastro";
 import Dashboard from "./src/Dashboard";
 import TelaDasCrianca from "./src/TelaDasCrianca";
 import TelaDosPais from "./src/TelaDosPais";
-import Profile from "./src/Profile"; // Certifique-se de que o caminho está correto
+import Profile from "./src/Profile";
 import AudioDialogue from "./src/AudioDialogue";
+import EditTasks from "./src/EditTask";
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,7 @@ function App() {
                 <Stack.Screen name="TelaDasCrianca" component={TelaDasCrianca} />
                 <Stack.Screen name="TelaDosPais" component={TelaDosPais} />
                 <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="EditTasks" component={EditTasks} />
                 <Stack.Screen name="AudioDialogue" component={AudioDialogue} />
             </Stack.Navigator>
         </NavigationContainer>

@@ -120,6 +120,25 @@ const TelaDasCrianca = ({ navigation }) => {
                                         Deletar tarefa
                                     </Text>
                                 </TouchableOpacity>
+                                <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('TelaDosPais', {
+                                        id: item.id,
+                                        name: item.name,
+                                        description: item.description,
+                                        tags: item.tags,
+                                        date: new Date(item.date),
+                                        startTime: new Date(item.startTime),
+                                        endTime: new Date(item.endTime),
+                                    })
+                                }}
+                                style={styles.completeButton}
+                                // onPress={() => editTask(item.id)} style={styles.completeButton}
+                                >
+                                    <Text style={styles.completeButtonText}>
+                                        Editar tarefa
+                                    </Text>
+                                </TouchableOpacity>
                             </>
                         )}
                     </View>
