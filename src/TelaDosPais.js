@@ -4,6 +4,7 @@ import { firebase } from '../config';
 import { addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { setPersistence } from 'firebase/auth/web-extension';
+import Toast from 'react-native-toast-message';
 
 const TelaDosPais = ({ route, navigation }) => {
     const [usuario, setUsuario] = useState(null);
@@ -19,6 +20,7 @@ const TelaDosPais = ({ route, navigation }) => {
     const [tagInput, setTagInput] = useState('');
     const user = firebase.auth().currentUser;
     const [edit, setEdit] = useState(false);
+    const [id, setId] = useState('');
 
     
 
@@ -49,10 +51,31 @@ const TelaDosPais = ({ route, navigation }) => {
                 setTags(route.params.tags);
                 setStartTime(route.params.startTime);
                 setEndTime(route.params.endTime);
+                setId(route.params.id);
             }
     }, []);
 
     const addTask = async (name, description, date, startTime, endTime, tags) => {
+
+        if (edit) {
+            await firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(id).update({
+                description: description,
+                name: name,
+                date: date.toISOString(),
+                tags: tags,
+                startTime: startTime.toISOString(),
+                endTime: endTime.toISOString(),
+            }).then(() => {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Tarefa editada com sucesso',
+                  });
+                navigation.goBack()
+            })
+                     
+        }
+
+
         const newCollectionRef = collection(firebase.firestore(), 'users', user.uid, 'Tasks');
         await addDoc(newCollectionRef, {
             name,

@@ -3,7 +3,7 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from
 import { firebase } from '../config';
 import * as Speech from 'expo-speech';
 import Toast from 'react-native-toast-message';
-
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabádo', 'Sem Data'];
 
@@ -42,7 +42,6 @@ const TelaDasCrianca = ({ navigation }) => {
     }, []);
 
     const toggleCompleted = (taskId) => {
-        
         const taskRef = firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(taskId);
         setTasks(prevTasks =>
             prevTasks.map(task => {
@@ -59,6 +58,26 @@ const TelaDasCrianca = ({ navigation }) => {
         Toast.show({
             type: 'success',
             text1: 'Tarefa concluída com sucesso',
+          });
+    };
+
+    const favoriteTask = (taskId) => {
+        const taskRef = firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(taskId);
+        setTasks(prevTasks =>
+            prevTasks.map(task => {
+                if (task.id === taskId) {
+                    const favoriteStatus = !task.favorite;
+                    taskRef.update({ favorite: favoriteStatus });
+                    return { ...task, favorite: favoriteStatus };
+                }
+                return task;
+            })
+        );
+        //Alert que peguei do site do npm
+        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
+        Toast.show({
+            type: 'success',
+            text1: 'Tarefa favoritada',
           });
     };
 
@@ -95,6 +114,9 @@ const TelaDasCrianca = ({ navigation }) => {
                         <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
                         <Text style={styles.taskTitle}>{item.name}</Text>
                         <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                        {item.favorite ? 
+                            <Ionicons style={{position: "absolute", right: 30}} name="star" size={32} color={'white'} />
+                         : '' }
                         {isSelected && (
                             <>
                                 <Text style={styles.taskDescription}>{item.description}</Text>
@@ -133,10 +155,14 @@ const TelaDasCrianca = ({ navigation }) => {
                                     })
                                 }}
                                 style={styles.completeButton}
-                                // onPress={() => editTask(item.id)} style={styles.completeButton}
                                 >
                                     <Text style={styles.completeButtonText}>
                                         Editar tarefa
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => favoriteTask(item.id)} style={styles.completeButton}>
+                                    <Text style={styles.completeButtonText}>
+                                        {item.favorite ? 'Desfavoritar' : 'Favoritar' } tarefa 
                                     </Text>
                                 </TouchableOpacity>
                             </>

@@ -3,6 +3,7 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from
 import { firebase } from '../../../../config.js';
 import * as Speech from 'expo-speech';
 import Toast from 'react-native-toast-message';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Tasks() {
 
@@ -75,6 +76,9 @@ export default function Tasks() {
                         <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
                         <Text style={styles.taskTitle}>{item.name}</Text>
                         <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                        {item.favorite ? 
+                            <Ionicons style={{position: "absolute", right: 30}} name="star" size={32} color={'white'} />
+                         : '' }
                         {isSelected && (
                             <>
                                 <Text style={styles.taskDescription}>{item.description}</Text>
@@ -124,16 +128,21 @@ export default function Tasks() {
     //     return taskStartTime.toDateString() === now.toDateString() && taskStartTime > now;
     // }).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
-    //Opção com todas as tasks do dia para teste de layout
+    //Opção com apenas as tarefas favoritas
     const filteredTasks = tasks.filter(task => {
-            const taskDate = new Date(task.date);
-            return taskDate.getDay();
+        return task.favorite === true;
     });
+
+    //Opção com todas as tasks do dia para teste de layout
+    // const filteredTasks = tasks.filter(task => {
+    //         const taskDate = new Date(task.date);
+    //         return taskDate.getDay();
+    // });
 
     return (
         <SafeAreaView style={{width: "95%", minHeight: 180, marginTop: 10}}>
             <View style={styles.menuContainer}>
-            <Text style={{fontSize: 20}}>Tarefas Diárias</Text>
+            <Text style={{fontSize: 20}}>Tarefas Favoritas</Text>
         </View>
         <SafeAreaView style={styles.container}>
             <FlatList
