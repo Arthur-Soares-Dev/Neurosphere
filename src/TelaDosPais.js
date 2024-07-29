@@ -72,27 +72,30 @@ const TelaDosPais = ({ route, navigation }) => {
                   });
                 navigation.goBack()
             })
-                     
+                    
+        } else {
+            const newCollectionRef = collection(firebase.firestore(), 'users', user.uid, 'Tasks');
+            await addDoc(newCollectionRef, {
+                name,
+                description,
+                date: date.toISOString(), // Salvar como string ISO 8601
+                startTime: startTime.toISOString(), // Salvar como string ISO 8601
+                endTime: endTime.toISOString(), // Salvar como string ISO 8601
+                tags,
+                completed: false
+            }).then(() => {
+                setName("");
+                setDescription("");
+                setDate(new Date());
+                setStartTime(new Date());
+                setEndTime(new Date());
+                setTags([]);
+            });
         }
 
+    
 
-        const newCollectionRef = collection(firebase.firestore(), 'users', user.uid, 'Tasks');
-        await addDoc(newCollectionRef, {
-            name,
-            description,
-            date: date.toISOString(), // Salvar como string ISO 8601
-            startTime: startTime.toISOString(), // Salvar como string ISO 8601
-            endTime: endTime.toISOString(), // Salvar como string ISO 8601
-            tags,
-            completed: false
-        }).then(() => {
-            setName("");
-            setDescription("");
-            setDate(new Date());
-            setStartTime(new Date());
-            setEndTime(new Date());
-            setTags([]);
-        });
+        
     };
 
     const getRandomColor = () => {
