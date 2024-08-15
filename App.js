@@ -12,6 +12,7 @@ import TelaDosPais from "./src/TelaDosPais";
 import Profile from "./src/Profile";
 import AudioDialogue from "./src/AudioDialogue";
 import EditTasks from "./src/EditTask";
+import CalendarView from "./src/CalendarView";
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,7 @@ function App() {
                 <Stack.Screen name="Profile" component={Profile} />
                 <Stack.Screen name="EditTasks" component={EditTasks} />
                 <Stack.Screen name="AudioDialogue" component={AudioDialogue} />
+                <Stack.Screen name="CalendarView" component={CalendarView} />
             </Stack.Navigator>
         </NavigationContainer>
     );

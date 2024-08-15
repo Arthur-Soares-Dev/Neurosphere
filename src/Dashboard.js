@@ -105,6 +105,19 @@ const Dashboard = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
 
+            <TouchableOpacity style={styles.card}
+            onPress={() => navigation.navigate('CalendarView')}
+            > 
+              <View style={styles.circle}>
+                <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}>
+                    
+                </Text>
+              </View>
+              <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+                Calendario
+              </Text>
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.cardPink}
             onPress={() => changePassword()}
             > 
