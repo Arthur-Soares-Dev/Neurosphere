@@ -1,4 +1,4 @@
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, ScrollView } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, View, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { firebase } from '../config';
 import TaskList from './components/Dashboard/DashboardTasks/index'
@@ -6,6 +6,7 @@ import Card from './components/Dashboard/DashboardCard/index'
 
 const Dashboard = ({ navigation }) => {
   const [usuario, setUsuario] = useState(null);
+  const [profileImage, setProfileImage] = useState('');
 
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
@@ -24,6 +25,7 @@ const Dashboard = ({ navigation }) => {
         .then((snapshot) => {
           if (snapshot.exists) {
             setUsuario(snapshot.data());
+            setProfileImage(snapshot.data().profileImage);
           } else {
             console.log('Usuário não existe');
           }
@@ -46,7 +48,10 @@ const Dashboard = ({ navigation }) => {
           style={styles.profileButton}
           onPress={() => navigation.navigate('Profile')}
         >
-          <View style={styles.profileIcon} />
+          <Image
+          source={profileImage ? { uri: profileImage } : require('../assets/default-avatar.png')}
+          style={styles.avatar}
+        />
         </TouchableOpacity>
       </View>
 
@@ -186,11 +191,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
   },
-
   containerAtalhos: {
     height: 200
   },
-
   menuContainer: {
     paddingLeft: 10,
     paddingRight: 10,
@@ -199,7 +202,6 @@ const styles = StyleSheet.create({
     justifyContent:'space-between',
     marginBottom: 10,
   },
-
   scrollContainer: {
     height: 150,
     flexDirection: "row",
@@ -207,7 +209,6 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     justifyContent:'space-between',
   },
-
   card: {
     width: 125,
     height: 150,
@@ -219,7 +220,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-
   cardPink: {
     width: 125,
     height: 150,
@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-
   cardBlue: {
     width: 125,
     height: 150,
@@ -243,7 +242,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-
   circle:{
     width: 50,
     height: 50,
@@ -253,14 +251,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-
   textCircle: { 
     position: 'absolute',
     color: "#FD7FAC", 
     fontSize: 40, 
     textAlign: 'center' 
   },
-
   square:{
     width: 50,
     height: 50,
@@ -269,5 +265,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
   },
 });

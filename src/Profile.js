@@ -25,6 +25,7 @@ const Profile = () => {
             setName(userData.name || '');
             setEmail(userData.email || '');
             setProfileImage(userData.profileImage || '');
+            console.log('PRIMEIRA:',profileImage)
           } else {
             console.log('No such document!');
           }

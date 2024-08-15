@@ -31,7 +31,8 @@
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "package": "com.example.neurosphere"
     },
     "web": {
       "favicon": "./assets/favicon.png"
