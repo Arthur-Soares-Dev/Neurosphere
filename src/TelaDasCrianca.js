@@ -53,12 +53,10 @@ const TelaDasCrianca = ({ navigation }) => {
                 return task;
             })
         );
-        //Alert que peguei do site do npm
-        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
         Toast.show({
             type: 'success',
             text1: 'Tarefa concluída com sucesso',
-          });
+        });
     };
 
     const favoriteTask = (taskId) => {
@@ -73,50 +71,45 @@ const TelaDasCrianca = ({ navigation }) => {
                 return task;
             })
         );
-        //Alert que peguei do site do npm
-        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
         Toast.show({
             type: 'success',
             text1: 'Tarefa favoritada',
-          });
+        });
     };
-
 
     const speakTask = (speakName, speakDescription) => {
         const thingToSay = `Nome da tarefa: ${speakName}. Descrição da tarefa: ${speakDescription}.`;
         options = {
             rate: 0.8,
             language: 'pt-BR'
-            //Documentação com todas as opções, como volume, velocidade, e essas coisas
-            //https://docs.expo.dev/versions/latest/sdk/speech/#speechoptions
-        }
+        };
         Speech.speak(thingToSay, options);
     }
 
     function deleteTask(id) {
         firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(id).delete();
-        //Alert que peguei do site do npm
-        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
         Toast.show({
             type: 'success',
             text1: 'Tarefa excluída com sucesso',
-          });
+        });
     }
 
     const renderItem = ({ item }) => {
-        if(item.completed == false){
+        if (item.completed == false) {
             const isSelected = item.id === selectedTaskId;
             const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
-    
+
             return (
                 <TouchableOpacity onPress={() => setSelectedTaskId(isSelected ? null : item.id)}>
                     <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 100 }]}>
                         <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
                         <Text style={styles.taskTitle}>{item.name}</Text>
                         <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                        {item.favorite ? 
-                            <Ionicons style={{position: "absolute", right: 30}} name="star" size={32} color={'white'} />
-                         : '' }
+                        {item.favorite && (
+                            <View style={styles.favoriteIconContainer}>
+                                <Ionicons name="star" size={32} color={'white'} />
+                            </View>
+                        )}
                         {isSelected && (
                             <>
                                 <Text style={styles.taskDescription}>{item.description}</Text>
@@ -143,18 +136,18 @@ const TelaDasCrianca = ({ navigation }) => {
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate('TelaDosPais', {
-                                        id: item.id,
-                                        name: item.name,
-                                        description: item.description,
-                                        tags: item.tags,
-                                        date: new Date(item.date),
-                                        startTime: new Date(item.startTime),
-                                        endTime: new Date(item.endTime),
-                                    })
-                                }}
-                                style={styles.completeButton}
+                                    onPress={() => {
+                                        navigation.navigate('TelaDosPais', {
+                                            id: item.id,
+                                            name: item.name,
+                                            description: item.description,
+                                            tags: item.tags,
+                                            date: new Date(item.date),
+                                            startTime: new Date(item.startTime),
+                                            endTime: new Date(item.endTime),
+                                        })
+                                    }}
+                                    style={styles.completeButton}
                                 >
                                     <Text style={styles.completeButtonText}>
                                         Editar tarefa
@@ -162,7 +155,7 @@ const TelaDasCrianca = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => favoriteTask(item.id)} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>
-                                        {item.favorite ? 'Desfavoritar' : 'Favoritar' } tarefa 
+                                        {item.favorite ? 'Desfavoritar' : 'Favoritar'} tarefa
                                     </Text>
                                 </TouchableOpacity>
                             </>
@@ -171,7 +164,6 @@ const TelaDasCrianca = ({ navigation }) => {
                 </TouchableOpacity>
             );
         }
-        
     };
 
     const getColorForTask = (task) => {
@@ -199,7 +191,7 @@ const TelaDasCrianca = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                <Text style={styles.backButtonText}>{"<"}</Text>
+                <Ionicons name="arrow-back" size={30} color="black" />
             </TouchableOpacity>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => handleDayChange(-1)} style={styles.arrowButton}>
@@ -230,20 +222,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        paddingTop: 25
     },
+
     backButton: {
         position: 'absolute',
         top: 10,
         left: 10,
-        padding: 10,
-        backgroundColor: '#f8f8f8',
+        padding: 13,
         borderRadius: 20,
         zIndex: 1,
+        marginTop: 22
     },
+
     backButtonText: {
         fontSize: 20,
         fontWeight: 'bold',
     },
+
     header: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -252,31 +248,38 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingHorizontal: 20,
     },
+
     arrowButton: {
         padding: 10,
     },
+
     arrowButtonText: {
         fontSize: 24,
         fontWeight: 'bold',
     },
+
     greeting: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
     },
+
     list: {
         flex: 1,
         paddingHorizontal: 20,
     },
+
     listContainer: {
         paddingBottom: 20,
     },
+
     taskContainer: {
         marginBottom: 20,
         borderRadius: 15,
         padding: 20,
         justifyContent: 'center',
     },
+
     taskContainerCompleted: {
         marginBottom: 20,
         borderRadius: 15,
@@ -284,22 +287,26 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         opacity: 0.5,
     },
+
     taskTime: {
         fontSize: 16,
         color: '#fff',
         fontWeight: 'bold',
     },
+
     taskTitle: {
         fontSize: 18,
         color: '#fff',
         fontWeight: 'bold',
         marginTop: 5,
     },
+
     taskDescription: {
         fontSize: 14,
         color: '#fff',
         marginTop: 5,
     },
+
     completeButton: {
         marginTop: 10,
         padding: 10,
@@ -307,15 +314,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#78909C',
         alignItems: 'center',
     },
+
     completeButtonText: {
         color: '#fff',
         fontWeight: 'bold',
     },
+
     tagsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginVertical: 10,
     },
+
     tag: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -325,7 +335,14 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginVertical: 5,
     },
+
     tagText: {
         color: '#fff',
+    },
+
+    favoriteIconContainer: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
     },
 });

@@ -50,9 +50,9 @@ export default function Tasks() {
         options = {
             rate: 0.8,
             language: 'pt-BR'
-            //Documentação com todas as opções, como volume, velocidade, e essas coisas
-            //https://docs.expo.dev/versions/latest/sdk/speech/#speechoptions
         }
+        //Documentação com todas as opções, como volume, velocidade, e essas coisas
+        //https://docs.expo.dev/versions/latest/sdk/speech/#speechoptions
         Speech.speak(thingToSay, options);
     }
 
@@ -72,12 +72,12 @@ export default function Tasks() {
             const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
             return (
                 <TouchableOpacity onPress={() => setSelectedTaskId(isSelected ? null : item.id)}>
-                    <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 100, width: 368, marginRight: 20 }]}>
+                    <View style={[taskStyle, { height: isSelected ? 'auto' : 120 }]}>
                         <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
                         <Text style={styles.taskTitle}>{item.name}</Text>
                         <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                         {item.favorite ? 
-                            <Ionicons style={{position: "absolute", right: 30}} name="star" size={32} color={'white'} />
+                            <Ionicons style={styles.starIcon} name="star" size={32} color={'white'} />
                          : '' }
                         {isSelected && (
                             <>
@@ -114,55 +114,37 @@ export default function Tasks() {
 
     const getColorForTask = (task) => {
         if (task.completed) {
-            return '#B0BEC5'; // Corzinha Tarefa Completa - Kai nn sei ce ta bonito?
+            return '#B0BEC5';
         }
         const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
         const index = tasks.indexOf(task) % colors.length;
         return colors[index];
     };
 
-    //Opção com apenas as tarefas do dia, com horário posterior ao atual, ordenadas por horário de início
-    // const filteredTasks = tasks.filter(task => {
-    //     const now = new Date();
-    //     const taskStartTime = new Date(task.startTime);
-    //     return taskStartTime.toDateString() === now.toDateString() && taskStartTime > now;
-    // }).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
-
-    //Opção com apenas as tarefas favoritas
     const filteredTasks = tasks.filter(task => {
         return task.favorite === true;
     });
 
-    //Opção com todas as tasks do dia para teste de layout
-    // const filteredTasks = tasks.filter(task => {
-    //         const taskDate = new Date(task.date);
-    //         return taskDate.getDay();
-    // });
-
     return (
-        <SafeAreaView style={{width: "95%", minHeight: 180, marginTop: 10}}>
+        <SafeAreaView style={{ flex: 1, marginTop: 10, height: 120, width: "95%" }}>
             <View style={styles.menuContainer}>
             <Text style={{fontSize: 20}}>Tarefas Favoritas</Text>
         </View>
-        <SafeAreaView style={styles.container}>
             <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 data={filteredTasks}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
-                style={styles.list}
                 contentContainerStyle={styles.listContainer}
             />
             <Toast />
-        </SafeAreaView>
         </SafeAreaView>
         
     );
 }
 
 const styles = StyleSheet.create({
-
     menuContainer: {
         alignItems: 'flex-end',
         flexDirection: 'row',
@@ -183,43 +165,59 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    list: {
-        flex: 1,
-        paddingLeft: 10,
-        paddingRight: 20,
-    },
+
     listContainer: {
-        paddingBottom: 20,
+        paddingLeft: 0,
+        paddingRight: 10,
     },
+
     taskContainer: {
         marginBottom: 20,
         borderRadius: 15,
         padding: 20,
         justifyContent: 'center',
+        backgroundColor: '#FFECB3',
+        width: 387,
+        marginRight: 10,
     },
+
     taskContainerCompleted: {
         marginBottom: 20,
         borderRadius: 15,
         padding: 20,
         justifyContent: 'center',
         opacity: 0.5,
+        backgroundColor: '#FFECB3',
+        width: 368,
+        marginRight: 20,
     },
+
     taskTime: {
         fontSize: 16,
         color: '#fff',
         fontWeight: 'bold',
     },
+
     taskTitle: {
         fontSize: 18,
         color: '#fff',
         fontWeight: 'bold',
         marginTop: 5,
     },
+
     taskDescription: {
         fontSize: 14,
         color: '#fff',
         marginTop: 5,
     },
+
+    starIcon: {
+        position: "absolute", 
+        right: 10, 
+        top: 10, 
+        zIndex: 1, 
+    },
+
     completeButton: {
         marginTop: 10,
         padding: 10,
@@ -227,15 +225,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#78909C',
         alignItems: 'center',
     },
+
     completeButtonText: {
         color: '#fff',
         fontWeight: 'bold',
     },
+
     tagsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginVertical: 10,
+        marginTop: 10,
     },
+
     tag: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -245,6 +247,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginVertical: 5,
     },
+
     tagText: {
         color: '#fff',
     },
