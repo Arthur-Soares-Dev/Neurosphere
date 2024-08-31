@@ -119,7 +119,7 @@ const Dashboard = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.cardBlue}
-            onPress={() => navigation.navigate('MathGame')}
+            onPress={() => navigation.navigate('Game')}
           >
             <View style={styles.circle}>
               <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}>
