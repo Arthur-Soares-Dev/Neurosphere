@@ -15,6 +15,7 @@ import EditTasks from "./src/EditTask";
 import CalendarView from "./src/CalendarView";
 import Game from "./src/Game"
 import MathGame from "./src/components/Games/MathGame";
+import WordGame from "./src/components/Games/WordGame";
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,7 @@ function App() {
                 <Stack.Screen name="CalendarView" component={CalendarView} />
                 <Stack.Screen name="Game" component={Game} />
                 <Stack.Screen name="MathGame" component={MathGame} />
+                <Stack.Screen name="WordGame" component={WordGame} />
             </Stack.Navigator>
         </NavigationContainer>
     );
