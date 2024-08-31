@@ -23,7 +23,7 @@ const Games = ({navigation}) => {
         <View style={styles.cardWrapper}>
           <TouchableOpacity
             style={[styles.card, { backgroundColor: '#353535' }]}
-            onPress={() => navigation.navigate('Palavras')}
+            onPress={() => navigation.navigate('')}
           />
           <Text style={styles.cardText}>Palavras</Text>
         </View>
