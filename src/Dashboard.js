@@ -49,87 +49,100 @@ const Dashboard = ({ navigation }) => {
           onPress={() => navigation.navigate('Profile')}
         >
           <Image
-          source={profileImage ? { uri: profileImage } : require('../assets/default-avatar.png')}
-          style={styles.avatar}
-        />
+            source={profileImage ? { uri: profileImage } : require('../assets/default-avatar.png')}
+            style={styles.avatar}
+          />
         </TouchableOpacity>
       </View>
 
-      <Card/>
+      <Card />
 
 
       <SafeAreaView style={styles.containerAtalhos}>
 
         <View style={styles.menuContainer}>
-            <Text style={{fontSize: 20}}>Atalhos Diários</Text>
+          <Text style={{ fontSize: 20 }}>Atalhos Diários</Text>
         </View>
 
         <ScrollView
-        horizontal={true}  
-        contentContainerStyle={styles.scrollContainer}
-        showsHorizontalScrollIndicator={false}
-        style={{height: 150}}
+          horizontal={true}
+          contentContainerStyle={styles.scrollContainer}
+          showsHorizontalScrollIndicator={false}
+          style={{ height: 150 }}
         >
-            <TouchableOpacity style={styles.cardPink}
-            onPress={() => navigation.navigate('TelaDosPais')}> 
-                <View style={styles.circle}>
-                    <Text style={styles.textCircle}>
-                        +
-                    </Text>
-                </View>
-                <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-                    Adicionar Tarefa
-                </Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.cardPink}
+            onPress={() => navigation.navigate('TelaDosPais')}>
+            <View style={styles.circle}>
+              <Text style={styles.textCircle}>
+                +
+              </Text>
+            </View>
+            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+              Adicionar Tarefa
+            </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={styles.cardBlue}
+          <TouchableOpacity style={styles.cardBlue}
             onPress={() => navigation.navigate('TelaDasCrianca')}
-            > 
-              <View style={styles.square}> 
-              </View>
-              <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-                Ver {"\n"} Tarefas
-              </Text>
-            </TouchableOpacity>
+          >
+            <View style={styles.square}>
+            </View>
+            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+              Ver {"\n"} Tarefas
+            </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={styles.card}
+          <TouchableOpacity style={styles.card}
             onPress={() => navigation.navigate('AudioDialogue')}
-            > 
-              <View style={styles.circle}>
-                <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}>
-                    
-                </Text>
-              </View>
-              <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-                Painel de Frases
-              </Text>
-            </TouchableOpacity>
+          >
+            <View style={styles.circle}>
+              <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}>
 
-            <TouchableOpacity style={styles.card}
+              </Text>
+            </View>
+            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+              Painel de Frases
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.card}
             onPress={() => navigation.navigate('CalendarView')}
-            > 
-              <View style={styles.circle}>
-                <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}>
-                    
-                </Text>
-              </View>
-              <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-                Calendario
+          >
+            <View style={styles.circle}>
+              <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}>
+
               </Text>
-            </TouchableOpacity>
+            </View>
+            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+              Calendario
+            </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={styles.cardPink}
+          <TouchableOpacity style={styles.card}
+            onPress={() => navigation.navigate('MathGame')}
+          >
+            <View style={styles.circle}>
+              <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}>
+
+              </Text>
+            </View>
+            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+              Jogos
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.cardPink}
             onPress={() => changePassword()}
-            > 
-                <View style={styles.circle}>
-                  <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}></Text>
-                </View>
-                <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-                  Trocar a {"\n"} Senha
-                </Text>
-            </TouchableOpacity>
+          >
+            <View style={styles.circle}>
+              <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}></Text>
+            </View>
+            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+              Trocar a {"\n"} Senha
+            </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={styles.cardBlue}
+          <TouchableOpacity style={styles.cardBlue}
             onPress={() => {
               firebase.auth().signOut()
                 .then(() => {
@@ -139,24 +152,24 @@ const Dashboard = ({ navigation }) => {
                   console.error("Erro ao fazer logout:", error);
                 });
             }}
-            > 
-                <View style={styles.circle}>
-                  <Text style={{position: 'absolute', color: "#7FACD6", fontSize: 40, textAlign: 'center', top: -9, left: 15}}>
-                    {">"}
-                  </Text>
-                </View>
-                <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-                  {"\n"} Sair
-                </Text>
-            </TouchableOpacity>
+          >
+            <View style={styles.circle}>
+              <Text style={{ position: 'absolute', color: "#7FACD6", fontSize: 40, textAlign: 'center', top: -9, left: 15 }}>
+                {">"}
+              </Text>
+            </View>
+            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
+              {"\n"} Sair
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
-        </SafeAreaView>
+      </SafeAreaView>
 
-      <TaskList/>
+      <TaskList />
 
 
     </SafeAreaView>
-    
+
   );
 }
 
@@ -212,7 +225,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     alignItems: 'flex-end',
     flexDirection: 'row',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
   scrollContainer: {
@@ -220,7 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingLeft: 10,
     paddingRight: 10,
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
   },
   card: {
     width: 125,
@@ -255,7 +268,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-  circle:{
+  circle: {
     width: 50,
     height: 50,
     borderRadius: 25,
@@ -264,13 +277,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  textCircle: { 
+  textCircle: {
     position: 'absolute',
-    color: "#FD7FAC", 
-    fontSize: 40, 
-    textAlign: 'center' 
+    color: "#FD7FAC",
+    fontSize: 40,
+    textAlign: 'center'
   },
-  square:{
+  square: {
     width: 50,
     height: 50,
     borderRadius: 10,
