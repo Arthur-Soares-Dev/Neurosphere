@@ -13,7 +13,8 @@ import Profile from "./src/Profile";
 import AudioDialogue from "./src/AudioDialogue";
 import EditTasks from "./src/EditTask";
 import CalendarView from "./src/CalendarView";
-import MathGame from "./src/MathGame"
+import Game from "./src/Game"
+import MathGame from "./src/components/Games/MathGame";
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,7 @@ function App() {
                 <Stack.Screen name="EditTasks" component={EditTasks} />
                 <Stack.Screen name="AudioDialogue" component={AudioDialogue} />
                 <Stack.Screen name="CalendarView" component={CalendarView} />
+                <Stack.Screen name="Game" component={Game} />
                 <Stack.Screen name="MathGame" component={MathGame} />
             </Stack.Navigator>
         </NavigationContainer>
