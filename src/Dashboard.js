@@ -105,7 +105,7 @@ const Dashboard = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.card}
+          <TouchableOpacity style={styles.cardPink}
             onPress={() => navigation.navigate('CalendarView')}
           >
             <View style={styles.circle}>
@@ -118,7 +118,7 @@ const Dashboard = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.card}
+          <TouchableOpacity style={styles.cardBlue}
             onPress={() => navigation.navigate('MathGame')}
           >
             <View style={styles.circle}>
@@ -131,7 +131,7 @@ const Dashboard = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.cardPink}
+          <TouchableOpacity style={styles.card}
             onPress={() => changePassword()}
           >
             <View style={styles.circle}>
@@ -142,7 +142,7 @@ const Dashboard = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.cardBlue}
+          <TouchableOpacity style={styles.cardPink}
             onPress={() => {
               firebase.auth().signOut()
                 .then(() => {
@@ -154,7 +154,7 @@ const Dashboard = ({ navigation }) => {
             }}
           >
             <View style={styles.circle}>
-              <Text style={{ position: 'absolute', color: "#7FACD6", fontSize: 40, textAlign: 'center', top: -9, left: 15 }}>
+              <Text style={{ position: 'absolute', color: "#FD7FAC", fontSize: 40, textAlign: 'center', top: -9, left: 15 }}>
                 {">"}
               </Text>
             </View>
