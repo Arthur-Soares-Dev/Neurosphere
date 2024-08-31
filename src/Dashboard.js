@@ -131,7 +131,7 @@ const Dashboard = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.card}
+          {/* <TouchableOpacity style={styles.card}
             onPress={() => changePassword()}
           >
             <View style={styles.circle}>
@@ -140,28 +140,7 @@ const Dashboard = ({ navigation }) => {
             <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
               Trocar a {"\n"} Senha
             </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.cardPink}
-            onPress={() => {
-              firebase.auth().signOut()
-                .then(() => {
-                  navigation.navigate('Login');
-                })
-                .catch((error) => {
-                  console.error("Erro ao fazer logout:", error);
-                });
-            }}
-          >
-            <View style={styles.circle}>
-              <Text style={{ position: 'absolute', color: "#FD7FAC", fontSize: 40, textAlign: 'center', top: -9, left: 15 }}>
-                {">"}
-              </Text>
-            </View>
-            <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-              {"\n"} Sair
-            </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
       </SafeAreaView>
 

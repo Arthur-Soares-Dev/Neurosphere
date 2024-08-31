@@ -20,7 +20,6 @@ const Cadastro = () => {
   };
 
   const isNameValid = (name) => {
-    // Verifica se o nome não está vazio
     return name.length > 0;
   };
 
