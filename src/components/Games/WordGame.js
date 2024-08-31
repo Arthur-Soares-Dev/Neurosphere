@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-// Importa o arquivo JSON da pasta assets
+
 const palavrasAleatorias = require('../../../assets/palavras-simples.json');
 
-// Função para selecionar uma palavra aleatória e gerar uma versão com letras faltando
 const getMaskedWord = (word) => {
   const numOfCharactersToMask = Math.max(1, Math.floor(word.length * 0.3));
   let maskedWord = word.split('').map((char) => (Math.random() > 0.3 ? char : '_')).join('');
@@ -27,14 +27,17 @@ const WordGame = () => {
 
   useEffect(() => {
     setWords(palavrasAleatorias);
-    setNewWord(palavrasAleatorias);
+    setNewWord();
   }, []);
 
-  const setNewWord = (wordsList) => {
-    const randomIndex = Math.floor(Math.random() * wordsList.length);
-    const word = wordsList[randomIndex];
+  const setNewWord = () => {
+    const randomIndex = Math.floor(Math.random() * palavrasAleatorias.length);
+    const word = palavrasAleatorias[randomIndex];
     setCurrentWord(word);
     setMaskedWord(getMaskedWord(word));
+    setAttempts(0)
+    setMessage('Digite uma letra!')
+    renderHearts()
     console.log('Palavra selecionada:', word); // Log da palavra correta
   };
 
@@ -65,6 +68,7 @@ const WordGame = () => {
         setMessage('Você ganhou! A palavra era ' + currentWord);
         console.log('Você ganhou. Palavra correta:', currentWord);
         Alert.alert('Você ganhou!', `A palavra era ${currentWord}`);
+        setNewWord()
       } else {
         setMessage('Letra correta!');
       }
@@ -74,11 +78,28 @@ const WordGame = () => {
   };
 
   const handleChange = (text) => {
-    setGuess(text);
+    setGuess(text.toLowerCase());
   };
+
+  const renderHearts = () => {
+    const hearts = [];
+    for (let i = 0; i < maxAttempts; i++) {
+      hearts.push(
+        <Ionicons 
+          key={i}
+          name="heart" 
+          size={40} 
+          color={i < maxAttempts - attempts ? 'red' : 'grey'} />
+      );
+    }
+  
+    return <View style={styles.heartsContainer}>{hearts}</View>;
+  };
+
 
   return (
     <View style={styles.container}>
+      { renderHearts() }
       <Text style={styles.title}>Jogo da Forca</Text>
       <Text style={styles.word}>
         {maskedWord}
@@ -86,7 +107,7 @@ const WordGame = () => {
       <TextInput
         style={styles.input}
         value={guess}
-        onChangeText={handleChange}
+        onChangeText={(text) => setGuess(text.toLowerCase())}
         maxLength={1}
         placeholder="Digite uma letra"
       />
@@ -94,7 +115,7 @@ const WordGame = () => {
       <Text style={styles.message}>
         {message}
       </Text>
-      <Button title="Nova Palavra" onPress={() => setNewWord(palavrasAleatorias)} />
+      <Button title="Nova Palavra" onPress={() => setNewWord()} />
     </View>
   );
 };
@@ -129,6 +150,12 @@ const styles = StyleSheet.create({
     color: 'red',
     marginVertical: 20,
   },
+  heartsContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 100,
+    right: 20
+  }
 });
 
 export default WordGame;
