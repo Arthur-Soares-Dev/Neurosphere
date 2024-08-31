@@ -201,12 +201,19 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
-import Ionicons from '@expo/vector-icons/Ionicons'; // Nova importação
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
     const navigation = useNavigation();
+
+    const validateEmail = (email) => {
+        // Expressão regular simples para validação de email
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    };
 
     const loginUser = async (email, password) => {
         try {
@@ -249,7 +256,14 @@ const Login = () => {
                             autoCorrect={false}
                             value={email}
                         />
-                        <Ionicons name="checkmark-circle" size={30} color="gray" style={styles.inputIcon} />
+                        {email.length > 0 && (
+                            <Ionicons 
+                                name={validateEmail(email) ? "checkmark-circle" : "close-circle"} 
+                                size={24} 
+                                color={validateEmail(email) ? "gray" : "gray"} 
+                                style={styles.inputIcon} 
+                            />
+                        )}
                     </View>
                     <Text style={styles.label}>Senha</Text>
                     <View style={styles.inputWrapper}>
@@ -260,10 +274,17 @@ const Login = () => {
                             onChangeText={(password) => setPassword(password)}
                             autoCapitalize="none"
                             autoCorrect={false}
-                            secureTextEntry={true}
+                            secureTextEntry={!showPassword}
                             value={password}
                         />
-                        <Ionicons name="eye-off" size={30} color="gray" style={styles.inputIcon} />
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                            <Ionicons 
+                                name={showPassword ? "eye" : "eye-off"} 
+                                size={24} 
+                                color="gray" 
+                                style={styles.inputIcon} 
+                            />
+                        </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
@@ -286,13 +307,13 @@ const Login = () => {
 
                     <View style={styles.socialButtonsContainer}>
                         <TouchableOpacity style={styles.socialButton}>
-                            <Ionicons name="logo-google" size={30} color="gray" />
+                            <Ionicons name="logo-google" size={30} color="#FD7FAC" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.socialButton}>
                             <Ionicons name="logo-facebook" size={30} color="gray" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.socialButton}>
-                            <Ionicons name="logo-apple" size={30} color="gray" />
+                            <Ionicons name="logo-apple" size={30} color="#7C9DD9" />
                         </TouchableOpacity>
                     </View>
                     
@@ -328,7 +349,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         paddingHorizontal: 0, 
-        paddingTop: 30
+        paddingTop: 30,
     },
     profileImage: {
         width: 180, 
@@ -406,4 +427,5 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     }
 });
+
 
