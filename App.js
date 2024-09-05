@@ -16,6 +16,7 @@ import CalendarView from "./src/CalendarView";
 import Game from "./src/Game"
 import MathGame from "./src/components/Games/MathGame";
 import WordGame from "./src/components/Games/WordGame";
+import { AuthProvider } from "./src/contexts/AuthContext";
 
 const Stack = createStackNavigator();
 
@@ -36,25 +37,27 @@ function App() {
     if (initializing) return null;
 
     return (
-        <NavigationContainer>
-            <Stack.Navigator
-                screenOptions={{ headerShown: false }}
-                initialRouteName={user ? "Dashboard" : "Login"}
-            >
-                <Stack.Screen name="Dashboard" component={Dashboard} />
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Cadastro" component={Cadastro} />
-                <Stack.Screen name="TelaDasCrianca" component={TelaDasCrianca} />
-                <Stack.Screen name="TelaDosPais" component={TelaDosPais} />
-                <Stack.Screen name="Profile" component={Profile} />
-                <Stack.Screen name="EditTasks" component={EditTasks} />
-                <Stack.Screen name="AudioDialogue" component={AudioDialogue} />
-                <Stack.Screen name="CalendarView" component={CalendarView} />
-                <Stack.Screen name="Game" component={Game} />
-                <Stack.Screen name="MathGame" component={MathGame} />
-                <Stack.Screen name="WordGame" component={WordGame} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <AuthProvider>
+            <NavigationContainer>
+                <Stack.Navigator
+                    screenOptions={{ headerShown: false }}
+                    initialRouteName={user ? "Dashboard" : "Login"}
+                >
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen name="Cadastro" component={Cadastro} />
+                    <Stack.Screen name="TelaDasCrianca" component={TelaDasCrianca} />
+                    <Stack.Screen name="TelaDosPais" component={TelaDosPais} />
+                    <Stack.Screen name="Profile" component={Profile} />
+                    <Stack.Screen name="EditTasks" component={EditTasks} />
+                    <Stack.Screen name="AudioDialogue" component={AudioDialogue} />
+                    <Stack.Screen name="CalendarView" component={CalendarView} />
+                    <Stack.Screen name="Game" component={Game} />
+                    <Stack.Screen name="MathGame" component={MathGame} />
+                    <Stack.Screen name="WordGame" component={WordGame} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </AuthProvider>
     );
 }
 
