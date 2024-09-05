@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { firebase } from '../config';
 import TaskList from './components/Dashboard/DashboardTasks/index'
 import Card from './components/Dashboard/DashboardCard/index'
+import { useAuth } from './contexts/AuthContext';
 
 const Dashboard = ({ navigation }) => {
-  const [usuario, setUsuario] = useState(null);
-  const [profileImage, setProfileImage] = useState('');
 
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
@@ -17,31 +16,14 @@ const Dashboard = ({ navigation }) => {
       });
   };
 
-  useEffect(() => {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      firebase.firestore().collection('users')
-        .doc(user.uid).get()
-        .then((snapshot) => {
-          if (snapshot.exists) {
-            setUsuario(snapshot.data());
-            setProfileImage(snapshot.data().profileImage);
-          } else {
-            console.log('Usuário não existe');
-          }
-        })
-        .catch((error) => {
-          console.error("Erro ao obter usuário:", error);
-        });
-    }
-  }, []);
+  const { user } = useAuth();  
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
 
         <Text style={styles.headerText}>
-          Olá, {usuario?.name}!
+          Olá, {user?.name}!
         </Text>
 
         <TouchableOpacity
@@ -49,7 +31,7 @@ const Dashboard = ({ navigation }) => {
           onPress={() => navigation.navigate('Profile')}
         >
           <Image
-            source={profileImage ? { uri: profileImage } : require('../assets/default-avatar.png')}
+            source={user?.profileImage ? { uri: user?.profileImage } : require('../assets/default-avatar.png')}
             style={styles.avatar}
           />
         </TouchableOpacity>

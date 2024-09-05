@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingVi
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useAuth } from './contexts/AuthContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -27,14 +28,36 @@ const Login = () => {
         }
     };
 
-    const forgetPassword = () => {
-        firebase.auth().sendPasswordResetEmail(email)
-            .then(() => {
-                alert("Email para troca de senha enviado");
-            }).catch((error) => {
-                alert("Digite seu email no campo acima");
-            });
+    const handleLogin = async (email, password) => {
+        console.log('handleLogin', email, password)
+        try {
+          await login(email, password);
+          // Redirecionar ou mostrar mensagem de sucesso, conforme necessário
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+
+    const handleForgetPassword = async () => {
+        try {
+            await forgetPassword(email);
+            alert("Email para troca de senha enviado");
+        } catch (error) {
+            setError(error.message);
+        }
+        
     };
+
+    const { login, forgetPassword } = useAuth();
+
+    // const forgetPassword = () => {
+    //     firebase.auth().sendPasswordResetEmail(email)
+    //         .then(() => {
+    //             alert("Email para troca de senha enviado");
+    //         }).catch((error) => {
+    //             alert("Digite seu email no campo acima");
+    //         });
+    // };
 
     return (
         <KeyboardAvoidingView
@@ -88,19 +111,19 @@ const Login = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity onPress={forgetPassword} style={styles.forgotPasswordContainer}>
+                    <TouchableOpacity onPress={handleForgetPassword} style={styles.forgotPasswordContainer}>
                         <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
                     </TouchableOpacity>
                     
                     <TouchableOpacity
-                        onPress={() => loginUser(email, password)}
+                        onPress={() => handleLogin(email, password)}
                         style={styles.loginButton}
                     >
                         <Text style={styles.loginButtonText}>Logar</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => loginUser('12201839@aluno.cotemig.com.br', 'senha123')}
+                        onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}
                         style={styles.loginButton}
                     >
                         <Text style={styles.loginButtonText}>Login Rápido</Text>
