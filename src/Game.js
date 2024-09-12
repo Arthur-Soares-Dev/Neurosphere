@@ -101,7 +101,7 @@ const Games = ({ navigation }) => {
                 <Ionicons name="calculator" size={40} color="#FD7FAC" />
               </View>
             </TouchableOpacity>
-            <Text style={styles.cardText}>Contas</Text>
+            <Text style={styles.cardText}>Jogo de Matématica</Text>
           </View>
 
           <View style={styles.cardWrapper}>
@@ -113,7 +113,7 @@ const Games = ({ navigation }) => {
                 <Ionicons name="book" size={40} color="#353535" />
               </View>
             </TouchableOpacity>
-            <Text style={styles.cardText}>Palavras</Text>
+            <Text style={styles.cardText}>Jogo da Forca</Text>
           </View>
 
         </View>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
   },
   title: {
     fontSize: 28,
