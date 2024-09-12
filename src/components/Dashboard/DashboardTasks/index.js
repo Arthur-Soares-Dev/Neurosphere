@@ -72,7 +72,7 @@ export default function Tasks() {
             const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
             return (
                 <TouchableOpacity onPress={() => setSelectedTaskId(isSelected ? null : item.id)}>
-                    <View style={[taskStyle, { height: isSelected ? 'auto' : 120 }]}>
+                    <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 120 }]}>
                         <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
                         <Text style={styles.taskTitle}>{item.name}</Text>
                         <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
@@ -126,13 +126,13 @@ export default function Tasks() {
     });
 
     return (
-        <SafeAreaView style={{ flex: 1, marginTop: 10, height: 120, width: "95%" }}>
+        <SafeAreaView style={{ flex: 1, marginTop: 10, height: 110, width: "95%" }}>
             <View style={styles.menuContainer}>
             <Text style={{fontSize: 20}}>Tarefas Favoritas</Text>
         </View>
             <FlatList
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
+                vertical={true}
+                showsVerticalScrollIndicator={false}
                 data={filteredTasks}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
@@ -150,20 +150,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
-    },
-
-    container: {
-        width: '100%',
-        flex: 1,
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#E3E3E3',
-        marginBottom: 17,
-        borderRadius: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 
     listContainer: {

@@ -2,11 +2,17 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-na
 import React, { useState, useEffect } from 'react';
 import { firebase } from '../config';
 import * as Speech from 'expo-speech';
+import { useNavigation } from '@react-navigation/native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import Card  from './components/AudioDialogue/Card'
 
 const AudioDialogue = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={30} color="#FD7FAC" />
+      </TouchableOpacity>
       <Text style={styles.menuContainer}>
         Painel de Frases
       </Text>
@@ -27,6 +33,11 @@ container: {
   paddingTop: 50,
   paddingHorizontal: 10,
   backgroundColor: '#f0f0f0',
+},
+
+backButton: {
+  marginLeft: 5,
+  marginBottom: 10
 },
 
 menuContainer: {
