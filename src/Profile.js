@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { firebase } from '../config';
+import {useAuth} from "./contexts/AuthContext";
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -11,33 +12,13 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [userId, setUserId] = useState(null);
   const [profileImage, setProfileImage] = useState('');
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = firebase.auth().currentUser;
-        if (user) {
-          setUserId(user.uid);
-          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
-          if (userDoc.exists) {
-            const userData = userDoc.data();
-            setName(userData.name || '');
-            setEmail(userData.email || '');
-            setProfileImage(userData.profileImage || '');
-          } else {
-            console.log('No such document!');
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user data: ", error);
-        Alert.alert('Error', 'Failed to fetch user data. Please check your internet connection.');
-      }
-    };
-
-    fetchUserData();
+    setName(user.name)
+    setEmail(user.email)
+    setProfileImage(user.profileImage)
   }, []);
 
   const isNameValid = (name) => {
@@ -66,64 +47,69 @@ const Profile = () => {
 
     if (!result.canceled) {
       const source = { uri: result.assets[0].uri };
-      setProfileImage(source.uri);
+      setProfileImage(source);
 
-      const fetchAndUpload = async () => {
-        try {
-          const response = await fetch(source.uri);
-          const blob = await response.blob();
-          const uploadTask = firebase.storage().ref().child(`profileImages/${userId}`).put(blob);
+      await handleUpdate()
 
-          uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-              // Handle upload progress
-            },
-            (error) => {
-              console.error('Upload Error: ', error);
-              Alert.alert('Error', 'Failed to upload image');
-            },
-            () => {
-              uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                setProfileImage(downloadURL);
-                firebase.firestore().collection('users').doc(userId).update({ profileImage: downloadURL });
-              });
-            }
-          );
-        } catch (error) {
-          console.error('Upload Error: ', error);
-          Alert.alert('Error', 'Failed to upload image');
-        }
-      };
-
-      fetchAndUpload();
+      // const fetchAndUpload = async () => {
+      //   try {
+      //     const response = await fetch(source.uri);
+      //     const blob = await response.blob();
+      //     const uploadTask = firebase.storage().ref().child(`profileImages/${user.uid}`).put(blob);
+      //
+      //     uploadTask.on(
+      //       'state_changed',
+      //       (snapshot) => {
+      //         // Handle upload progress
+      //       },
+      //       (error) => {
+      //         console.error('Upload Error: ', error);
+      //         Alert.alert('Error', 'Failed to upload image');
+      //       },
+      //       () => {
+      //         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+      //           setProfileImage(downloadURL);
+      //           firebase.firestore().collection('users').doc(user.uid).update({ profileImage: downloadURL });
+      //         });
+      //       }
+      //     );
+      //   } catch (error) {
+      //     console.error('Upload Error: ', error);
+      //     Alert.alert('Error', 'Failed to upload image');
+      //   }
+      // };
+      //
+      // fetchAndUpload();
     }
   };
 
   const handleUpdate = async () => {
-    if (!userId) return;
+    if (!user) {
+      console.error('Usuário não está autenticado ou o UID está faltando');
+      return;
+    }
 
-    const updates = {};
-    if (name !== '') updates.name = name;
-    if (email !== '') updates.email = email;
-    if (currentPassword !== '') updates.currentPassword = currentPassword
+    const updatedData = {
+      name: name,
+      email: email
+    };
 
     try {
-      await firebase.firestore().collection('users').doc(userId).update(updates);
+      // const profileImage = profileImage ? profileImage : null;
+      console.log('profileImage',profileImage)
 
-      if (newPassword !== '') {
-        const user = firebase.auth().currentUser;
-        const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
-        await user.reauthenticateWithCredential(credential);
-        await user.updatePassword(newPassword);
-      }
-
-      Alert.alert('Successo', 'Conta atualizada com sucesso!');
+      console.log('UID', user.uid);
+      await updateUser(user.uid, updatedData, currentPassword, newPassword, profileImage);
+      console.log("Atualização de usuário concluída com sucesso!");
+      alert("Atualização de usuário concluída com sucesso!");
     } catch (error) {
-      console.error("Error updating profile: ", error);
-      Alert.alert('Erro', 'Falha ao atualizar a conta!');
+      alert("Erro ao atualizar o usuário:", error);
     }
   };
+
+
+
+  const { updateUser, user } = useAuth();
 
   return (
     <View style={styles.container}>

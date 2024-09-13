@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { firebase } from '../config';
+import {useAuth} from "./contexts/AuthContext";
 
 const Cadastro = () => {
   const navigation = useNavigation();
@@ -12,6 +13,16 @@ const Cadastro = () => {
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState();
+  const isFirstRender = React.useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    alert(error);
+  }, [error]);
   
   const validateEmail = (email) => {
     // Expressão para validação de email - Stack Overflow e Linkedin
@@ -23,37 +34,25 @@ const Cadastro = () => {
     return name.length > 0;
   };
 
-  const registerUser = async (email, password, name) => {
+  const handleRegister = async (email, password, name) => {
     if (password !== confirmPassword) {
       alert('As senhas não coincidem');
       return;
     }
     try {
       if (email && password && name) {
-        await firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(() => {
-            firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set({
-              name,
-              email
-            })
-              .then(() => {
-                alert('Cadastro realizado com sucesso!');
-                navigation.navigate('Login');
-              })
-              .catch((error) => {
-                alert(error.message);
-              });
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
+        await registerUser(email, password, name)
+        navigation.navigate('Dashboard');
       } else {
-        alert('Por favor, preencha todos os campos');
+        setError('Preencha todos os campos');
       }
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
     }
   };
+
+
+  const { registerUser } = useAuth();
 
   return (
     <KeyboardAvoidingView
@@ -150,7 +149,7 @@ const Cadastro = () => {
           </View>
 
           <TouchableOpacity
-            onPress={() => registerUser(email, password, name)}
+            onPress={() => handleRegister(email, password, name)}
             style={styles.registerButton}
           >
             <Text style={styles.registerButtonText}>Cadastrar</Text>
@@ -161,12 +160,6 @@ const Cadastro = () => {
               <Ionicons name="logo-google" size={30} color="#FD7FAC" />
               <Text style={styles.signInText}> Cadastrar com o <Text style={styles.signInLink}>Google</Text>?</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-facebook" size={30} color="gray" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-apple" size={30} color="#7C9DD9" />
-            </TouchableOpacity> */}
           </View>
 
           <View style={styles.signInContainer}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
@@ -8,8 +8,18 @@ import { useAuth } from './contexts/AuthContext';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
+    const [showPassword, setShowPassword] = useState(false);
     const navigation = useNavigation();
+    const [error, setError] = useState();
+    const isFirstRender = React.useRef(true);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        alert(error);
+    }, [error]);
 
     const validateEmail = (email) => {
         // Expressão regular simples para validação de email
@@ -17,26 +27,15 @@ const Login = () => {
         return re.test(email);
     };
 
-    const loginUser = async (email, password) => {
-        try {
-            await firebase.auth().signInWithEmailAndPassword(email, password);
-            navigation.navigate('Dashboard');
-            setEmail('');
-            setPassword('');
-        } catch (error) {
-            alert(error.message);
-        }
-    };
-
     const handleLogin = async (email, password) => {
         console.log('handleLogin', email, password)
         try {
           await login(email, password);
-          // Redirecionar ou mostrar mensagem de sucesso, conforme necessário
+            navigation.navigate('Dashboard');
         } catch (error) {
           setError(error.message);
         }
-      };
+    };
 
     const handleForgetPassword = async () => {
         try {
@@ -49,15 +48,6 @@ const Login = () => {
     };
 
     const { login, forgetPassword } = useAuth();
-
-    // const forgetPassword = () => {
-    //     firebase.auth().sendPasswordResetEmail(email)
-    //         .then(() => {
-    //             alert("Email para troca de senha enviado");
-    //         }).catch((error) => {
-    //             alert("Digite seu email no campo acima");
-    //         });
-    // };
 
     return (
         <KeyboardAvoidingView
