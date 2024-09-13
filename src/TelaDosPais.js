@@ -21,9 +21,6 @@ const TelaDosPais = ({ route, navigation }) => {
     const user = firebase.auth().currentUser;
     const [edit, setEdit] = useState(false);
     const [id, setId] = useState('');
-
-    
-
     
 
     useEffect(() => {

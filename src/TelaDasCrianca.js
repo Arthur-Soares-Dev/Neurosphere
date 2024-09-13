@@ -1,101 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native';
-import { firebase } from '../config';
 import * as Speech from 'expo-speech';
 import Toast from 'react-native-toast-message';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useTasks } from './contexts/TasksContext'; // Caminho para o TasksContext
+import { useAuth } from './contexts/AuthContext'; // Caminho para o AuthContext
 
-const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabádo', 'Sem Data'];
+const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Sem Data'];
 
 const TelaDasCrianca = ({ navigation }) => {
-    const [usuario, setUsuario] = useState(null);
-    const [tasks, setTasks] = useState([]);
+    const { tasks, toggleCompleted, favoriteTask, deleteTask } = useTasks();
     const [selectedTaskId, setSelectedTaskId] = useState(null);
-    const [selectedDay, setSelectedDay] = useState(1); // Monday
-    const user = firebase.auth().currentUser;
-
-    useEffect(() => {
-        if (user) {
-            firebase.firestore().collection('users')
-                .doc(user.uid).get()
-                .then((snapshot) => {
-                    if (snapshot.exists) {
-                        setUsuario(snapshot.data());
-                    } else {
-                        console.log('Usuário não existe');
-                    }
-                })
-                .catch((error) => {
-                    console.error("Erro ao obter usuário:", error);
-                });
-
-            firebase.firestore().collection('users')
-                .doc(user.uid).collection('Tasks')
-                .onSnapshot((querySnapshot) => {
-                    const tasksList = [];
-                    querySnapshot.forEach((doc) => {
-                        tasksList.push({ ...doc.data(), id: doc.id });
-                    });
-                    setTasks(tasksList);
-                });
-        }
-    }, []);
-
-    const toggleCompleted = (taskId) => {
-        const taskRef = firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(taskId);
-        setTasks(prevTasks =>
-            prevTasks.map(task => {
-                if (task.id === taskId) {
-                    const newCompletedStatus = !task.completed;
-                    taskRef.update({ completed: newCompletedStatus });
-                    return { ...task, completed: newCompletedStatus };
-                }
-                return task;
-            })
-        );
-        Toast.show({
-            type: 'success',
-            text1: 'Tarefa concluída com sucesso',
-        });
-    };
-
-    const favoriteTask = (taskId) => {
-        const taskRef = firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(taskId);
-        setTasks(prevTasks =>
-            prevTasks.map(task => {
-                if (task.id === taskId) {
-                    const favoriteStatus = !task.favorite;
-                    taskRef.update({ favorite: favoriteStatus });
-                    return { ...task, favorite: favoriteStatus };
-                }
-                return task;
-            })
-        );
-        Toast.show({
-            type: 'success',
-            text1: 'Tarefa favoritada',
-        });
-    };
+    const [selectedDay, setSelectedDay] = useState(1);
 
     const speakTask = (speakName, speakDescription) => {
         const thingToSay = `Nome da tarefa: ${speakName}. Descrição da tarefa: ${speakDescription}.`;
-        options = {
+        const options = {
             rate: 0.8,
             language: 'pt-BR'
         };
         Speech.speak(thingToSay, options);
-    }
+    };
 
-    function deleteTask(id) {
-        firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(id).delete();
-        Toast.show({
-            type: 'success',
-            text1: 'Tarefa excluída com sucesso',
-        });
-    }
+    const getColorForTask = (task) => {
+        if (task.completed) {
+            return '#B0BEC5'; // Corzinha Tarefa Completa
+        }
+        const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
+        const index = tasks.indexOf(task) % colors.length;
+        return colors[index];
+    };
+
+    const filteredTasks = tasks.filter(task => {
+        if (selectedDay === 7) {
+            return !task.date;
+        } else {
+            const taskDate = new Date(task.date);
+            return taskDate.getDay() === selectedDay;
+        }
+    });
+
+    const handleDayChange = (direction) => {
+        setSelectedDay(prevDay => (prevDay + direction + 8) % 8);
+    };
 
     const renderItem = ({ item }) => {
-        if (item.completed == false) {
+        if (item.completed === false) {
             const isSelected = item.id === selectedTaskId;
             const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
 
@@ -126,14 +76,10 @@ const TelaDasCrianca = ({ navigation }) => {
                                     <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
-                                    <Text style={styles.completeButtonText}>
-                                        Falar
-                                    </Text>
+                                    <Text style={styles.completeButtonText}>Falar</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.completeButton}>
-                                    <Text style={styles.completeButtonText}>
-                                        Deletar tarefa
-                                    </Text>
+                                    <Text style={styles.completeButtonText}>Deletar tarefa</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => {
@@ -149,14 +95,10 @@ const TelaDasCrianca = ({ navigation }) => {
                                     }}
                                     style={styles.completeButton}
                                 >
-                                    <Text style={styles.completeButtonText}>
-                                        Editar tarefa
-                                    </Text>
+                                    <Text style={styles.completeButtonText}>Editar tarefa</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => favoriteTask(item.id)} style={styles.completeButton}>
-                                    <Text style={styles.completeButtonText}>
-                                        {item.favorite ? 'Desfavoritar' : 'Favoritar'} tarefa
-                                    </Text>
+                                    <Text style={styles.completeButtonText}>{item.favorite ? 'Desfavoritar' : 'Favoritar'} tarefa</Text>
                                 </TouchableOpacity>
                             </>
                         )}
@@ -164,28 +106,6 @@ const TelaDasCrianca = ({ navigation }) => {
                 </TouchableOpacity>
             );
         }
-    };
-
-    const getColorForTask = (task) => {
-        if (task.completed) {
-            return '#B0BEC5'; // Corzinha Tarefa Completa - Kai nn sei ce ta bonito?
-        }
-        const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
-        const index = tasks.indexOf(task) % colors.length;
-        return colors[index];
-    };
-
-    const filteredTasks = tasks.filter(task => {
-        if (selectedDay === 7) {
-            return !task.date;
-        } else {
-            const taskDate = new Date(task.date);
-            return taskDate.getDay() === selectedDay;
-        }
-    });
-
-    const handleDayChange = (direction) => {
-        setSelectedDay(prevDay => (prevDay + direction + 8) % 8);
     };
 
     return (

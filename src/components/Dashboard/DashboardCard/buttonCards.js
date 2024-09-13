@@ -45,15 +45,6 @@ const ButtonCards = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.cardPink} onPress={() => navigation.navigate('CalendarView')}>
-          <View style={styles.square}>
-            <Ionicons name="calendar-outline" size={40} color="#FD7FAC" />
-          </View>
-          <Text style={{ color: "#FD7FAC", fontSize: 14, textAlign: 'center' }}>
-            Calendario
-          </Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.cardBlue} onPress={() => navigation.navigate('Game')}>
           <View style={styles.square}>
             <Ionicons name="game-controller-outline" size={40} color="#7FACD6" />
