@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image, SafeAreaView, FlatList } from 'react-native';
 import React from 'react';
 import * as Speech from 'expo-speech';
 import { cardProps } from './CardProps';

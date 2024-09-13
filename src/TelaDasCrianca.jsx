@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native';
 import * as Speech from 'expo-speech';
 import Toast from 'react-native-toast-message';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useTasks } from './contexts/TasksContext'; // Caminho para o TasksContext
-import { useAuth } from './contexts/AuthContext'; // Caminho para o AuthContext
+import { useTasks } from './contexts/TasksContext';
 
 const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Sem Data'];
 

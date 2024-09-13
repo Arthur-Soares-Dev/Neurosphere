@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { firebase } from '../config';
 import { addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { setPersistence } from 'firebase/auth/web-extension';
 import Toast from 'react-native-toast-message';
 
 const TelaDosPais = ({ route, navigation }) => {
-    const [usuario, setUsuario] = useState(null);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
@@ -21,36 +19,7 @@ const TelaDosPais = ({ route, navigation }) => {
     const user = firebase.auth().currentUser;
     const [edit, setEdit] = useState(false);
     const [id, setId] = useState('');
-    
 
-    useEffect(() => {
-        if (user) {
-            firebase.firestore().collection('users')
-                .doc(user.uid).get()
-                .then((snapshot) => {
-                    if (snapshot.exists) {
-                        setUsuario(snapshot.data());
-                    } else {
-                        console.log('Usuário não existe');
-                    }
-                })
-                .catch((error) => {
-                    console.error("Erro ao obter usuário:", error);
-                });
-        }
-
-        if(route.params)
-            {
-                setEdit(true);
-                setDescription(route.params.description);
-                setName(route.params.name);
-                setDate(route.params.date);
-                setTags(route.params.tags);
-                setStartTime(route.params.startTime);
-                setEndTime(route.params.endTime);
-                setId(route.params.id);
-            }
-    }, []);
 
     const addTask = async (name, description, date, startTime, endTime, tags) => {
 

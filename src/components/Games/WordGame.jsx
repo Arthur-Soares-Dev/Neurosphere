@@ -6,7 +6,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 const palavrasAleatorias = require('../../../assets/palavras-simples.json');
 
 const getMaskedWord = (word) => {
-  const numOfCharactersToMask = Math.max(1, Math.floor(word.length * 0.3));
+  Math.max(1, Math.floor(word.length * 0.3));
   let maskedWord = word.split('').map((char) => (Math.random() > 0.3 ? char : '_')).join('');
 
   while (maskedWord === word) {
@@ -17,7 +17,6 @@ const getMaskedWord = (word) => {
 };
 
 const WordGame = () => {
-  const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
   const [maskedWord, setMaskedWord] = useState('');
   const [guess, setGuess] = useState('');
@@ -26,7 +25,6 @@ const WordGame = () => {
   const maxAttempts = 5;
 
   useEffect(() => {
-    setWords(palavrasAleatorias);
     setNewWord();
   }, []);
 
@@ -75,10 +73,6 @@ const WordGame = () => {
     }
 
     setGuess('');
-  };
-
-  const handleChange = (text) => {
-    setGuess(text.toLowerCase());
   };
 
   const renderHearts = () => {
