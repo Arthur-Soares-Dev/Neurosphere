@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { firebaseAuth, firestore } from '../firebase/firebaseServices';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {firebaseAuth, firestore} from '../firebase/firebaseServices';
 import {storage} from "../../config";
 
 const AuthContext = createContext();
@@ -112,8 +112,7 @@ export function AuthProvider({ children }) {
           const blob = await response.blob();
           const snapshot = await profileImageRef.put(blob);
 
-          const downloadURL = await snapshot.ref.getDownloadURL();
-          updates.profileImage = downloadURL;
+          updates.profileImage = await snapshot.ref.getDownloadURL();
         }
       }
 

@@ -47,6 +47,7 @@ export default function Tasks() {
 
     const speakTask = (speakName, speakDescription) => {
         const thingToSay = `Nome da tarefa: ${speakName}. Descrição da tarefa: ${speakDescription}.`;
+        let options;
         options = {
             rate: 0.8,
             language: 'pt-BR'
@@ -67,7 +68,7 @@ export default function Tasks() {
     }
 
     const renderItem = ({ item }) => {
-        if(item.completed == false){
+        if(item.completed === false){
             const isSelected = item.id === selectedTaskId;
             const taskStyle = item.completed ? styles.taskContainerCompleted : styles.taskContainer;
             return (

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { firebase } from '../config';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useAuth } from './contexts/AuthContext';
 

@@ -1,7 +1,5 @@
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { firebase } from '../config';
-import * as Speech from 'expo-speech';
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Card  from './components/AudioDialogue/Card'
