@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, FlatList } from 'react-native';
-import { firebase } from '../config';
-import { addDoc, collection } from "firebase/firestore";
+import React, {useEffect, useState} from 'react';
+import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Toast from 'react-native-toast-message';
+import {useTasks} from "./contexts/TasksContext";
+import {Task} from "./models/Task";
 
 const TelaDosPais = ({ route, navigation }) => {
     const [name, setName] = useState('');
@@ -16,53 +15,27 @@ const TelaDosPais = ({ route, navigation }) => {
     const [showEndTimePicker, setShowEndTimePicker] = useState(false);
     const [tags, setTags] = useState([]);
     const [tagInput, setTagInput] = useState('');
-    const user = firebase.auth().currentUser;
     const [edit, setEdit] = useState(false);
-    const [id, setId] = useState('');
+    const { addTask } = useTasks()
 
+    useEffect(() => {
+        if (route.params) {
+            console.log('route.params', route.params);
+            const { task } = route.params;
+            console.log('task', task);
 
-    const addTask = async (name, description, date, startTime, endTime, tags) => {
+            setName(task.name || '');
+            setDescription(task.description || '');
 
-        if (edit) {
-            await firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(id).update({
-                description: description,
-                name: name,
-                date: date.toISOString(),
-                tags: tags,
-                startTime: startTime.toISOString(),
-                endTime: endTime.toISOString(),
-            }).then(() => {
-                Toast.show({
-                    type: 'success',
-                    text1: 'Tarefa editada com sucesso',
-                  });
-                navigation.goBack()
-            })
-                    
-        } else {
-            const newCollectionRef = collection(firebase.firestore(), 'users', user.uid, 'Tasks');
-            await addDoc(newCollectionRef, {
-                name,
-                description,
-                date: date.toISOString(), // Salvar como string ISO 8601
-                startTime: startTime.toISOString(), // Salvar como string ISO 8601
-                endTime: endTime.toISOString(), // Salvar como string ISO 8601
-                tags,
-                completed: false
-            }).then(() => {
-                setName("");
-                setDescription("");
-                setDate(new Date());
-                setStartTime(new Date());
-                setEndTime(new Date());
-                setTags([]);
-            });
+            setDate(task.date ? new Date(task.date) : new Date());
+            setStartTime(task.startTime ? new Date(task.startTime) : new Date());
+            setEndTime(task.endTime ? new Date(task.endTime) : new Date());
+
+            setTags(Array.isArray(task.tags) ? task.tags : []);
         }
+    }, []);
 
-    
 
-        
-    };
 
     const getRandomColor = () => {
         const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
@@ -80,6 +53,33 @@ const TelaDosPais = ({ route, navigation }) => {
         const newTags = tags.filter((_, i) => i !== index);
         setTags(newTags);
     };
+
+    const handleAddTask = async (name, description, date, startTime, endTime, tags) => {
+        try {
+            console.log('TAGS',tags)
+            const task = new Task(
+                null,
+                name,
+                description,
+                date,
+                startTime,
+                endTime,
+                false,
+                false,
+                tags
+            )
+            await addTask(task)
+            setName('')
+            setDescription('')
+            setDate(new Date())
+            setStartTime(new Date())
+            setEndTime(new Date())
+            setTags([])
+            setTagInput('')
+        } catch (e) {
+            console.error('Erro ao adicionar tarefa:',e)
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -201,7 +201,7 @@ const TelaDosPais = ({ route, navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => addTask(name, description, date, startTime, endTime, tags)}
+                        onPress={() => handleAddTask(name, description, date, startTime, endTime, tags)}
                         style={styles.button}
                     >
                         <Text style={styles.buttonText}>

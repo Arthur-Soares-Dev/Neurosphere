@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import React, {useState} from 'react';
+import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
 const MathGame = () => {
   const [number1, setNumber1] = useState(generateNumber());

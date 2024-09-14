@@ -1,34 +1,16 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native';
-import * as Speech from 'expo-speech';
+import React, {useState} from 'react';
+import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useTasks } from './contexts/TasksContext';
+import {useTasks} from './contexts/TasksContext';
+import {Task} from "./models/Task";
 
 const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Sem Data'];
 
 const TelaDasCrianca = ({ navigation }) => {
-    const { tasks, toggleCompleted, favoriteTask, deleteTask } = useTasks();
+    const { tasks, toggleCompleted, favoriteTask, deleteTask, speakTask, getColorForTask } = useTasks();
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     const [selectedDay, setSelectedDay] = useState(1);
-
-    const speakTask = (speakName, speakDescription) => {
-        const thingToSay = `Nome da tarefa: ${speakName}. Descrição da tarefa: ${speakDescription}.`;
-        const options = {
-            rate: 0.8,
-            language: 'pt-BR'
-        };
-        Speech.speak(thingToSay, options);
-    };
-
-    const getColorForTask = (task) => {
-        if (task.completed) {
-            return '#B0BEC5'; // Corzinha Tarefa Completa
-        }
-        const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
-        const index = tasks.indexOf(task) % colors.length;
-        return colors[index];
-    };
 
     const filteredTasks = tasks.filter(task => {
         if (selectedDay === 7) {
@@ -51,9 +33,13 @@ const TelaDasCrianca = ({ navigation }) => {
             return (
                 <TouchableOpacity onPress={() => setSelectedTaskId(isSelected ? null : item.id)}>
                     <View style={[taskStyle, { backgroundColor: getColorForTask(item), height: isSelected ? 'auto' : 100 }]}>
-                        <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString()}</Text>
+                        <Text style={styles.taskTime}>{new Date(item.date).toLocaleDateString('pt-BR')}</Text>
                         <Text style={styles.taskTitle}>{item.name}</Text>
-                        <Text style={styles.taskTime}>{new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                        <Text style={styles.taskTime}>
+                            {new Date(item.startTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                            -
+                            {new Date(item.endTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                        </Text>
                         {item.favorite && (
                             <View style={styles.favoriteIconContainer}>
                                 <Ionicons name="star" size={32} color={'white'} />
@@ -82,14 +68,19 @@ const TelaDasCrianca = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => {
+                                        const task = new Task(
+                                            item.id,
+                                            item.name,
+                                            item.description,
+                                            new Date(item.date),
+                                            new Date(item.startTime),
+                                            new Date(item.endTime),
+                                            item.completed,
+                                            item.favorite,
+                                            item.tags,
+                                        )
                                         navigation.navigate('TelaDosPais', {
-                                            id: item.id,
-                                            name: item.name,
-                                            description: item.description,
-                                            tags: item.tags,
-                                            date: new Date(item.date),
-                                            startTime: new Date(item.startTime),
-                                            endTime: new Date(item.endTime),
+                                            task
                                         })
                                     }}
                                     style={styles.completeButton}

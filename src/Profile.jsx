@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { firebase } from '../config';
 import {useAuth} from "./contexts/AuthContext";
 
 const Profile = () => {
@@ -50,36 +49,6 @@ const Profile = () => {
       setProfileImage(source);
 
       await handleUpdate()
-
-      // const fetchAndUpload = async () => {
-      //   try {
-      //     const response = await fetch(source.uri);
-      //     const blob = await response.blob();
-      //     const uploadTask = firebase.storage().ref().child(`profileImages/${user.uid}`).put(blob);
-      //
-      //     uploadTask.on(
-      //       'state_changed',
-      //       (snapshot) => {
-      //         // Handle upload progress
-      //       },
-      //       (error) => {
-      //         console.error('Upload Error: ', error);
-      //         Alert.alert('Error', 'Failed to upload image');
-      //       },
-      //       () => {
-      //         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-      //           setProfileImage(downloadURL);
-      //           firebase.firestore().collection('users').doc(user.uid).update({ profileImage: downloadURL });
-      //         });
-      //       }
-      //     );
-      //   } catch (error) {
-      //     console.error('Upload Error: ', error);
-      //     Alert.alert('Error', 'Failed to upload image');
-      //   }
-      // };
-      //
-      // fetchAndUpload();
     }
   };
 
@@ -107,9 +76,16 @@ const Profile = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout;
+      navigation.navigate('Login');
+    } catch (e) {
+      console.error("Erro ao fazer logout:", e);
+    }
+  }
 
-
-  const { updateUser, user } = useAuth();
+  const { updateUser, user, logout } = useAuth();
 
   return (
     <View style={styles.container}>
@@ -204,13 +180,7 @@ const Profile = () => {
       <TouchableOpacity
         style={[styles.button, { backgroundColor: '#FD7FAC', marginTop: 20 }]}
         onPress={() => {
-          firebase.auth().signOut()
-            .then(() => {
-              navigation.navigate('Login');
-            })
-            .catch((error) => {
-              console.error("Erro ao fazer logout:", error);
-            });
+          handleLogout()
         }}
       >
         <Text style={styles.buttonText}>Sair</Text>

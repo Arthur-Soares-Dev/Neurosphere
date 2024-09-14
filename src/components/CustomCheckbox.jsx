@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 const CustomCheckbox = ({ isChecked, onPress }) => {
     return (

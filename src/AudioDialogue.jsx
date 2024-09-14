@@ -1,8 +1,8 @@
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import Card  from './components/AudioDialogue/Card'
+import Card from './components/AudioDialogue/Card'
 
 const AudioDialogue = () => {
   const navigation = useNavigation();
