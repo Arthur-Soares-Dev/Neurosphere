@@ -1,7 +1,7 @@
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View, ScrollView } from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native'; 
+import {useNavigation} from '@react-navigation/native';
 
 const ButtonCards = () => {
   const navigation = useNavigation();

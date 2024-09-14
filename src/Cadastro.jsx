@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from "./contexts/AuthContext";
 

@@ -1,4 +1,5 @@
-import{ StyleSheet } from "react-native"
+import {StyleSheet} from "react-native"
+
 const StyleTask = StyleSheet.create({
     container:{
         flexDirection: "row",

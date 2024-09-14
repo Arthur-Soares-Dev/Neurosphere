@@ -1,10 +1,10 @@
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, View } from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import TaskList from './components/Dashboard/DashboardTasks';
 import Card from './components/Dashboard/DashboardCard';
 import ButtonCards from './components/Dashboard/DashboardCard/buttonCards';
-import { useAuth } from './contexts/AuthContext';
-import { useNavigation } from '@react-navigation/native'; 
+import {useAuth} from './contexts/AuthContext';
+import {useNavigation} from '@react-navigation/native';
 
 const Dashboard = () => {
   const navigation = useNavigation();

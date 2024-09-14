@@ -1,9 +1,6 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import React, { useState, useEffect } from "react";
-import { firebase } from "./config";
-
-
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "@react-navigation/stack";
+import React, {useEffect, useState} from "react";
 import Login from "./src/Login";
 import Cadastro from "./src/Cadastro";
 import Dashboard from "./src/Dashboard";
@@ -14,8 +11,9 @@ import AudioDialogue from "./src/AudioDialogue";
 import Game from "./src/Game"
 import MathGame from "./src/components/Games/MathGame";
 import WordGame from "./src/components/Games/WordGame";
-import { AuthProvider } from "./src/contexts/AuthContext";
-import { TasksProvider } from './src/contexts/TasksContext';
+import {AuthProvider} from "./src/contexts/AuthContext";
+import {TasksProvider} from './src/contexts/TasksContext';
+import {firebaseAuth} from "./src/firebase/firebaseServices";
 
 const Stack = createStackNavigator();
 
@@ -29,7 +27,7 @@ function App() {
     }
 
     useEffect(() => {
-        const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+        const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
     

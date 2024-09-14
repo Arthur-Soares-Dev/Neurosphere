@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, Image, SafeAreaView, FlatList } from 'react-native';
+import {FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import * as Speech from 'expo-speech';
-import { cardProps } from './CardProps';
+import {cardProps} from './CardProps';
 
 const Card = () => {
     const borderColors = ['#FD7FAC', '#7FACD6', '#353535'];
@@ -60,9 +60,9 @@ const styles = StyleSheet.create({
     button: {
         height: 150,
         width: '48%',
-        backgroundColor: '#f0f0f0', 
-        borderColor: '#026efd', 
-        borderWidth: 2, 
+        backgroundColor: '#f0f0f0',
+        borderColor: '#026efd',
+        borderWidth: 2,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 15,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#353535', 
+        color: '#353535',
         marginBottom: 20,
     },
     tinyLogo: {

@@ -1,70 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native';
-import { firebase } from '../../../../config.js';
-import * as Speech from 'expo-speech';
+import React, {useState} from 'react';
+import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {useTasks} from "../../../contexts/TasksContext";
 
 export default function Tasks() {
-
-    const [tasks, setTasks] = useState([]);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
-    const user = firebase.auth().currentUser;
+    const { toggleCompleted, deleteTask, tasks, speakTask, getColorForTask } = useTasks()
 
-    useEffect(() => {
-        if (user) {
-            firebase.firestore().collection('users')
-                .doc(user.uid).collection('Tasks')
-                .onSnapshot((querySnapshot) => {
-                    const tasksList = [];
-                    querySnapshot.forEach((doc) => {
-                        tasksList.push({ ...doc.data(), id: doc.id });
-                    });
-                    setTasks(tasksList);
-                });
+    const handleToggleCompleted = async (id) => {
+        try {
+            await toggleCompleted(id)
+        } catch (e) {
+            console.log("Erro ao completar a tarefa:",e)
         }
-    }, []);
-
-    const toggleCompleted = (taskId) => {
-        const taskRef = firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(taskId);
-        setTasks(prevTasks =>
-            prevTasks.map(task => {
-                if (task.id === taskId) {
-                    const newCompletedStatus = !task.completed;
-                    taskRef.update({ completed: newCompletedStatus });
-                    return { ...task, completed: newCompletedStatus };
-                }
-                return task;
-            })
-        );        
-        //Alert que peguei do site do npm
-        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
-        Toast.show({
-            type: 'success',
-            text1: 'Tarefa concluída com sucesso',
-          });
-    };
-
-    const speakTask = (speakName, speakDescription) => {
-        const thingToSay = `Nome da tarefa: ${speakName}. Descrição da tarefa: ${speakDescription}.`;
-        let options;
-        options = {
-            rate: 0.8,
-            language: 'pt-BR'
-        }
-        //Documentação com todas as opções, como volume, velocidade, e essas coisas
-        //https://docs.expo.dev/versions/latest/sdk/speech/#speechoptions
-        Speech.speak(thingToSay, options);
     }
 
-    function deleteTask(id) {
-        firebase.firestore().collection('users').doc(user.uid).collection('Tasks').doc(id).delete();
-        //Alert que peguei do site do npm
-        //https://github.com/calintamas/react-native-toast-message/tree/fd3a03ad2b5f447c613bf9eb41c91549528009cb
-        Toast.show({
-            type: 'success',
-            text1: 'Tarefa excluída com sucesso',
-          });
+    const handleDeleteTask = async (id) => {
+        try {
+            await deleteTask(id)
+        } catch (e) {
+            console.log("Erro ao completar a tarefa:",e)
+        }
     }
 
     const renderItem = ({ item }) => {
@@ -92,7 +49,7 @@ export default function Tasks() {
                                         ))}
                                     </View>
                                 )}
-                                <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.completeButton}>
+                                <TouchableOpacity onPress={() => handleToggleCompleted(item.id)} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
@@ -100,7 +57,7 @@ export default function Tasks() {
                                         Falar
                                     </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.completeButton}>
+                                <TouchableOpacity onPress={() => handleDeleteTask(item.id)} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>
                                         Deletar tarefa
                                     </Text>
@@ -111,15 +68,6 @@ export default function Tasks() {
                 </TouchableOpacity>
             );
         }
-    };
-
-    const getColorForTask = (task) => {
-        if (task.completed) {
-            return '#B0BEC5';
-        }
-        const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
-        const index = tasks.indexOf(task) % colors.length;
-        return colors[index];
     };
 
     const filteredTasks = tasks.filter(task => {
@@ -141,7 +89,6 @@ export default function Tasks() {
             />
             <Toast />
         </SafeAreaView>
-        
     );
 }
 
