@@ -18,16 +18,8 @@ const ButtonCards = () => {
         showsHorizontalScrollIndicator={false}
         style={{ height: 150 }}
       >
-        <TouchableOpacity style={styles.cardPinkTask} onPress={() => navigation.navigate('TelaDosPais')}>
-          <View style={{
-            width: 50,
-            height: 50,
-            borderRadius: 50,
-            backgroundColor: "white",
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 10,
-          }}>
+        <TouchableOpacity style={[styles.card, {backgroundColor: '#FD7FAC', borderColor: '#FD7FAC'}]} onPress={() => navigation.navigate('TelaDosPais')}>
+          <View style={[styles.square, {backgroundColor: 'white', borderRadius: 50}]}>
             <Ionicons name="add-outline" size={40} color="#FD7FAC" />
           </View>
           <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
@@ -35,29 +27,29 @@ const ButtonCards = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.cardBlue} onPress={() => navigation.navigate('TelaDasCrianca')}>
+        <TouchableOpacity style={[styles.card, {backgroundColor: '#7FACD630', borderColor: '#7FACD6'}]} onPress={() => navigation.navigate('TelaDasCrianca')}>
           <View style={styles.square}>
-            <Ionicons name="list-outline" size={40} color="#7FACD6" />
+            <Ionicons name="list-outline" size={40} color="#006DD2" />
           </View>
-          <Text style={{ color: "#7FACD6", fontSize: 14, textAlign: 'center' }}>
+          <Text style={{ color: "#006DD2", fontSize: 14, textAlign: 'center' }}>
             Ver {"\n"} Tarefas
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('AudioDialogue')}>
           <View style={styles.square}>
-            <Ionicons name="chatbubble-outline" size={40} color="#353535" />
+            <Ionicons name="chatbubble-outline" size={40} color="#151515" />
           </View>
-          <Text style={{ color: "#353535", fontSize: 14, textAlign: 'center' }}>
+          <Text style={{ color: "#151515", fontSize: 14, textAlign: 'center' }}>
             Painel de Frases
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.cardBlue} onPress={() => navigation.navigate('Game')}>
+        <TouchableOpacity style={[styles.card, {backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC'}]} onPress={() => navigation.navigate('Game')}>
           <View style={styles.square}>
-            <Ionicons name="game-controller-outline" size={40} color="#7FACD6" />
+            <Ionicons name="game-controller-outline" size={40} color="#EB0054" />
           </View>
-          <Text style={{ color: "#7FACD6", fontSize: 14, textAlign: 'center' }}>
+          <Text style={{ color: "#EB0054", fontSize: 14, textAlign: 'center' }}>
             Jogos
           </Text>
         </TouchableOpacity>
@@ -119,45 +111,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#35353530',
     borderWidth: 2,
     borderColor: '#353535',
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  cardPink: {
-    width: 125,
-    height: 150,
-    borderRadius: 10,
-    backgroundColor: '#FD7FAC30',
-    borderWidth: 2,
-    borderColor: '#FD7FAC',
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  cardPinkTask: {
-    width: 125,
-    height: 150,
-    borderRadius: 10,
-    backgroundColor: '#FD7FAC',
-    borderWidth: 2,
-    borderColor: '#FD7FAC',
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  cardBlue: {
-    width: 125,
-    height: 150,
-    borderRadius: 10,
-    backgroundColor: '#7FACD630',
-    borderWidth: 2,
-    borderColor: '#7FACD6',
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
