@@ -18,11 +18,19 @@ const ButtonCards = () => {
         showsHorizontalScrollIndicator={false}
         style={{ height: 150 }}
       >
-        <TouchableOpacity style={styles.cardPink} onPress={() => navigation.navigate('TelaDosPais')}>
-          <View style={styles.square}>
-            <Ionicons name="add-circle-outline" size={40} color="#FD7FAC" />
+        <TouchableOpacity style={styles.cardPinkTask} onPress={() => navigation.navigate('TelaDosPais')}>
+          <View style={{
+            width: 50,
+            height: 50,
+            borderRadius: 50,
+            backgroundColor: "white",
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 10,
+          }}>
+            <Ionicons name="add-outline" size={40} color="#FD7FAC" />
           </View>
-          <Text style={{ color: "#FD7FAC", fontSize: 14, textAlign: 'center' }}>
+          <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
             Adicionar Tarefa
           </Text>
         </TouchableOpacity>
@@ -108,7 +116,7 @@ const styles = StyleSheet.create({
     width: 125,
     height: 150,
     borderRadius: 10,
-    backgroundColor: '#35353550',
+    backgroundColor: '#35353530',
     borderWidth: 2,
     borderColor: '#353535',
     justifyContent: "center",
@@ -121,7 +129,20 @@ const styles = StyleSheet.create({
     width: 125,
     height: 150,
     borderRadius: 10,
-    backgroundColor: '#FD7FAC50',
+    backgroundColor: '#FD7FAC30',
+    borderWidth: 2,
+    borderColor: '#FD7FAC',
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  cardPinkTask: {
+    width: 125,
+    height: 150,
+    borderRadius: 10,
+    backgroundColor: '#FD7FAC',
     borderWidth: 2,
     borderColor: '#FD7FAC',
     justifyContent: "center",
@@ -134,7 +155,7 @@ const styles = StyleSheet.create({
     width: 125,
     height: 150,
     borderRadius: 10,
-    backgroundColor: '#7FACD650',
+    backgroundColor: '#7FACD630',
     borderWidth: 2,
     borderColor: '#7FACD6',
     justifyContent: "center",
@@ -147,7 +168,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 10,
-    backgroundColor: "white",
+    backgroundColor: "transparent",
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
