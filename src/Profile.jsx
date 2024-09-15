@@ -178,6 +178,15 @@ const Profile = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
+          style={[styles.button, { marginTop: 20 }]}
+          onPress={() => {
+            navigation.navigate("FeedbackList")
+          }}
+      >
+        <Text style={styles.buttonText}>Feedbacks</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
         style={[styles.button, { backgroundColor: '#FD7FAC', marginTop: 20 }]}
         onPress={() => {
           handleLogout()
