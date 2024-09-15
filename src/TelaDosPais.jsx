@@ -1,41 +1,39 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {useTasks} from "./contexts/TasksContext";
-import {Task} from "./models/Task";
+import { useTasks } from "./contexts/TasksContext";
+import { Task } from "./models/Task";
 
 const TelaDosPais = ({ route, navigation }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [date, setDate] = useState(new Date());
-    const [startTime, setStartTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(new Date());
+    const [date, setDate] = useState(new Date().toISOString());
+    const [startTime, setStartTime] = useState(new Date().toISOString());
+    const [endTime, setEndTime] = useState(new Date().toISOString());
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showStartTimePicker, setShowStartTimePicker] = useState(false);
     const [showEndTimePicker, setShowEndTimePicker] = useState(false);
     const [tags, setTags] = useState([]);
     const [tagInput, setTagInput] = useState('');
     const [edit, setEdit] = useState(false);
-    const { addTask } = useTasks()
+    const [taskId, setTaskId] = useState('');
+    const { addTask, updateTask } = useTasks();
 
     useEffect(() => {
         if (route.params) {
-            console.log('route.params', route.params);
             const { task } = route.params;
-            console.log('task', task);
-
+            setEdit(true);
+            setTaskId(task.id);
             setName(task.name || '');
             setDescription(task.description || '');
 
-            setDate(task.date ? new Date(task.date) : new Date());
-            setStartTime(task.startTime ? new Date(task.startTime) : new Date());
-            setEndTime(task.endTime ? new Date(task.endTime) : new Date());
+            setDate(task.date || new Date().toISOString());
+            setStartTime(task.startTime || new Date().toISOString());
+            setEndTime(task.endTime || new Date().toISOString());
 
             setTags(Array.isArray(task.tags) ? task.tags : []);
         }
-    }, []);
-
-
+    }, [route.params]);
 
     const getRandomColor = () => {
         const colors = ['#FFCDD2', '#E1BEE7', '#BBDEFB', '#C8E6C9', '#FFECB3'];
@@ -56,7 +54,6 @@ const TelaDosPais = ({ route, navigation }) => {
 
     const handleAddTask = async (name, description, date, startTime, endTime, tags) => {
         try {
-            console.log('TAGS',tags)
             const task = new Task(
                 null,
                 name,
@@ -66,20 +63,29 @@ const TelaDosPais = ({ route, navigation }) => {
                 endTime,
                 false,
                 false,
-                tags
-            )
-            await addTask(task)
-            setName('')
-            setDescription('')
-            setDate(new Date())
-            setStartTime(new Date())
-            setEndTime(new Date())
-            setTags([])
-            setTagInput('')
+                Array.isArray(tags) ? tags : []
+            );
+            if (edit) {
+                console.log('a')
+                await updateTask(taskId, task.toPlainObject());
+                navigation.navigate('TelaDasCrianca');
+            } else {
+
+                console.log('b')
+                await addTask(task.toPlainObject());
+            }
+            setName('');
+            setDescription('');
+            setDate(new Date().toISOString());
+            setStartTime(new Date().toISOString());
+            setEndTime(new Date().toISOString());
+            setTags([]);
+            setTagInput('');
+
         } catch (e) {
-            console.error('Erro ao adicionar tarefa:',e)
+            console.error('Erro ao adicionar tarefa:', e);
         }
-    }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -105,17 +111,18 @@ const TelaDosPais = ({ route, navigation }) => {
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Date</Text>
                         <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                            <Text style={styles.textInput}>{date.toDateString()}</Text>
+                            <Text style={styles.textInput}>{new Date(date).toDateString()}</Text>
                         </TouchableOpacity>
                         {showDatePicker && (
                             <DateTimePicker
-                                value={date}
+                                value={new Date(date)}
                                 mode="date"
                                 display="default"
                                 onChange={(event, selectedDate) => {
-                                    const currentDate = selectedDate || date;
+                                    if (selectedDate) {
+                                        setDate(new Date(selectedDate).toISOString());
+                                    }
                                     setShowDatePicker(false);
-                                    setDate(currentDate);
                                 }}
                             />
                         )}
@@ -125,18 +132,19 @@ const TelaDosPais = ({ route, navigation }) => {
                         <View style={styles.timeInputContainer}>
                             <Text style={styles.label}>Start Time</Text>
                             <TouchableOpacity onPress={() => setShowStartTimePicker(true)}>
-                                <Text style={styles.textInput}>{startTime.toTimeString().substring(0, 5)}</Text>
+                                <Text style={styles.textInput}>{new Date(startTime).toTimeString().substring(0, 5)}</Text>
                             </TouchableOpacity>
                             {showStartTimePicker && (
                                 <DateTimePicker
-                                    value={startTime}
+                                    value={new Date(startTime)}
                                     mode="time"
                                     is24Hour={true}
                                     display="default"
                                     onChange={(event, selectedDate) => {
-                                        const currentDate = selectedDate || startTime;
+                                        if (selectedDate) {
+                                            setStartTime(new Date(selectedDate).toISOString());
+                                        }
                                         setShowStartTimePicker(false);
-                                        setStartTime(currentDate);
                                     }}
                                 />
                             )}
@@ -144,18 +152,19 @@ const TelaDosPais = ({ route, navigation }) => {
                         <View style={styles.timeInputContainer}>
                             <Text style={styles.label}>End Time</Text>
                             <TouchableOpacity onPress={() => setShowEndTimePicker(true)}>
-                                <Text style={styles.textInput}>{endTime.toTimeString().substring(0, 5)}</Text>
+                                <Text style={styles.textInput}>{new Date(endTime).toTimeString().substring(0, 5)}</Text>
                             </TouchableOpacity>
                             {showEndTimePicker && (
                                 <DateTimePicker
-                                    value={endTime}
+                                    value={new Date(endTime)}
                                     mode="time"
                                     is24Hour={true}
                                     display="default"
                                     onChange={(event, selectedDate) => {
-                                        const currentDate = selectedDate || endTime;
+                                        if (selectedDate) {
+                                            setEndTime(new Date(selectedDate).toISOString());
+                                        }
                                         setShowEndTimePicker(false);
-                                        setEndTime(currentDate);
                                     }}
                                 />
                             )}
@@ -186,7 +195,7 @@ const TelaDosPais = ({ route, navigation }) => {
                             keyExtractor={(item, index) => index.toString()}
                             horizontal
                             renderItem={({ item, index }) => (
-                                <View style={[styles.tag, { backgroundColor: item.color }]}>
+                                <View style={[styles.tag, { backgroundColor: item.color }]} >
                                     <Text style={styles.tagText}>{item.text}</Text>
                                     <TouchableOpacity onPress={() => handleRemoveTag(index)} style={styles.removeTagButton}>
                                         <Text style={styles.removeTagButtonText}>x</Text>
@@ -205,9 +214,8 @@ const TelaDosPais = ({ route, navigation }) => {
                         style={styles.button}
                     >
                         <Text style={styles.buttonText}>
-                            
                             {(edit ? 'Edit the Task' : 'Create a new task')}
-                            </Text>
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -223,10 +231,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     backButton: {
-        position: 'absolute',
-        top: 20,
-        left: 20,
-        zIndex: 1,
+        margin: 16,
+        alignItems: 'center',
     },
     backButtonCircle: {
         width: 24,
@@ -236,18 +242,15 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
+        padding: 16,
     },
     innerContainer: {
-        width: '100%',
-        alignItems: 'center',
+        padding: 16,
+        backgroundColor: '#fff',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        textAlign: 'center',
         marginBottom: 20,
     },
     inputContainer: {

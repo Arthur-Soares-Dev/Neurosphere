@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useTasks} from './contexts/TasksContext';
 import {Task} from "./models/Task";
+import DialogTask from "./DialogTask";
 
 const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Sem Data'];
 
@@ -11,6 +12,12 @@ const TelaDasCrianca = ({ navigation }) => {
     const { tasks, toggleCompleted, favoriteTask, deleteTask, speakTask, getColorForTask } = useTasks();
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     const [selectedDay, setSelectedDay] = useState(1);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    useEffect(() => {
+        console.log('tasks.length',tasks.length)
+    }, []);
+
 
     const filteredTasks = tasks.filter(task => {
         if (selectedDay === 7) {
@@ -20,10 +27,20 @@ const TelaDasCrianca = ({ navigation }) => {
             return taskDate.getDay() === selectedDay;
         }
     });
+    console.log('filteredTasks',filteredTasks)
 
     const handleDayChange = (direction) => {
         setSelectedDay(prevDay => (prevDay + direction + 8) % 8);
     };
+
+    const handleToggleCompleted = async (id) => {
+        try {
+            setIsDialogOpen(true)
+        } catch (e) {
+            console.log("Erro:", e)
+        }
+    }
+
 
     const renderItem = ({ item }) => {
         if (item.completed === false) {
@@ -57,7 +74,7 @@ const TelaDasCrianca = ({ navigation }) => {
                                         ))}
                                     </View>
                                 )}
-                                <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.completeButton}>
+                                <TouchableOpacity onPress={() => handleToggleCompleted(item.id)} style={styles.completeButton}>
                                     <Text style={styles.completeButtonText}>{item.completed ? 'Ativar' : 'Concluir'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => speakTask(item.name, item.description)} style={styles.completeButton}>
@@ -72,9 +89,9 @@ const TelaDasCrianca = ({ navigation }) => {
                                             item.id,
                                             item.name,
                                             item.description,
-                                            new Date(item.date),
-                                            new Date(item.startTime),
-                                            new Date(item.endTime),
+                                            item.date,
+                                            item.startTime,
+                                            item.endTime,
                                             item.completed,
                                             item.favorite,
                                             item.tags,
@@ -122,6 +139,11 @@ const TelaDasCrianca = ({ navigation }) => {
                 contentContainerStyle={styles.listContainer}
             />
             <Toast />
+            <DialogTask
+                isOpen={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                taskId={selectedTaskId}
+            />
         </SafeAreaView>
     );
 }
