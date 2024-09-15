@@ -30,7 +30,9 @@ export function TasksProvider({ children }) {
                             data.endTime,
                             data.completed,
                             data.favorite,
-                            data.tags
+                            data.tags,
+                            data.mensagem,
+                            data.emoji
                         );
                         tasksList.push(task);
                     });
@@ -40,6 +42,29 @@ export function TasksProvider({ children }) {
             return () => unsubscribe();
         }
     }, [user]);
+
+    const updateTaskMessageAndEmoji = async (taskId, mensagem, emoji) => {
+        try {
+            const taskRef = firestore
+                .collection('users')
+                .doc(user.uid)
+                .collection('Tasks')
+                .doc(taskId);
+
+            await taskRef.update({
+                mensagem: mensagem || '',
+                emoji: emoji || ''
+            });
+
+            setTasks((prevTasks) =>
+                prevTasks.map((task) =>
+                    task.id === taskId ? { ...task, mensagem, emoji } : task
+                )
+            );
+        } catch (error) {
+            console.error('Erro ao atualizar mensagem e emoji:', error);
+        }
+    };
 
     const toggleCompleted = (taskId) => {
         const taskRef = firestore
@@ -172,7 +197,8 @@ export function TasksProvider({ children }) {
                 addTask,
                 updateTask,
                 speakTask,
-                getColorForTask
+                getColorForTask,
+                updateTaskMessageAndEmoji
             }}
         >
             {children}
