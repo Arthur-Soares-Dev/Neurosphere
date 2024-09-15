@@ -13,6 +13,7 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   useEffect(() => {
     setName(user.name)
@@ -165,10 +166,10 @@ const Profile = () => {
             value={newPassword}
             onChangeText={setNewPassword}
             placeholder="Senha Nova"
-            secureTextEntry={!showCurrentPassword}
+            secureTextEntry={!showNewPassword}
           />
-          <TouchableOpacity onPress={() => setShowCurrentPassword(!showCurrentPassword)}>
-            <Ionicons name={showCurrentPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon} />
+          <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)}>
+            <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon} />
           </TouchableOpacity>
         </View>
       </View>
