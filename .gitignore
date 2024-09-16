@@ -39,3 +39,5 @@ config.js
 .idea/php.xml
 .idea/vcs.xml
 .idea/workspace.xml
+
+.web-build/
