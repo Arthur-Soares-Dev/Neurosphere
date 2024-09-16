@@ -88,7 +88,7 @@ const Login = () => {
                             />
                         )}
                     </View>
-                    <Text style={styles.label}>Senha</Text>
+                    <Text style={styles.label}>Senhaa</Text>
                     <View style={styles.inputWrapper}>
                         <TextInput
                             style={styles.textInput}
