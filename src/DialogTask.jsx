@@ -72,6 +72,11 @@ const DialogTask = ({ isOpen, onClose, taskId }) => {
                         <Text
                             style={styles.submitButtonText}>Enviar</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.submitButton} onPress={() => onClose()}>
+                        <Text
+                            style={styles.submitButtonText}>Fechar</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </Modal>
