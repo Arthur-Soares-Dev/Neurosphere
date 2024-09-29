@@ -37,6 +37,30 @@ const Games = ({ navigation }) => {
             <Text style={styles.cardText}>Jogo da Forca</Text>
           </View>
 
+          <View style={styles.cardWrapper}>
+            <TouchableOpacity
+                style={[styles.card, { backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC' }]}
+                onPress={() => navigation.navigate('MemoryGame')}
+            >
+              <View style={styles.iconWrapper}>
+                <Ionicons name="calculator" size={40} color="#EB0054" />
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.cardText}>Jogo da memória</Text>
+          </View>
+
+          <View style={styles.cardWrapper}>
+            <TouchableOpacity
+                style={[styles.card, { backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC' }]}
+                onPress={() => navigation.navigate('SensoryMaze')}
+            >
+              <View style={styles.iconWrapper}>
+                <Ionicons name="calculator" size={40} color="#EB0054" />
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.cardText}>Jogo da sequência</Text>
+          </View>
+
         </View>
       </ScrollView>
     </View>
