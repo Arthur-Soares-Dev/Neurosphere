@@ -36,8 +36,6 @@ yarn-error.*
 
 # configurações banco de dados
 config.js
-.idea/php.xml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea
 
 .web-build/

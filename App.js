@@ -11,6 +11,8 @@ import AudioDialogue from "./src/AudioDialogue";
 import Game from "./src/Game"
 import MathGame from "./src/components/Games/MathGame";
 import WordGame from "./src/components/Games/WordGame";
+import MemoryGame from "./src/components/Games/MemoryGame";
+import SensoryMaze from "./src/components/Games/SensoryMaze";
 import FeedbackList from "./src/FeedbackList";
 import {AuthProvider} from "./src/contexts/AuthContext";
 import {TasksProvider} from './src/contexts/TasksContext';
@@ -52,6 +54,8 @@ function App() {
                         <Stack.Screen name="Game" component={Game} />
                         <Stack.Screen name="MathGame" component={MathGame} />
                         <Stack.Screen name="WordGame" component={WordGame} />
+                        <Stack.Screen name="MemoryGame" component={MemoryGame} />
+                        <Stack.Screen name="SensoryMaze" component={SensoryMaze} />
                         <Stack.Screen name="FeedbackList" component={FeedbackList} />
                     </Stack.Navigator>
                 </NavigationContainer>
