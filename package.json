@@ -1,47 +1,12 @@
 {
-  "name": "neurosphere",
+  "name": "meu-projeto",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "build": "expo export"
-  },
-  "dependencies": {
-    "@react-native-community/checkbox": "^0.5.17",
-    "@react-native-community/datetimepicker": "^8.0.1",
-    "@react-native-firebase/app": "^17.4.2",
-    "@react-native-firebase/auth": "^17.4.2",
-    "@react-native-firebase/firestore": "^17.4.2",
-    "@react-native-picker/picker": "2.7.5",
-    "@react-navigation/native": "^6.1.17",
-    "@react-navigation/stack": "^6.3.29",
-    "expo": "^51.0.32",
-    "expo-image-picker": "~15.0.7",
-    "expo-notifications": "~0.28.16",
-    "expo-speech": "~12.0.2",
-    "expo-status-bar": "~1.12.1",
-    "firebase": "^10.11.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-native": "^0.75.3",
-    "react-native-alert-notification": "^0.4.0",
-    "react-native-calendars": "^1.1306.0",
-    "react-native-gesture-handler": "~2.16.1",
-    "react-native-image-picker": "^7.1.2",
-    "react-native-linear-gradient": "^2.8.3",
-    "react-native-root-toast": "^3.6.0",
-    "react-native-safe-area-context": "4.10.5",
-    "react-native-screens": "3.31.1",
-    "react-native-toast-message": "^2.2.0",
-    "react-native-vector-icons": "^10.1.0",
-    "react-native-web": "^0.19.12",
-    "@expo/metro-runtime": "~3.2.3"
-  },
+  "start:client": "cd client && npx expo start --port 8082 && a",
+  "start:server": "cd server && node server.js",
+  "start": "concurrently \"npm run start:client\" \"npm run start:server\""
+},
   "devDependencies": {
-    "@babel/core": "^7.20.0"
-  },
-  "private": true
+    "concurrently": "^7.6.0"
+  }
 }
