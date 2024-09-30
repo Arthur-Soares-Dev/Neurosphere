@@ -1,63 +1,52 @@
-const admin = require('../config/firebase');
+const { getAllTasks, createTask, updateTaskById, deleteTaskById } = require('../models/taskModel');
 
-const getTasks = async (req, res) => {
+// Controller para obter todas as tarefas
+async function getTasks(req, res) {
     try {
-        const tasksRef = admin.firestore().collection('tasks');
-        const snapshot = await tasksRef.get();
-        const tasks = [];
-        snapshot.forEach(doc => {
-            tasks.push({ id: doc.id, ...doc.data() });
-        });
+        const tasks = await getAllTasks();
         res.json(tasks);
     } catch (error) {
         console.error('Erro ao obter tarefas:', error);
-        res.status(500).json({ error: 'Erro ao obter tarefas' });
+        res.status(500).json({ error: error.message });
     }
-};
+}
 
-const addTask = async (req, res) => {
-    const { name, description, date, startTime, endTime, completed, favorite, tags } = req.body;
-
+// Controller para adicionar uma nova tarefa
+async function addTask(req, res) {
+    const taskData = req.body;
     try {
-        const taskRef = admin.firestore().collection('tasks').doc();
-        await taskRef.set({
-            name,
-            description,
-            date,
-            startTime,
-            endTime,
-            completed: completed || false,
-            favorite: favorite || false,
-            tags: Array.isArray(tags) ? tags : [],
-        });
-        res.status(201).json({ id: taskRef.id });
+        const newTask = await createTask(taskData);
+        res.status(201).json(newTask);
     } catch (error) {
         console.error('Erro ao adicionar tarefa:', error);
-        res.status(500).json({ error: 'Erro ao adicionar tarefa' });
+        res.status(500).json({ error: error.message });
     }
-};
+}
 
-const updateTask = async (req, res) => {
+// Controller para atualizar uma tarefa existente
+async function updateTask(req, res) {
+    const { taskId } = req.params;
+    const taskData = req.body;
     try {
-        const taskRef = admin.firestore().collection('tasks').doc(req.params.taskId);
-        await taskRef.update(req.body);
-        res.status(200).json({ message: 'Tarefa atualizada com sucesso' });
+        const updatedTask = await updateTaskById(taskId, taskData);
+        res.status(200).json(updatedTask);
     } catch (error) {
         console.error('Erro ao atualizar tarefa:', error);
-        res.status(500).json({ error: 'Erro ao atualizar tarefa' });
+        res.status(500).json({ error: error.message });
     }
-};
+}
 
-const deleteTask = async (req, res) => {
+// Controller para deletar uma tarefa
+async function deleteTask(req, res) {
+    const { taskId } = req.params;
     try {
-        const taskRef = admin.firestore().collection('tasks').doc(req.params.taskId);
-        await taskRef.delete();
-        res.status(200).json({ message: 'Tarefa deletada com sucesso' });
+        const message = await deleteTaskById(taskId);
+        res.status(200).json(message);
     } catch (error) {
         console.error('Erro ao deletar tarefa:', error);
-        res.status(500).json({ error: 'Erro ao deletar tarefa' });
+        res.status(500).json({ error: error.message });
     }
-};
+}
 
 module.exports = {
     getTasks,
