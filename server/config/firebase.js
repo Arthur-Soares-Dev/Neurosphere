@@ -2,7 +2,7 @@
 const admin = require('firebase-admin');
 
 // Chave do Firebase Admin SDK
-const serviceAccount = require('./neurosphere-132f0-firebase-adminsdk-4jjcj-cd54b89158.json');
+const serviceAccount = require('../firebasekey/serviceAccount');
 
 // Inicialize o Firebase Admin SDK
 admin.initializeApp({
