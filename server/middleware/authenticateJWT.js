@@ -1,8 +1,17 @@
+const jwt = require('jsonwebtoken');
+
 const authenticateJWT = (req, res, next) => {
-    if (req.session.user) {
-        next(); // Usuário autenticado, prosseguir
+    const token = req.headers.authorization?.split(' ')[1]; // Extrai o token do cabeçalho
+    if (token) {
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // Forbidden
+            }
+            req.user = user; // Salva o usuário na requisição
+            next(); // Prossegue para a próxima função
+        });
     } else {
-        res.status(401).json({ error: 'Acesso não autorizado' }); // Usuário não autenticado
+        res.sendStatus(401); // Unauthorized
     }
 };
 

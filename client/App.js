@@ -31,17 +31,6 @@ function App() {
         const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
-
-    useEffect(() => {
-        const startServer = async () => {
-            const { localServer } = NativeModules;
-            if (localServer) {
-                localServer.start();
-            }
-        };
-
-        startServer();
-    }, []);
     
     if (initializing) return null;
 

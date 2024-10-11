@@ -1,111 +1,74 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { firestore } from '../firebase/firebaseServices';
-import { useAuth } from './AuthContext';
-import * as Speech from "expo-speech";
+import * as Speech from 'expo-speech';
 import { Task } from '../models/Task';
-import { initializeAPI, getAPIUrl } from '../service/api';
-
-let API_URL = '';
-
-(async function () {
-    await initializeAPI(); // Inicialize a API antes de fazer qualquer requisição
-    API_URL = getAPIUrl(); // Obtenha a URL da API
-})();
+import api from '../service/api'; // Importa a API
+import { useAuth } from './AuthContext'; // Importa o contexto de autenticação
 
 const TasksContext = createContext();
 
 export function TasksProvider({ children }) {
+    const { user } = useAuth(); // Acesse o contexto de autenticação
+    const userId = user ? user.uid : null; // Obtenha o userId do usuário autenticado
+    console.log('userId',userId)
     const [tasks, setTasks] = useState([]);
+    console.log('tasks',tasks)
     const [selectedTaskId, setSelectedTaskId] = useState(null);
-    const { user } = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (user) {
-            const unsubscribe = firestore
-                .collection('users')
-                .doc(user.uid)
-                .collection('Tasks')
-                .onSnapshot((querySnapshot) => {
-                    const tasksList = [];
-                    querySnapshot.forEach((doc) => {
-                        const data = doc.data();
-                        const task = new Task(
-                            doc.id,
-                            data.name,
-                            data.description,
-                            data.date,
-                            data.startTime,
-                            data.endTime,
-                            data.completed,
-                            data.favorite,
-                            data.tags,
-                            data.mensagem,
-                            data.emoji
-                        );
-                        tasksList.push(task);
-                    });
-                    setTasks(tasksList);
-                });
+        const fetchTasks = async () => {
+            if (!userId) return; // Retorna se não houver userId
 
-            return () => unsubscribe();
-        }
-    }, [user]);
+            try {
+                const response = await api.get(`/tasks?userId=${userId}`); // Inclui userId na requisição
+                const tasksList = response.data.map((taskData) => new Task(
+                    taskData.id,
+                    taskData.name,
+                    taskData.description,
+                    taskData.date,
+                    taskData.startTime,
+                    taskData.endTime,
+                    taskData.completed,
+                    taskData.favorite,
+                    taskData.tags,
+                    taskData.mensagem,
+                    taskData.emoji
+                ));
+                setTasks(tasksList);
+                console.log('tasksList',tasksList)
+            } catch (error) {
+                console.error("Erro ao carregar tarefas:", error);
+                setError("Erro ao carregar tarefas.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchTasks();
+    }, [userId]); // Dependência de userId
 
     const updateTaskMessageAndEmoji = async (taskId, mensagem, emoji) => {
         try {
-            const taskRef = firestore
-                .collection('users')
-                .doc(user.uid)
-                .collection('Tasks')
-                .doc(taskId);
-
-            await taskRef.update({
-                mensagem: mensagem || '',
-                emoji: emoji || ''
-            });
-
+            await api.put(`/tasks/${taskId}`, { mensagem, emoji, userId }); // Inclui userId na requisição
             setTasks((prevTasks) =>
                 prevTasks.map((task) =>
                     task.id === taskId ? { ...task, mensagem, emoji } : task
                 )
             );
-
-            // Atualiza a API
-            await fetch(`${API_URL}/tasks/${taskId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ mensagem, emoji }),
-            });
         } catch (error) {
             console.error('Erro ao atualizar mensagem e emoji:', error);
+            setError("Erro ao atualizar a tarefa.");
         }
     };
 
     const toggleCompleted = async (taskId) => {
-        const taskRef = firestore
-            .collection('users')
-            .doc(user.uid)
-            .collection('Tasks')
-            .doc(taskId);
-
         setTasks((prevTasks) =>
             prevTasks.map((task) => {
                 if (task.id === taskId) {
-                    const newCompletedStatus = !task.completed;
-                    taskRef.update({ completed: newCompletedStatus });
-
-                    // Atualiza a API
-                    fetch(`${API_URL}/tasks/${taskId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ completed: newCompletedStatus }),
-                    });
-
-                    return { ...task, completed: newCompletedStatus };
+                    const completed = true;
+                    api.put(`/tasks/${taskId}?completed=${completed}`, { completed, userId }); // Inclui userId na requisição
+                    return { ...task, completed: completed };
                 }
                 return task;
             })
@@ -113,27 +76,11 @@ export function TasksProvider({ children }) {
     };
 
     const favoriteTask = async (taskId) => {
-        const taskRef = firestore
-            .collection('users')
-            .doc(user.uid)
-            .collection('Tasks')
-            .doc(taskId);
-
         setTasks((prevTasks) =>
             prevTasks.map((task) => {
                 if (task.id === taskId) {
                     const favoriteStatus = !task.favorite;
-                    taskRef.update({ favorite: favoriteStatus });
-
-                    // Atualiza a API
-                    fetch(`${API_URL}/tasks/${taskId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ favorite: favoriteStatus }),
-                    });
-
+                    api.put(`/tasks/${taskId}`, { favorite: favoriteStatus, userId }); // Inclui userId na requisição
                     return { ...task, favorite: favoriteStatus };
                 }
                 return task;
@@ -142,29 +89,20 @@ export function TasksProvider({ children }) {
     };
 
     const deleteTask = async (taskId) => {
-        await firestore
-            .collection('users')
-            .doc(user.uid)
-            .collection('Tasks')
-            .doc(taskId)
-            .delete();
-
-        // Remove da API
-        await fetch(`${API_URL}/tasks/${taskId}`, {
-            method: 'DELETE',
-        });
+        try {
+            await api.delete(`/tasks/${taskId}?userId=${userId}`); // Inclui userId na requisição
+            setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+        } catch (error) {
+            console.error('Erro ao deletar tarefa:', error);
+            setError("Erro ao deletar a tarefa.");
+        }
     };
 
     const addTask = async (newTaskData) => {
         try {
-            const taskRef = firestore
-                .collection('users')
-                .doc(user.uid)
-                .collection('Tasks')
-                .doc();
-
+            const response = await api.post('/tasks', { ...newTaskData, userId }); // Inclui userId na requisição
             const newTask = new Task(
-                null,
+                response.data.id,
                 newTaskData.name || '',
                 newTaskData.description || '',
                 newTaskData.date || '',
@@ -174,56 +112,24 @@ export function TasksProvider({ children }) {
                 newTaskData.favorite !== undefined ? newTaskData.favorite : false,
                 Array.isArray(newTaskData.tags) ? newTaskData.tags : []
             );
-
-            const taskObject = newTask.toPlainObject();
-
-            await taskRef.set(taskObject);
-            setTasks((prevTasks) => [...prevTasks, { ...taskObject, id: taskRef.id }]);
-
-            // Adiciona à API
-            await fetch(`${API_URL}/tasks`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(taskObject),
-            });
+            setTasks((prevTasks) => [...prevTasks, newTask]);
         } catch (error) {
             console.error('Erro ao adicionar tarefa:', error);
+            setError("Erro ao adicionar a tarefa.");
         }
     };
 
     const updateTask = async (taskId, updatedData) => {
         try {
-            const taskRef = firestore
-                .collection('users')
-                .doc(user.uid)
-                .collection('Tasks')
-                .doc(taskId);
-
-            const updatedTask = {
-                ...updatedData,
-                favorite: updatedData.favorite !== undefined ? updatedData.favorite : false,
-                tags: Array.isArray(updatedData.tags) ? updatedData.tags : []
-            };
-
-            await taskRef.update(updatedTask);
+            await api.put(`/tasks/${taskId}`, { ...updatedData, userId }); // Inclui userId na requisição
             setTasks((prevTasks) =>
                 prevTasks.map((task) =>
-                    task.id === taskId ? { ...task, ...updatedTask } : task
+                    task.id === taskId ? { ...task, ...updatedData } : task
                 )
             );
-
-            // Atualiza a API
-            await fetch(`${API_URL}/tasks/${taskId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedTask),
-            });
         } catch (error) {
             console.error('Erro ao atualizar tarefa:', error);
+            setError("Erro ao atualizar a tarefa.");
         }
     };
 
@@ -258,7 +164,9 @@ export function TasksProvider({ children }) {
                 updateTask,
                 speakTask,
                 getColorForTask,
-                updateTaskMessageAndEmoji
+                updateTaskMessageAndEmoji,
+                isLoading,
+                error
             }}
         >
             {children}

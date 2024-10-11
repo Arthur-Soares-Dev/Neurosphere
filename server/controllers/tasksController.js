@@ -1,50 +1,77 @@
-const { getAllTasks, createTask, updateTaskById, deleteTaskById } = require('../models/taskModel');
+const { getTasksByUserId, createTask, updateTaskById, deleteTaskById } = require('../models/taskModel');
 
-// Controller para obter todas as tarefas
-async function getTasks(req, res) {
-    try {
-        const tasks = await getAllTasks();
-        res.json(tasks);
-    } catch (error) {
-        console.error('Erro ao obter tarefas:', error);
-        res.status(500).json({ error: error.message });
+// Função utilitária para verificar se userId está presente
+function validateUserId(userId) {
+    console.log('userId2',userId)
+    if (!userId) {
+        throw new Error('userId é obrigatório');
     }
 }
 
-// Controller para adicionar uma nova tarefa
-async function addTask(req, res) {
-    const taskData = req.body;
+// Controller para obter todas as tarefas de um usuário
+async function getTasks(req, res) {
+    const { userId } = req.query; // Obtendo userId da query string
     try {
-        const newTask = await createTask(taskData);
-        res.status(201).json(newTask);
+        validateUserId(userId); // Verificação do userId
+        const tasks = await getTasksByUserId(userId);
+        res.json(tasks);
+    } catch (error) {
+        console.error('Erro ao obter tarefas:', error);
+        res.status(400).json({ error: error.message });
+    }
+}
+
+const addTask = async (req, res) => {
+    const { userId } = req.body; // Obtendo userId da query string
+    console.log('userId',userId)
+    const taskData = req.body;
+
+    console.log('Dados da tarefa recebidos:', taskData); // Log dos dados recebidos
+    if (!taskData || typeof taskData !== 'object') {
+        return res.status(400).json({ error: 'Dados da tarefa inválidos.' });
+    }
+
+    try {
+        const result = await createTask(userId, taskData);
+        res.status(201).json(result);
     } catch (error) {
         console.error('Erro ao adicionar tarefa:', error);
         res.status(500).json({ error: error.message });
     }
-}
+};
+
+
 
 // Controller para atualizar uma tarefa existente
 async function updateTask(req, res) {
     const { taskId } = req.params;
     const taskData = req.body;
+    console.log('req.body',req.body);
+    const {completed} = req.query;
+    console.log('taskData2',taskData)
+    console.log('completed',completed)
     try {
-        const updatedTask = await updateTaskById(taskId, taskData);
+        validateUserId(taskData.userId); // Verificação do userId
+        const updatedTask = await updateTaskById(taskData.userId, taskId, taskData);
         res.status(200).json(updatedTask);
     } catch (error) {
         console.error('Erro ao atualizar tarefa:', error);
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 }
 
 // Controller para deletar uma tarefa
 async function deleteTask(req, res) {
     const { taskId } = req.params;
+    const { userId } = req.query; // Obtendo userId do corpo da requisição
+    console.log('userId',userId)
     try {
-        const message = await deleteTaskById(taskId);
+        validateUserId(userId); // Verificação do userId
+        const message = await deleteTaskById(userId, taskId);
         res.status(200).json(message);
     } catch (error) {
         console.error('Erro ao deletar tarefa:', error);
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 }
 

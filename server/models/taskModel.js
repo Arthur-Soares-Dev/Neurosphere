@@ -1,9 +1,10 @@
-const admin = require('../config/firebase');
+const { firestore } = require('../config/firebase'); // Importando Firestore corretamente
 
-// Função para obter todas as tarefas do Firestore
-async function getAllTasks() {
+// Função para obter todas as tarefas de um usuário do Firestore
+async function getTasksByUserId(userId) {
     try {
-        const tasksRef = admin.firestore().collection('tasks');
+        console.log('USERID', userId);
+        const tasksRef = firestore.collection('users').doc(userId).collection('Tasks'); // Alterando para a estrutura correta
         const snapshot = await tasksRef.get();
         const tasks = [];
         snapshot.forEach(doc => {
@@ -16,31 +17,46 @@ async function getAllTasks() {
 }
 
 // Função para adicionar uma nova tarefa ao Firestore
-async function createTask(taskData) {
+async function createTask(userId, taskData) {
+    // Verifica se o userId está definido e não é uma string vazia
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+        throw new Error('userId inválido.');
+    }
+
     const { name, description, date, startTime, endTime, completed, favorite, tags } = taskData;
 
     try {
-        const taskRef = admin.firestore().collection('tasks').doc();
+        // Usando a estrutura correta para o caminho do Firestore
+        const taskRef = firestore.collection('users').doc(userId).collection('Tasks').doc();
         await taskRef.set({
-            name,              // Nome da tarefa
-            description,       // Descrição da tarefa
-            date,              // Data da tarefa
-            startTime,         // Hora de início da tarefa
-            endTime,           // Hora de término da tarefa
-            completed: completed || false, // Status de completude
-            favorite: favorite || false,   // Status de favorito
-            tags: Array.isArray(tags) ? tags : [], // Tags associadas
+            name,
+            description,
+            date,
+            startTime,
+            endTime,
+            completed: completed || false,
+            favorite: favorite || false,
+            tags: Array.isArray(tags) ? tags : []
         });
-        return { id: taskRef.id };
+        return { id: taskRef.id }; // Retorna o ID da nova tarefa criada
     } catch (error) {
+        console.error('Erro ao adicionar tarefa:', error); // Log do erro
         throw new Error('Erro ao adicionar tarefa: ' + error.message);
     }
 }
 
 // Função para atualizar uma tarefa existente no Firestore
-async function updateTaskById(taskId, taskData) {
+async function updateTaskById(userId, taskId, taskData) {
     try {
-        const taskRef = admin.firestore().collection('tasks').doc(taskId);
+        const taskRef = firestore.collection('users').doc(userId).collection('Tasks').doc(taskId); // Usando a estrutura correta
+        const doc = await taskRef.get();
+
+        // Verifica se a tarefa pertence ao usuário
+        if (!doc.exists) {
+            throw new Error('Tarefa não encontrada');
+        }
+
+        console.log('taskData',taskData)
         await taskRef.update(taskData);
         return { message: 'Tarefa atualizada com sucesso' };
     } catch (error) {
@@ -49,9 +65,16 @@ async function updateTaskById(taskId, taskData) {
 }
 
 // Função para deletar uma tarefa do Firestore
-async function deleteTaskById(taskId) {
+async function deleteTaskById(userId, taskId) {
     try {
-        const taskRef = admin.firestore().collection('tasks').doc(taskId);
+        const taskRef = firestore.collection('users').doc(userId).collection('Tasks').doc(taskId); // Usando a estrutura correta
+        const doc = await taskRef.get();
+
+        // Verifica se a tarefa pertence ao usuário
+        if (!doc.exists) {
+            throw new Error('Tarefa não encontrada');
+        }
+
         await taskRef.delete();
         return { message: 'Tarefa deletada com sucesso' };
     } catch (error) {
@@ -60,7 +83,7 @@ async function deleteTaskById(taskId) {
 }
 
 module.exports = {
-    getAllTasks,
+    getTasksByUserId,
     createTask,
     updateTaskById,
     deleteTaskById,

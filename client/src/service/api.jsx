@@ -1,34 +1,15 @@
-import { Platform } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
+import axios from 'axios';
+import BASE_URL from './ipLocal'
 
-let API_URL = '';
+let url = ''
+if (BASE_URL) {
+  url = BASE_URL;
+} else {
+  url = '10.0.2.2';
+}
 
-// Função para verificar se está em um emulador
-const isEmulator = () => {
-  return (
-    Platform.OS === 'android' &&
-    Platform.constants?.reactNativeVersion
-  );
-};
+const api = axios.create({
+  baseURL: `http://${url}:5000/`,
+});
 
-// Função para configurar o URL da API
-const configureAPIUrl = (ip) => {
-  API_URL = isEmulator() ? 'http://10.0.2.2:5000' : `http://${ip}:5000`;
-};
-
-// Função para obter o IP local usando NetInfo
-const getLocalIP = async () => {
-  const state = await NetInfo.fetch();
-  if (state.details && state.details.ipAddress) {
-    return state.details.ipAddress;
-  }
-  return null;
-};
-
-// Função para inicializar a configuração da API
-export const initializeAPI = async () => {
-  const localIP = await getLocalIP();
-  configureAPIUrl(localIP);
-};
-
-export const getAPIUrl = () => API_URL;
+export default api;

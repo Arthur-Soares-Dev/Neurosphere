@@ -1,13 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import { initializeAPI, getAPIUrl } from '../service/api';
-
-let API_URL = '';
-
-(async function () {
-    await initializeAPI(); // Inicialize a API antes de fazer qualquer requisição
-    API_URL = getAPIUrl(); // Obtenha a URL da API
-})()
+import React, {createContext, useContext, useState} from 'react';
+import api from '../service/api'
 
 
 const AuthContext = createContext();
@@ -18,8 +10,8 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     console.log("Tentando fazer login com", email);
     try {
-        console.log('URL da API para login:', `${API_URL}/auth/login`);
-        const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+        // console.log('URL da API para login:', `${API_URL}/auth/login`);
+        const response = await api.post(`/auth/login`, { email, password });
         setUser(response.data);
       return response.data;
     } catch (error) {
@@ -30,7 +22,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
+      await api.post(`/auth/logout`, {}, { withCredentials: true });
       setUser(null);
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
@@ -44,7 +36,7 @@ export function AuthProvider({ children }) {
         alert("Email inválido");
         return;
       }
-      await axios.post(`${API_URL}/auth/forget-password`, { email });
+      await api.post(`/auth/forget-password`, { email });
     } catch (error) {
       console.error("Erro ao enviar email de redefinição de senha:", error);
       throw new Error(error.message);
@@ -54,7 +46,7 @@ export function AuthProvider({ children }) {
   const registerUser = async (email, password, name) => {
     console.log("Tentando registrar com", email);
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, { email, password, name });
+      const response = await api.post(`/auth/register`, { email, password, name });
       setUser(response.data);
       return response.data;
     } catch (error) {
@@ -72,7 +64,7 @@ export function AuthProvider({ children }) {
       if (updatedData.email) updates.email = updatedData.email;
 
       // Faz a requisição para atualizar o usuário
-      const response = await axios.put(`${API_URL}/auth/update/${uid}`, { ...updates, currentPassword, newPassword, profileImage });
+      const response = await api.put(`$/auth/update/${uid}`, { ...updates, currentPassword, newPassword, profileImage });
       
       const updatedUser = response.data;
       setUser(updatedUser);
@@ -84,8 +76,15 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const getAuthToken = async () => {
+    if (user) {
+      return await user.getIdToken(); // Obtém o token do usuário
+    }
+    throw new Error('Usuário não autenticado');
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, forgetPassword, registerUser, updateUser }}>
+    <AuthContext.Provider value={{ user, login, logout, forgetPassword, registerUser, updateUser, getAuthToken }}>
       {children}
     </AuthContext.Provider>
   );

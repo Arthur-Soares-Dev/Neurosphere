@@ -14,6 +14,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "express-session": "^1.18.0",
-    "firebase-admin": "^12.5.0"
+    "firebase-admin": "^12.6.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }
