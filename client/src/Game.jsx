@@ -37,6 +37,31 @@ const Games = ({ navigation }) => {
             <Text style={styles.cardText}>Jogo da Forca</Text>
           </View>
 
+          <View style={styles.cardWrapper}>
+            <TouchableOpacity
+              style={[styles.card, { backgroundColor: '#35353530', borderColor: '#151515' }]}
+              onPress={() => navigation.navigate('ColorGame')}
+            >
+              <View style={styles.iconWrapper}>
+                <Ionicons name="color-palette-outline" size={40} color="#353535" />
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.cardText}>Jogo das Cores</Text>
+          </View>
+
+          <View style={styles.cardWrapper}>
+            <TouchableOpacity
+              style={[styles.card, { backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC' }]}
+              onPress={() => navigation.navigate('EmotionGame')}
+            >
+              <View style={styles.iconWrapper}>
+                <Ionicons name="happy-outline" size={40} color="#EB0054" />
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.cardText}>Jogo de Emoções</Text>
+          </View>
+
+
         </View>
       </ScrollView>
     </View>

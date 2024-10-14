@@ -11,6 +11,8 @@ import AudioDialogue from "./src/AudioDialogue";
 import Game from "./src/Game"
 import MathGame from "./src/components/Games/MathGame";
 import WordGame from "./src/components/Games/WordGame";
+import EmotionGame from "./src/components/Games/EmotionGame";
+import ColorGame from "./src/components/Games/ColorGame";
 import FeedbackList from "./src/FeedbackList";
 import {AuthProvider} from "./src/contexts/AuthContext";
 import {TasksProvider} from './src/contexts/TasksContext';
@@ -52,6 +54,8 @@ function App() {
                         <Stack.Screen name="Game" component={Game} />
                         <Stack.Screen name="MathGame" component={MathGame} />
                         <Stack.Screen name="WordGame" component={WordGame} />
+                        <Stack.Screen name="EmotionGame" component={EmotionGame} />
+                        <Stack.Screen name="ColorGame" component={ColorGame} />
                         <Stack.Screen name="FeedbackList" component={FeedbackList} />
                     </Stack.Navigator>
                 </NavigationContainer>
