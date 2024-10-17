@@ -21,10 +21,10 @@ const TelaDasCrianca = ({ navigation }) => {
 
     const filteredTasks = tasks.filter(task => {
         if (selectedDay === 7) {
-            return !task.date;
+            return !task.date && !task.completed;
         } else {
             const taskDate = new Date(task.date);
-            return taskDate.getDay() === selectedDay;
+            return taskDate.getDay() === selectedDay && !task.completed;
         }
     });
     console.log('filteredTasks',filteredTasks)

@@ -46,10 +46,6 @@ const addTask = async (req, res) => {
 async function updateTask(req, res) {
     const { taskId } = req.params;
     const taskData = req.body;
-    console.log('req.body',req.body);
-    const {completed} = req.query;
-    console.log('taskData2',taskData)
-    console.log('completed',completed)
     try {
         validateUserId(taskData.userId); // Verificação do userId
         const updatedTask = await updateTaskById(taskData.userId, taskId, taskData);

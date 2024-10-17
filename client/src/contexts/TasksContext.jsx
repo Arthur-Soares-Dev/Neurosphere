@@ -48,12 +48,12 @@ export function TasksProvider({ children }) {
         fetchTasks();
     }, [userId]); // Dependência de userId
 
-    const updateTaskMessageAndEmoji = async (taskId, mensagem, emoji) => {
+    const updateTaskMessageAndEmoji = async (taskId, mensagem, emoji, completed = true) => {
         try {
-            await api.put(`/tasks/${taskId}`, { mensagem, emoji, userId }); // Inclui userId na requisição
+            await api.put(`/tasks/${taskId}`, { mensagem, emoji, userId, completed }); // Inclui userId na requisição
             setTasks((prevTasks) =>
                 prevTasks.map((task) =>
-                    task.id === taskId ? { ...task, mensagem, emoji } : task
+                    task.id === taskId ? { ...task, mensagem, emoji, completed } : task
                 )
             );
         } catch (error) {
