@@ -3,6 +3,7 @@ import React from 'react';
 import * as Speech from 'expo-speech';
 import {cardProps} from './CardProps';
 
+//Deprecated
 const Card = () => {
     const borderColors = ['#FD7FAC', '#7FACD6', '#353535'];
 
