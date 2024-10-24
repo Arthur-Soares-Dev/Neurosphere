@@ -79,26 +79,31 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const updateUser = async (uid, updatedData, currentPassword = '', newPassword = '', profileImage = null) => {
+  const updateUser = async (uid, updatedData) => {
     console.log("Tentando atualizar o usuário com UID:", uid);
+
     try {
       const updates = {};
 
-      if (updatedData.name) updates.name = updatedData.name;
-      if (updatedData.email) updates.email = updatedData.email;
+      for (const key in updatedData) {
+        if (updatedData.hasOwnProperty(key) && updatedData[key] !== undefined) {
+          updates[key] = updatedData[key];
+        }
+      }
 
-      // Faz a requisição para atualizar o usuário
-      const response = await api.put(`$/auth/update/${uid}`, { ...updates, currentPassword, newPassword, profileImage });
-      
+      // Faz a requisição para atualizar o usuário no servidor
+      const response = await api.put(`/auth/update/${uid}`, updates);
+
       const updatedUser = response.data;
       setUser(updatedUser);
 
       return updatedUser;
     } catch (error) {
       console.error("Erro ao atualizar o usuário:", error);
-      throw new Error(error.response.data.message || error.message);
+      throw new Error(error.response?.data?.message || error.message);
     }
   };
+
 
   const getAuthToken = async () => {
     if (user) {

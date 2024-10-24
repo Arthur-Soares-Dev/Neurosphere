@@ -1,15 +1,16 @@
-import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
 import TaskList from './components/Dashboard/DashboardTasks';
 import Card from './components/Dashboard/DashboardCard';
 import ButtonCards from './components/Dashboard/DashboardCard/buttonCards';
-import {useAuth} from './contexts/AuthContext';
-import {useNavigation} from '@react-navigation/native';
+import { useAuth } from './contexts/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import PinDialog from './PinDialog'; // Importe seu PinDialog
 
 const Dashboard = () => {
   const navigation = useNavigation();
-
   const { user } = useAuth();
+  const [isPinDialogOpen, setIsPinDialogOpen] = useState(false); // Estado para controlar a visibilidade do PinDialog
 
   return (
     <SafeAreaView style={styles.container}>
@@ -19,7 +20,7 @@ const Dashboard = () => {
         </Text>
         <TouchableOpacity
           style={styles.profileButton}
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => setIsPinDialogOpen(true)} // Abre o PinDialog
         >
           <Image
             source={user?.profileImage ? { uri: user?.profileImage } : require('../assets/default-avatar.png')}
@@ -30,6 +31,13 @@ const Dashboard = () => {
       <Card />
       <ButtonCards />
       <TaskList />
+
+      {/* Adicione o PinDialog ao componente */}
+      <PinDialog
+        isOpen={isPinDialogOpen}
+        onClose={() => setIsPinDialogOpen(false)} // Fecha o PinDialog
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
 }
@@ -57,12 +65,6 @@ const styles = StyleSheet.create({
   },
   profileButton: {
     padding: 10,
-  },
-  profileIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#f0f0f0',
   },
   avatar: {
     width: 50,

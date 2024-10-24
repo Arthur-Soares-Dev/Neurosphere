@@ -54,26 +54,28 @@ const Profile = () => {
   };
 
   const handleUpdate = async () => {
-    if (!user) {
+    if (!user || !user.uid) {
       console.error('Usuário não está autenticado ou o UID está faltando');
       return;
     }
 
+    // Monta o objeto com os dados que serão atualizados
     const updatedData = {
-      name: name,
-      email: email
+      name: name || undefined, // Mantém o valor atual se for uma string vazia
+      email: email || undefined, // Mantém o valor atual se for uma string vazia
+      currentPassword: currentPassword || undefined, // Adiciona a senha atual se estiver definida
+      newPassword: newPassword || undefined, // Adiciona a nova senha se estiver definida
+      profileImage: profileImage || undefined // Adiciona a imagem de perfil se estiver definida
     };
 
     try {
-      // const profileImage = profileImage ? profileImage : null;
-      console.log('profileImage', profileImage)
-
       console.log('UID', user.uid);
-      await updateUser(user.uid, updatedData, currentPassword, newPassword, profileImage);
+      await updateUser(user.uid, updatedData); // Chama a função updateUser com o uid e os dados atualizados
       console.log("Atualização de usuário concluída com sucesso!");
       alert("Atualização de usuário concluída com sucesso!");
     } catch (error) {
-      alert("Erro ao atualizar o usuário:", error);
+      console.error("Erro ao atualizar o usuário:", error);
+      alert("Erro ao atualizar o usuário: " + error.message); // Alerta com a mensagem de erro
     }
   };
 
