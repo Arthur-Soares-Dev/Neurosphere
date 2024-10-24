@@ -1,5 +1,6 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import api from '../service/api'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const AuthContext = createContext();
@@ -7,12 +8,30 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const checkUserLoggedIn = async () => {
+      try {
+        const savedUser = await AsyncStorage.getItem('user');
+        if (savedUser) {
+          setUser(JSON.parse(savedUser)); // Carrega o usuário do AsyncStorage
+        } else {
+          setUser(null); // Se não há dados no AsyncStorage, definir como null
+        }
+      } catch (error) {
+        console.error('Erro ao verificar login persistido:', error);
+        setUser(null); // Em caso de erro, garantir que o usuário seja null
+      }
+    };
+    checkUserLoggedIn();
+  }, []);
+
   const login = async (email, password) => {
     console.log("Tentando fazer login com", email);
     try {
         // console.log('URL da API para login:', `${API_URL}/auth/login`);
         const response = await api.post(`/auth/login`, { email, password });
         setUser(response.data);
+      await AsyncStorage.setItem('user', JSON.stringify(response.data)); // Salva os dados do usuário no AsyncStorage
       return response.data;
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -21,14 +40,19 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    console.log('logout context')
     try {
       await api.post(`/auth/logout`, {}, { withCredentials: true });
       setUser(null);
+      await AsyncStorage.removeItem('user'); // Remover dados do AsyncStorage
+      const savedUser = await AsyncStorage.getItem('user');
+      console.log("Dados no AsyncStorage após logout:", savedUser); // Verifica se realmente foi removido
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
       throw new Error(error.message);
     }
   };
+
 
   const forgetPassword = async (email) => {
     try {

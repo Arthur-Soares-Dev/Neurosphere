@@ -46,7 +46,7 @@ const Profile = () => {
     });
 
     if (!result.canceled) {
-      const source = { uri: result.assets[0].uri };
+      const source = {uri: result.assets[0].uri};
       setProfileImage(source);
 
       await handleUpdate()
@@ -66,7 +66,7 @@ const Profile = () => {
 
     try {
       // const profileImage = profileImage ? profileImage : null;
-      console.log('profileImage',profileImage)
+      console.log('profileImage', profileImage)
 
       console.log('UID', user.uid);
       await updateUser(user.uid, updatedData, currentPassword, newPassword, profileImage);
@@ -79,24 +79,25 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      await logout;
-      navigation.navigate('Login');
+      logout().then(() => {
+        navigation.navigate('Login');
+      });
     } catch (e) {
       console.error("Erro ao fazer logout:", e);
     }
   }
 
-  const { updateUser, user, logout } = useAuth();
+  const {updateUser, user, logout} = useAuth();
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={30} color="#FD7FAC" />
+        <Ionicons name="arrow-back" size={30} color="#FD7FAC"/>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={handleImagePick}>
         <Image
-          source={profileImage ? { uri: profileImage } : require('../assets/default-avatar.png')}
+          source={profileImage ? {uri: profileImage} : require('../assets/default-avatar.png')}
           style={styles.avatar}
         />
       </TouchableOpacity>
@@ -112,9 +113,9 @@ const Profile = () => {
           />
           {name.trim() !== '' && (
             <Ionicons
-              name={isNameValid(name) ? "checkmark-circle" : "close-circle"} 
-              size={24} 
-              color={isNameValid(name) ? "gray" : "gray"} 
+              name={isNameValid(name) ? "checkmark-circle" : "close-circle"}
+              size={24}
+              color={isNameValid(name) ? "gray" : "gray"}
               style={styles.icon}
             />
           )}
@@ -133,9 +134,9 @@ const Profile = () => {
           />
           {email.trim() !== '' && (
             <Ionicons
-              name={validateEmail(email) ? "checkmark-circle" : "close-circle"} 
-              size={24} 
-              color={validateEmail(email) ? "gray" : "gray"} 
+              name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
+              size={24}
+              color={validateEmail(email) ? "gray" : "gray"}
               style={styles.icon}
             />
           )}
@@ -153,7 +154,7 @@ const Profile = () => {
             secureTextEntry={!showCurrentPassword}
           />
           <TouchableOpacity onPress={() => setShowCurrentPassword(!showCurrentPassword)}>
-            <Ionicons name={showCurrentPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon} />
+            <Ionicons name={showCurrentPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -169,7 +170,7 @@ const Profile = () => {
             secureTextEntry={!showNewPassword}
           />
           <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)}>
-            <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon} />
+            <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -179,16 +180,16 @@ const Profile = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-          style={[styles.button, { marginTop: 20 }]}
-          onPress={() => {
-            navigation.navigate("FeedbackList")
-          }}
+        style={[styles.button, {marginTop: 20}]}
+        onPress={() => {
+          navigation.navigate("FeedbackList")
+        }}
       >
         <Text style={styles.buttonText}>Feedbacks</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: '#FD7FAC', marginTop: 20 }]}
+        style={[styles.button, {backgroundColor: '#FD7FAC', marginTop: 20}]}
         onPress={() => {
           handleLogout()
         }}
@@ -217,14 +218,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   avatar: {
-    width: 120, 
-    height: 120, 
+    width: 120,
+    height: 120,
     borderRadius: 60,
     marginBottom: 24,
   },
   inputContainer: {
     width: '100%',
-    marginBottom: 24, 
+    marginBottom: 24,
   },
   label: {
     marginBottom: 8,
