@@ -2,6 +2,7 @@ import {SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {ScreenNames} from "../../../enums/ScreenNames";
 
 const ButtonCards = () => {
   const navigation = useNavigation();
@@ -18,7 +19,7 @@ const ButtonCards = () => {
         showsHorizontalScrollIndicator={false}
         style={{ height: 150 }}
       >
-        <TouchableOpacity style={[styles.card, {backgroundColor: '#FD7FAC', borderColor: '#FD7FAC'}]} onPress={() => navigation.navigate('CreateTaskScreen')}>
+        <TouchableOpacity style={[styles.card, {backgroundColor: '#FD7FAC', borderColor: '#FD7FAC'}]} onPress={() => navigation.navigate(ScreenNames.CREATE_TASK)}>
           <View style={[styles.square, {backgroundColor: 'white', borderRadius: 50}]}>
             <Ionicons name="add-outline" size={40} color="#FD7FAC" />
           </View>
@@ -27,7 +28,7 @@ const ButtonCards = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, {backgroundColor: '#7FACD630', borderColor: '#7FACD6'}]} onPress={() => navigation.navigate('ViewTasksScreen')}>
+        <TouchableOpacity style={[styles.card, {backgroundColor: '#7FACD630', borderColor: '#7FACD6'}]} onPress={() => navigation.navigate(ScreenNames.VIEW_TASKS)}>
           <View style={styles.square}>
             <Ionicons name="list-outline" size={40} color="#006DD2" />
           </View>
@@ -36,7 +37,7 @@ const ButtonCards = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('AudioDialogueScreen')}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate(ScreenNames.AUDIO_DIALOGUE)}>
           <View style={styles.square}>
             <Ionicons name="chatbubble-outline" size={40} color="#151515" />
           </View>
@@ -45,7 +46,7 @@ const ButtonCards = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.card, {backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC'}]} onPress={() => navigation.navigate('GamesListScreen')}>
+        <TouchableOpacity style={[styles.card, {backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC'}]} onPress={() => navigation.navigate(ScreenNames.GAMES_LIST)}>
           <View style={styles.square}>
             <Ionicons name="game-controller-outline" size={40} color="#EB0054" />
           </View>

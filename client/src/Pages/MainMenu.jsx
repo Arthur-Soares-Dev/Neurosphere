@@ -1,16 +1,17 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {ScreenNames} from "../enums/ScreenNames";
 
 const NeuroSphereScreen = () => {
   const navigation = useNavigation();
 
   const handleSignIn = () => {
-    navigation.navigate('LoginScreen');
+    navigation.navigate(ScreenNames.LOGIN);
   };
 
   const handleSignUp = () => {
-    navigation.navigate('RegisterScreen');
+    navigation.navigate(ScreenNames.REGISTER);
   };
 
   const handleSignInWithGoogle = () => {

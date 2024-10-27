@@ -13,10 +13,6 @@ const AudioDialogueScreen = () => {
 
   const borderColors = ['#FD7FAC', '#7FACD6', '#353535'];
 
-  /**
-   * Fala o áudio do card selecionado.
-   * @param {Object} card - O card que contém o áudio a ser falado.
-   */
   const speakCard = (card) => {
     const options = {
       language: 'pt-BR',
@@ -25,9 +21,6 @@ const AudioDialogueScreen = () => {
     Speech.speak(card.audio, options);
   };
 
-  /**
-   * Fala o áudio de todos os cards selecionados em sequência.
-   */
   const speakAll = () => {
     const options = {
       language: 'pt-BR',
@@ -50,9 +43,6 @@ const AudioDialogueScreen = () => {
     }
   };
 
-  /**
-   * Limpa todos os cards selecionados.
-   */
   const clearCards = () => {
     setSelectedCards([]);
   };

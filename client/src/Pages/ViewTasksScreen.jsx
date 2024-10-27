@@ -4,14 +4,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTasks } from '../contexts/TasksContext';
 import MyCalendar from "../components/MyCalendar";
 import DialogTask from "../components/DialogTask";
+import {ScreenNames} from "../enums/ScreenNames";
 
 const ViewTasksScreen = ({ navigation }) => {
   const { tasks, toggleCompleted, favoriteTask, deleteTask, speakTask } = useTasks();
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [expandedTaskId, setExpandedTaskId] = useState(null);
-  const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar o diálogo
-  const [selectedTaskId, setSelectedTaskId] = useState(null); // Para armazenar o ID da tarefa selecionada
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
 
 
   const daysOfWeek = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
@@ -35,31 +36,28 @@ const ViewTasksScreen = ({ navigation }) => {
 
   const filteredAndSortedTasks = tasks
     .filter(task => !task.completed && new Date(task.date).toDateString() === selectedDay.toDateString())
-    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate)); // Ordena pelo horário de início
+    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
 
   const parseCustomDate = (dateString) => {
     console.log('dateString', dateString);
 
-    // Se dateString for um objeto com segundos e nanossegundos
     if (dateString._seconds && dateString._nanoseconds) {
       const seconds = dateString._seconds;
       const nanoseconds = dateString._nanoseconds;
 
-      // Criar um novo objeto Date
-      return new Date(seconds * 1000 + Math.floor(nanoseconds / 1000000)); // Convertendo para milissegundos
+      return new Date(seconds * 1000 + Math.floor(nanoseconds / 1000000));
     }
 
-    // Se dateString for uma string, converta normalmente
     const date = new Date(dateString);
-    return isNaN(date.getTime()) ? null : date; // Retornar null se a data não for válida
+    return isNaN(date.getTime()) ? null : date;
   };
 
 
   const markedDates = tasks.reduce((acc, task) => {
     const taskDate = parseCustomDate(task.date);
     if (taskDate && !task.completed) {
-      const date = taskDate.toISOString().split('T')[0]; // Converte a data para o formato YYYY-MM-DD
-      acc[date] = { marked: true }; // Marca a data
+      const date = taskDate.toISOString().split('T')[0];
+      acc[date] = { marked: true };
     }
     return acc;
   }, {});
@@ -68,7 +66,6 @@ const ViewTasksScreen = ({ navigation }) => {
   const renderItem = ({ item }) => {
     const isExpanded = item.id === expandedTaskId;
 
-    // Converter as datas de início e fim para objetos Date
     const startTime = new Date(item.startTime);
     const endTime = new Date(item.endTime);
 
@@ -101,7 +98,7 @@ const ViewTasksScreen = ({ navigation }) => {
               }} style={styles.taskButton}>
                 <Text style={styles.taskButtonText}>Concluir</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('CreateTaskScreen', { task: item })} style={styles.taskButton}>
+              <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.CREATE_TASK, { task: item })} style={styles.taskButton}>
                 <Ionicons name="create-outline" size={16} color="white" />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.taskButton}>
@@ -163,7 +160,7 @@ const ViewTasksScreen = ({ navigation }) => {
         data={filteredAndSortedTasks}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        style={[styles.list, showCalendar && styles.listDisabled]} // Adicionando estilo para desabilitar a lista quando o calendário está aberto
+        style={[styles.list, showCalendar && styles.listDisabled]}
         contentContainerStyle={styles.listContainer}
       />
       <DialogTask
@@ -227,7 +224,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   listDisabled: {
-    opacity: 0.5, // Tornar a lista opaca para indicar que está desabilitada
+    opacity: 0.5,
   },
   taskContainer: {
     backgroundColor: '#6B5B95',

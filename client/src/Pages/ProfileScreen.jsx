@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from "../contexts/AuthContext";
+import {ScreenNames} from "../enums/ScreenNames";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -26,7 +27,6 @@ const ProfileScreen = () => {
   };
 
   const validateEmail = (email) => {
-    // Expressão para validação de email - Stack Overflow e Linkedin
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
@@ -59,30 +59,29 @@ const ProfileScreen = () => {
       return;
     }
 
-    // Monta o objeto com os dados que serão atualizados
     const updatedData = {
-      name: name || undefined, // Mantém o valor atual se for uma string vazia
-      email: email || undefined, // Mantém o valor atual se for uma string vazia
-      currentPassword: currentPassword || undefined, // Adiciona a senha atual se estiver definida
-      newPassword: newPassword || undefined, // Adiciona a nova senha se estiver definida
-      profileImage: profileImage || undefined // Adiciona a imagem de perfil se estiver definida
+      name: name || undefined,
+      email: email || undefined,
+      currentPassword: currentPassword || undefined,
+      newPassword: newPassword || undefined,
+      profileImage: profileImage || undefined
     };
 
     try {
       console.log('UID', user.uid);
-      await updateUser(user.uid, updatedData); // Chama a função updateUser com o uid e os dados atualizados
+      await updateUser(user.uid, updatedData);
       console.log("Atualização de usuário concluída com sucesso!");
       alert("Atualização de usuário concluída com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar o usuário:", error);
-      alert("Erro ao atualizar o usuário: " + error.message); // Alerta com a mensagem de erro
+      alert("Erro ao atualizar o usuário: " + error.message);
     }
   };
 
   const handleLogout = async () => {
     try {
       logout().then(() => {
-        navigation.navigate('LoginScreen');
+        navigation.navigate(ScreenNames.LOGIN);
       });
     } catch (e) {
       console.error("Erro ao fazer logout:", e);
@@ -184,7 +183,7 @@ const ProfileScreen = () => {
       <TouchableOpacity
         style={[styles.button, {marginTop: 20}]}
         onPress={() => {
-          navigation.navigate("FeedbackListScreen")
+          navigation.navigate(ScreenNames.FEEDBACK_LIST)
         }}
       >
         <Text style={styles.buttonText}>Feedbacks</Text>

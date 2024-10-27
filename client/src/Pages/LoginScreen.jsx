@@ -15,6 +15,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from '../contexts/AuthContext';
 import globalStyles from '../Styles/GlobalStyle';
 import SocialLoginButtons from '../components/SocialLoginButtons';
+import {ScreenNames} from "../enums/ScreenNames";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (user) {
-      navigation.navigate('DashboardScreen'); // Se o usuário estiver logado, navega para o DashboardScreen
+      navigation.navigate(ScreenNames.DASHBOARD); // Se o usuário estiver logado, navega para o DashboardScreen
     }
   }, [user]);
 
@@ -39,7 +40,7 @@ const LoginScreen = () => {
     console.log('handleLogin', email, password)
     try {
       await login(email, password);
-      navigation.navigate('DashboardScreen');
+      navigation.navigate(ScreenNames.DASHBOARD);
     } catch (error) {
       setError(error.message);
     }
@@ -141,7 +142,7 @@ const LoginScreen = () => {
           <View style={styles.signUpContainer}>
             <Text style={styles.signUpText}>Não possui uma conta?</Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+            <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.REGISTER)}>
 
               <Text style={styles.signUpLink}>Cadastrar</Text>
 

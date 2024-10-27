@@ -1,43 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useAuth } from '../contexts/AuthContext'; // Importe o contexto de autenticação
+import { useAuth } from '../contexts/AuthContext';
+import {ScreenNames} from "../enums/ScreenNames";
 
 const PinDialog = ({ isOpen, onClose, navigation }) => {
   const [pin, setPin] = useState('');
-  const { user, updateUser } = useAuth(); // Pegue os dados do usuário e a função de atualizar
+  const { user, updateUser } = useAuth();
 
   useEffect(() => {
     if (user) {
-      setPin(''); // Reseta o estado do PIN quando o diálogo é aberto
+      setPin('');
     }
   }, [isOpen, user]);
 
   const handleConfirm = async () => {
     try {
       if (user?.pin) {
-        // Verifica o PIN existente
         if (pin === user.pin) {
-          Alert.alert('Sucesso', 'PIN correto!'); // Mensagem de sucesso
-          navigation.navigate('ProfileScreen'); // Redireciona para outra tela
-          onClose(); // Fecha o diálogo
+          Alert.alert('Sucesso', 'PIN correto!');
+          navigation.navigate(ScreenNames.PROFILE);
+          onClose();
         } else {
-          Alert.alert('Erro', 'PIN incorreto. Tente novamente.'); // Alerta para PIN incorreto
-          setPin(''); // Reseta o estado do PIN para nova tentativa
+          Alert.alert('Erro', 'PIN incorreto. Tente novamente.');
+          setPin('');
         }
       } else {
         // Lógica para criar um novo PIN
         if (pin.length === 4) {
-          await updateUser(user.uid, { pin }); // Chama a função de atualização do contexto
+          await updateUser(user.uid, { pin });
           Alert.alert('Sucesso', 'Novo PIN criado com sucesso!');
-          onClose(); // Fecha o diálogo
-          navigation.navigate('ProfileScreen'); // Redireciona para a tela de perfil aqui
+          onClose();
+          navigation.navigate(ScreenNames.PROFILE);
         } else {
-          Alert.alert('Erro', 'O novo PIN deve ter 4 dígitos.'); // Validação do novo PIN
+          Alert.alert('Erro', 'O novo PIN deve ter 4 dígitos.');
         }
       }
     } catch (error) {
       console.error('Erro ao processar PIN:', error);
-      Alert.alert('Erro', 'Ocorreu um erro ao processar sua solicitação.'); // Mensagem de erro genérica
+      Alert.alert('Erro', 'Ocorreu um erro ao processar sua solicitação.');
     }
   };
 

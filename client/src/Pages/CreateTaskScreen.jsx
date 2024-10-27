@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTasks } from "../contexts/TasksContext";
 import { Task } from "../models/Task";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {ScreenNames} from "../enums/ScreenNames";
 
 const CreateTaskScreen = ({ route, navigation }) => {
     const [name, setName] = useState('');
@@ -75,7 +76,7 @@ const CreateTaskScreen = ({ route, navigation }) => {
             );
             if (edit) {
                 await updateTask(taskId, task.toPlainObject());
-                navigation.navigate('ViewTasksScreen');
+                navigation.navigate(ScreenNames.VIEW_TASKS);
             } else {
                 await addTask(task.toPlainObject());
             }

@@ -12,6 +12,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from "../contexts/AuthContext";
+import {ScreenNames} from "../enums/ScreenNames";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -33,7 +34,6 @@ const RegisterScreen = () => {
   }, [error]);
   
   const validateEmail = (email) => {
-    // Expressão para validação de email - Stack Overflow e Linkedin
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
@@ -50,7 +50,7 @@ const RegisterScreen = () => {
     try {
       if (email && password && name) {
         await registerUser(email, password, name)
-        navigation.navigate('DashboardScreen');
+        navigation.navigate(ScreenNames.DASHBOARD);
       } else {
         setError('Preencha todos os campos');
       }
@@ -172,7 +172,7 @@ const RegisterScreen = () => {
 
           <View style={styles.signInContainer}>
             <Text style={styles.signInText}>Já possui uma conta?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+            <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.LOGIN)}>
               <Text style={styles.signInLink}>Logar</Text>
             </TouchableOpacity>
           </View>

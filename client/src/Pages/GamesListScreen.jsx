@@ -1,6 +1,7 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {ScreenNames} from "../enums/ScreenNames";
 
 const GamesListScreen = ({ navigation }) => {
   return (
@@ -16,7 +17,7 @@ const GamesListScreen = ({ navigation }) => {
           <View style={styles.cardWrapper}>
             <TouchableOpacity
               style={[styles.card, { backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC' }]}
-              onPress={() => navigation.navigate('MathGameScreen')}
+              onPress={() => navigation.navigate(ScreenNames.MATH_GAME)}
             >
               <View style={styles.iconWrapper}>
                 <Ionicons name="calculator" size={40} color="#EB0054" />
@@ -28,7 +29,7 @@ const GamesListScreen = ({ navigation }) => {
           <View style={styles.cardWrapper}>
             <TouchableOpacity
               style={[styles.card, { backgroundColor: '#35353530', borderColor: '#151515' }]}
-              onPress={() => navigation.navigate('WordGameScreen')}
+              onPress={() => navigation.navigate(ScreenNames.WORD_GAME)}
             >
               <View style={styles.iconWrapper}>
                 <Ionicons name="book" size={40} color="#353535" />
@@ -40,7 +41,7 @@ const GamesListScreen = ({ navigation }) => {
           <View style={styles.cardWrapper}>
             <TouchableOpacity
               style={[styles.card, { backgroundColor: '#35353530', borderColor: '#151515' }]}
-              onPress={() => navigation.navigate('ColorGameScreen')}
+              onPress={() => navigation.navigate(ScreenNames.COLOR_GAME)}
             >
               <View style={styles.iconWrapper}>
                 <Ionicons name="color-palette-outline" size={40} color="#353535" />
@@ -52,7 +53,7 @@ const GamesListScreen = ({ navigation }) => {
           <View style={styles.cardWrapper}>
             <TouchableOpacity
               style={[styles.card, { backgroundColor: '#FD7FAC30', borderColor: '#FD7FAC' }]}
-              onPress={() => navigation.navigate('EmotionGameScreen')}
+              onPress={() => navigation.navigate(ScreenNames.EMOTION_GAME)}
             >
               <View style={styles.iconWrapper}>
                 <Ionicons name="happy-outline" size={40} color="#EB0054" />
