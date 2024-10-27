@@ -1,4 +1,4 @@
-const { createUserWithAuth, loginUserByEmail, updateUser, logoutUser } = require('../models/userModel');
+const { createUserWithAuth, loginUserByEmail, getUser, updateUser, logoutUser } = require('../models/userModel');
 
 // Registrar novo usuário
 async function registerUser(req, res) {
@@ -40,9 +40,21 @@ function logout(req, res) {
     res.status(200).json(message);
 }
 
+// Buscar perfil de usuário por uid
+async function getUserProfile(req, res) {
+    const { uid } = req.params;
+    try {
+        const user = await getUser(uid);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     registerUser,
     login,
     updateUserProfile,
     logout,
+    getUserProfile
 };
