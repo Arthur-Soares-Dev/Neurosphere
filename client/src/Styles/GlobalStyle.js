@@ -16,6 +16,8 @@ export const sizeFonts = {
 };
 
 const globalStyles = StyleSheet.create({
+
+  /* Views */
   outercontainer: {
     flex: 1,
     flexGrow: 1,
@@ -30,6 +32,8 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
+
+  /* Buttons */
 
   button: {
     width: '100%',
@@ -46,12 +50,16 @@ const globalStyles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
+  /* Inputs */
+
   input: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 30,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.white,
+    borderColor: colors.blue,
+    borderWidth: 2,
     borderRadius: 20,
     paddingHorizontal: 10,
   },

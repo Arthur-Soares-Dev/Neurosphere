@@ -13,7 +13,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from '../contexts/AuthContext';
-import globalStyles from '../Styles/GlobalStyle';
+import globalStyles, { colors } from '../Styles/GlobalStyle';
 import SocialLoginButtons from '../components/SocialLoginButtons';
 import {ScreenNames} from "../enums/ScreenNames";
 
@@ -67,11 +67,9 @@ const LoginScreen = () => {
           
           <Text style={styles.label}>Email</Text>
 
-          <View style={styles.inputWrapper}>
+          <View style={globalStyles.input}>
             <TextInput
-              style={styles.textInput}
-              placeholder="Email"
-              placeholderTextColor="rgba(53,53,53,.6)"
+              style={globalStyles.inputText}
               onChangeText={(email) => setEmail(email)}
               autoCapitalize="none"
               autoCorrect={false}
@@ -82,7 +80,7 @@ const LoginScreen = () => {
               <Ionicons
                 name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
                 size={24}
-                color={validateEmail(email) ? "gray" : "gray"}
+                color={validateEmail(email) ? colors.blue : colors.blue}
                 style={styles.inputIcon}
               />
             )}
@@ -90,11 +88,9 @@ const LoginScreen = () => {
 
           <Text style={styles.label}>Senha</Text>
 
-          <View style={globalStyles.input}>
+          <View style={[globalStyles.input, globalStyles.filledInput]}>
             <TextInput
               style={styles.textInput}
-              placeholder="Senha"
-              placeholderTextColor="rgba(53,53,53,.6)"
               onChangeText={(password) => setPassword(password)}
               autoCapitalize="none"
               autoCorrect={false}
@@ -107,7 +103,7 @@ const LoginScreen = () => {
               <Ionicons
                 name={showPassword ? "eye" : "eye-off"}
                 size={24}
-                color="gray"
+                color={colors.white}
                 style={styles.inputIcon}
               />
 
