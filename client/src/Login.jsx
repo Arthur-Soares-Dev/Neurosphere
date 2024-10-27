@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Image,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,6 +13,8 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from './contexts/AuthContext';
+import globalStyles from './Styles/GlobalStyle';
+import SocialLoginButtons from './components/SocialLoginButtons';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -55,16 +57,15 @@ const Login = () => {
 
 
   return (
-    <KeyboardAvoidingView
+    <SafeAreaView style={globalStyles.outercontainer}>
+
+      <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.outerContainer}
-    >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
-          <Image
-            style={styles.profileImage}
-          />
+      >
+        <View style={globalStyles.container}>
+          
           <Text style={styles.label}>Email</Text>
+
           <View style={styles.inputWrapper}>
             <TextInput
               style={styles.textInput}
@@ -75,6 +76,7 @@ const Login = () => {
               autoCorrect={false}
               value={email}
             />
+
             {email.length > 0 && (
               <Ionicons
                 name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
@@ -84,8 +86,10 @@ const Login = () => {
               />
             )}
           </View>
+
           <Text style={styles.label}>Senha</Text>
-          <View style={styles.inputWrapper}>
+
+          <View style={globalStyles.input}>
             <TextInput
               style={styles.textInput}
               placeholder="Senha"
@@ -96,83 +100,66 @@ const Login = () => {
               secureTextEntry={!showPassword}
               value={password}
             />
+
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+
               <Ionicons
                 name={showPassword ? "eye" : "eye-off"}
                 size={24}
                 color="gray"
                 style={styles.inputIcon}
               />
+
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity onPress={handleForgetPassword} style={styles.forgotPasswordContainer}>
+
             <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
+
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => handleLogin(email, password)}
-            style={styles.loginButton}
+            style={globalStyles.button}
           >
-            <Text style={styles.loginButtonText}>Logar</Text>
+
+            <Text style={globalStyles.buttonText}>Logar</Text>
+
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}
-            style={styles.loginButton}
+            style={globalStyles.button}
           >
-            <Text style={styles.loginButtonText}>Login Rápido</Text>
+            <Text style={globalStyles.buttonText}>Login Rápido</Text>
+
           </TouchableOpacity>
 
-          <View style={styles.socialButtonsContainer}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-google" size={30} color="#FD7FAC"/>
-              <Text style={styles.signUpText}> Logar com o <Text style={styles.signUpLink}>Google</Text> ?</Text>
-            </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.socialButton}>
-                            <Ionicons name="logo-facebook" size={30} color="gray" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.socialButton}>
-                            <Ionicons name="logo-apple" size={30} color="#7C9DD9" />
-                        </TouchableOpacity> */}
-          </View>
+          <SocialLoginButtons/>
 
           <View style={styles.signUpContainer}>
             <Text style={styles.signUpText}>Não possui uma conta?</Text>
+
             <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+
               <Text style={styles.signUpLink}>Cadastrar</Text>
+
             </TouchableOpacity>
           </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+        </View>    
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+    
   );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 30,
-  },
-  container: {
-    flex: 1,
-    width: '90%',
-    maxWidth: 400,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    paddingHorizontal: 0,
-    paddingTop: 30,
-  },
+
+
   profileImage: {
     width: 180,
     height: 180,
@@ -243,6 +230,7 @@ const styles = StyleSheet.create({
   signUpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center'
   },
   signUpText: {
     color: '#353535',

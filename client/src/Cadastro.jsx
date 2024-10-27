@@ -63,9 +63,9 @@ const Cadastro = () => {
   const { registerUser } = useAuth();
 
   return (
-    <KeyboardAvoidingView
+    <View style={styles.outerContainer}>
+      <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.outerContainer}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
@@ -179,6 +179,7 @@ const Cadastro = () => {
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
+    </View>
   );
 };
 
