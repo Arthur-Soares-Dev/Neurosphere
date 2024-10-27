@@ -232,7 +232,7 @@ const TelaDosPais = ({ route, navigation }) => {
                         onPress={() => handleAddTask(name, description, date, startTime, endTime, tags)}
                         style={styles.button}
                     >
-                        <Text style={styles.buttonText}>Criar</Text>
+                        <Text style={styles.buttonText}>{(edit ? 'Editar' : 'Criar')}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

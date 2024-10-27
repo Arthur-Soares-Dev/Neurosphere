@@ -36,7 +36,8 @@ async function createTask(userId, taskData) {
             endTime,
             completed: completed || false,
             favorite: favorite || false,
-            tags: Array.isArray(tags) ? tags : []
+            tags: Array.isArray(tags) ? tags : [],
+            userId: userId,
         });
         return { id: taskRef.id }; // Retorna o ID da nova tarefa criada
     } catch (error) {
