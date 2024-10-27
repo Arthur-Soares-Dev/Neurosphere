@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {useAuth} from "./contexts/AuthContext";
+import {useAuth} from "../contexts/AuthContext";
 
-const Cadastro = () => {
+const RegisterScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,7 +50,7 @@ const Cadastro = () => {
     try {
       if (email && password && name) {
         await registerUser(email, password, name)
-        navigation.navigate('Dashboard');
+        navigation.navigate('DashboardScreen');
       } else {
         setError('Preencha todos os campos');
       }
@@ -172,7 +172,7 @@ const Cadastro = () => {
 
           <View style={styles.signInContainer}>
             <Text style={styles.signInText}>Já possui uma conta?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
               <Text style={styles.signInLink}>Logar</Text>
             </TouchableOpacity>
           </View>
@@ -183,7 +183,7 @@ const Cadastro = () => {
   );
 };
 
-export default Cadastro;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   outerContainer: {

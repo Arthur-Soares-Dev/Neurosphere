@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useTasks } from './contexts/TasksContext';
-import MyCalendar from "./components/MyCalendar";
+import { useTasks } from '../contexts/TasksContext';
+import MyCalendar from "../components/MyCalendar";
+import DialogTask from "../components/DialogTask";
 
-const TelaDasCrianca = ({ navigation }) => {
+const ViewTasksScreen = ({ navigation }) => {
   const { tasks, toggleCompleted, favoriteTask, deleteTask, speakTask } = useTasks();
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar o diálogo
+  const [selectedTaskId, setSelectedTaskId] = useState(null); // Para armazenar o ID da tarefa selecionada
+
 
   const daysOfWeek = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
 
@@ -91,10 +95,13 @@ const TelaDasCrianca = ({ navigation }) => {
           <View style={styles.taskContent}>
             <Text style={styles.taskDescription}>{item.description}</Text>
             <View style={styles.taskButtons}>
-              <TouchableOpacity onPress={() => toggleCompleted(item.id)} style={styles.taskButton}>
+              <TouchableOpacity onPress={() => {
+                setSelectedTaskId(item.id);
+                setDialogVisible(true);
+              }} style={styles.taskButton}>
                 <Text style={styles.taskButtonText}>Concluir</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('TelaDosPais', { task: item })} style={styles.taskButton}>
+              <TouchableOpacity onPress={() => navigation.navigate('CreateTaskScreen', { task: item })} style={styles.taskButton}>
                 <Ionicons name="create-outline" size={16} color="white" />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.taskButton}>
@@ -159,11 +166,16 @@ const TelaDasCrianca = ({ navigation }) => {
         style={[styles.list, showCalendar && styles.listDisabled]} // Adicionando estilo para desabilitar a lista quando o calendário está aberto
         contentContainerStyle={styles.listContainer}
       />
+      <DialogTask
+        isOpen={dialogVisible}
+        onClose={() => setDialogVisible(false)}
+        taskId={selectedTaskId}
+      />
     </SafeAreaView>
   );
 };
 
-export default TelaDasCrianca;
+export default ViewTasksScreen;
 
 const styles = StyleSheet.create({
   container: {

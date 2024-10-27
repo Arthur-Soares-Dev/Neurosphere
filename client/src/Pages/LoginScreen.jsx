@@ -12,11 +12,11 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {useAuth} from './contexts/AuthContext';
-import globalStyles from './Styles/GlobalStyle';
-import SocialLoginButtons from './components/SocialLoginButtons';
+import {useAuth} from '../contexts/AuthContext';
+import globalStyles from '../Styles/GlobalStyle';
+import SocialLoginButtons from '../components/SocialLoginButtons';
 
-const Login = () => {
+const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +26,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigation.navigate('Dashboard'); // Se o usuário estiver logado, navega para o Dashboard
+      navigation.navigate('DashboardScreen'); // Se o usuário estiver logado, navega para o DashboardScreen
     }
   }, [user]);
 
@@ -39,7 +39,7 @@ const Login = () => {
     console.log('handleLogin', email, password)
     try {
       await login(email, password);
-      navigation.navigate('Dashboard');
+      navigation.navigate('DashboardScreen');
     } catch (error) {
       setError(error.message);
     }
@@ -141,7 +141,7 @@ const Login = () => {
           <View style={styles.signUpContainer}>
             <Text style={styles.signUpText}>Não possui uma conta?</Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+            <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
 
               <Text style={styles.signUpLink}>Cadastrar</Text>
 
@@ -155,7 +155,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginScreen;
 
 const styles = StyleSheet.create({
 

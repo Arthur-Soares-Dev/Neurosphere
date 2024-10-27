@@ -3,9 +3,9 @@ import {Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {useAuth} from "./contexts/AuthContext";
+import {useAuth} from "../contexts/AuthContext";
 
-const Profile = () => {
+const ProfileScreen = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -82,7 +82,7 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       logout().then(() => {
-        navigation.navigate('Login');
+        navigation.navigate('LoginScreen');
       });
     } catch (e) {
       console.error("Erro ao fazer logout:", e);
@@ -99,7 +99,7 @@ const Profile = () => {
 
       <TouchableOpacity onPress={handleImagePick}>
         <Image
-          source={profileImage ? {uri: profileImage} : require('../assets/default-avatar.png')}
+          source={profileImage ? {uri: profileImage} : require('../../assets/default-avatar.png')}
           style={styles.avatar}
         />
       </TouchableOpacity>
@@ -184,7 +184,7 @@ const Profile = () => {
       <TouchableOpacity
         style={[styles.button, {marginTop: 20}]}
         onPress={() => {
-          navigation.navigate("FeedbackList")
+          navigation.navigate("FeedbackListScreen")
         }}
       >
         <Text style={styles.buttonText}>Feedbacks</Text>
@@ -202,7 +202,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {

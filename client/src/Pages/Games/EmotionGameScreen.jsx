@@ -20,7 +20,7 @@ const getRandomEmotions = (correctEmotion, round) => {
   return options.sort(() => 0.5 - Math.random());
 };
 
-export default function EmotionGame() {
+export default function EmotionGameScreen() {
   const getNewEmotion = () => {
     let newEmotion;
     do {

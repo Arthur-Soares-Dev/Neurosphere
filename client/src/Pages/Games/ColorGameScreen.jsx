@@ -20,7 +20,7 @@ const getRandomSequences = (correctSequence) => {
   return sequences.sort(() => 0.5 - Math.random());
 };
 
-export default function ColorSequenceGame() {
+export default function ColorGameScreen() {
   const [round, setRound] = useState(1);
   const [gameOver, setGameOver] = useState(false);
   const [success, setSuccess] = useState(false);

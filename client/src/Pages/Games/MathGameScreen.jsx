@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
-const MathGame = () => {
+const MathGameScreen = () => {
   const [number1, setNumber1] = useState(generateNumber());
   const [number2, setNumber2] = useState(generateNumber());
   const [operation, setOperation] = useState(generateOperation());
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MathGame;
+export default MathGameScreen;

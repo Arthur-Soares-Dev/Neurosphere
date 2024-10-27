@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useAuth } from './contexts/AuthContext'; // Importe o contexto de autenticação
+import { useAuth } from '../contexts/AuthContext'; // Importe o contexto de autenticação
 
 const PinDialog = ({ isOpen, onClose, navigation }) => {
   const [pin, setPin] = useState('');
@@ -18,7 +18,7 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
         // Verifica o PIN existente
         if (pin === user.pin) {
           Alert.alert('Sucesso', 'PIN correto!'); // Mensagem de sucesso
-          navigation.navigate('Profile'); // Redireciona para outra tela
+          navigation.navigate('ProfileScreen'); // Redireciona para outra tela
           onClose(); // Fecha o diálogo
         } else {
           Alert.alert('Erro', 'PIN incorreto. Tente novamente.'); // Alerta para PIN incorreto
@@ -30,7 +30,7 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
           await updateUser(user.uid, { pin }); // Chama a função de atualização do contexto
           Alert.alert('Sucesso', 'Novo PIN criado com sucesso!');
           onClose(); // Fecha o diálogo
-          navigation.navigate('Profile'); // Redireciona para a tela de perfil aqui
+          navigation.navigate('ProfileScreen'); // Redireciona para a tela de perfil aqui
         } else {
           Alert.alert('Erro', 'O novo PIN deve ter 4 dígitos.'); // Validação do novo PIN
         }

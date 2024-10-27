@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import {useTasks} from "./contexts/TasksContext"; // Atualize para FontAwesome5 se necessário
+import {useTasks} from "../contexts/TasksContext"; // Atualize para FontAwesome5 se necessário
 
 const DialogTask = ({ isOpen, onClose, taskId }) => {
     const [selectedEmoji, setSelectedEmoji] = useState('');

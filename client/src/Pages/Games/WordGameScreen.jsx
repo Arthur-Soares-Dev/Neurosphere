@@ -16,7 +16,7 @@ const getMaskedWord = (word) => {
   return maskedWord;
 };
 
-const WordGame = () => {
+const WordGameScreen = () => {
   const [currentWord, setCurrentWord] = useState('');
   const [maskedWord, setMaskedWord] = useState('');
   const [guess, setGuess] = useState('');
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default WordGame;
+export default WordGameScreen;

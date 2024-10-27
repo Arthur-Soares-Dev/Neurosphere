@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useTasks } from "./contexts/TasksContext";
-import { Task } from "./models/Task";
+import { useTasks } from "../contexts/TasksContext";
+import { Task } from "../models/Task";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const TelaDosPais = ({ route, navigation }) => {
+const CreateTaskScreen = ({ route, navigation }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date().toISOString());
@@ -75,7 +75,7 @@ const TelaDosPais = ({ route, navigation }) => {
             );
             if (edit) {
                 await updateTask(taskId, task.toPlainObject());
-                navigation.navigate('TelaDasCrianca');
+                navigation.navigate('ViewTasksScreen');
             } else {
                 await addTask(task.toPlainObject());
             }
@@ -240,7 +240,7 @@ const TelaDosPais = ({ route, navigation }) => {
     );
 }
 
-export default TelaDosPais;
+export default CreateTaskScreen;
 
 const styles = StyleSheet.create({
     container: {

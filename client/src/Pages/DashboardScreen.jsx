@@ -1,13 +1,13 @@
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
-import TaskList from './components/Dashboard/DashboardTasks';
-import Card from './components/Dashboard/DashboardCard';
-import ButtonCards from './components/Dashboard/DashboardCard/buttonCards';
-import { useAuth } from './contexts/AuthContext';
+import TaskList from '../components/Dashboard/DashboardTasks';
+import Card from '../components/Dashboard/DashboardCard';
+import ButtonCards from '../components/Dashboard/DashboardCard/buttonCards';
+import { useAuth } from '../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import PinDialog from './PinDialog'; // Importe seu PinDialog
 
-const Dashboard = () => {
+const DashboardScreen = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const [isPinDialogOpen, setIsPinDialogOpen] = useState(false); // Estado para controlar a visibilidade do PinDialog
@@ -23,7 +23,7 @@ const Dashboard = () => {
           onPress={() => setIsPinDialogOpen(true)} // Abre o PinDialog
         >
           <Image
-            source={user?.profileImage ? { uri: user?.profileImage } : require('../assets/default-avatar.png')}
+            source={user?.profileImage ? { uri: user?.profileImage } : require('../../assets/default-avatar.png')}
             style={styles.avatar}
           />
         </TouchableOpacity>
@@ -42,7 +42,7 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard;
+export default DashboardScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import {useTasks} from "./contexts/TasksContext";
+import {useTasks} from "../contexts/TasksContext";
 
-const FeedbackList = () => {
+const FeedbackListScreen = () => {
     const { tasks } = useTasks();
 
     const filteredTasks = tasks.filter(task => task.emoji);
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FeedbackList;
+export default FeedbackListScreen;

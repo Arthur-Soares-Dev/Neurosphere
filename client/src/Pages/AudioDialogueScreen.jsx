@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Speech from 'expo-speech';
 import DraggableFlatList from 'react-native-draggable-flatlist';
-import { cardProps } from './components/AudioDialogue/CardProps';
+import { cardProps } from '../components/AudioDialogue/CardProps';
 
-const AudioDialogue = () => {
+const AudioDialogueScreen = () => {
   const navigation = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState('emotions');
   const [selectedCards, setSelectedCards] = useState([]);
@@ -153,7 +153,7 @@ const AudioDialogue = () => {
   );
 };
 
-export default AudioDialogue;
+export default AudioDialogueScreen;
 
 const styles = StyleSheet.create({
   container: {

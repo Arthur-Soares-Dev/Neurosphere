@@ -45,7 +45,9 @@
     "react-native-screens": "3.31.1",
     "react-native-toast-message": "^2.2.0",
     "react-native-vector-icons": "^10.1.0",
-    "react-native-web": "^0.19.12"
+    "react-native-web": "^0.19.12",
+    "typescript": "~5.3.3",
+    "@types/react": "~18.2.79"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

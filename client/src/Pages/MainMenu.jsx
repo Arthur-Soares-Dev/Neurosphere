@@ -6,11 +6,11 @@ const NeuroSphereScreen = () => {
   const navigation = useNavigation();
 
   const handleSignIn = () => {
-    navigation.navigate('Login');
+    navigation.navigate('LoginScreen');
   };
 
   const handleSignUp = () => {
-    navigation.navigate('Cadastro');
+    navigation.navigate('RegisterScreen');
   };
 
   const handleSignInWithGoogle = () => {
