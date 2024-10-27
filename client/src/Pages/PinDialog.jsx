@@ -8,6 +8,7 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
   const { user, updateUser } = useAuth();
 
   useEffect(() => {
+    console.log('user',user)
     if (user) {
       setPin('');
     }
@@ -15,6 +16,7 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
 
   const handleConfirm = async () => {
     try {
+      console.log('user2',user)
       if (user?.pin) {
         if (pin === user.pin) {
           Alert.alert('Sucesso', 'PIN correto!');
