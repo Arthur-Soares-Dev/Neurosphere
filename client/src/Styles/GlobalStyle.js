@@ -1,14 +1,16 @@
 // src/styles/globalStyles.js
 import { StyleSheet } from 'react-native';
 
-export const colors = {
-  blue: '#3B8AC4',
-  yellow: '#FBAE17',
-  green: '#9FDE76',
-  pink: '#F76D8E',
-  purple: '#A57EDE',
-  white: '#FFF6EE',
-};
+export const colors =  Object.freeze(
+  {
+    BLUE: '#3B8AC4',
+    YELLOW: '#FBAE17',
+    GREEN: '#9FDE76',
+    PINK: '#F76D8E',
+    PURPLE: '#A57EDE',
+    WHITE: '#FFF6EE',
+  }
+);
 
 export const sizeFonts = {
   small: 20,
@@ -21,22 +23,22 @@ const globalStyles = StyleSheet.create({
   // outercontainer: {
   //   flex: 1,
   //   
-  //   backgroundColor: colors.white,
+  //   backgroundColor: colors.WHITE,
   //   justifyContent: 'center',
   //    alignItems: 'center',
   // },
 
   outerContainer: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.WHITE,
   },
 
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     paddingVertical: '20%',
-    backgroundColor: colors.white,
-    paddingHorizontal: 19,
+    backgroundColor: colors.WHITE,
+    paddingHorizontal: 35,
   },
 
   container: {
@@ -50,7 +52,7 @@ const globalStyles = StyleSheet.create({
 
   button: {
     width: '100%',
-    backgroundColor: colors.pink,
+    backgroundColor: colors.PINK,
     padding: 17,
     borderRadius: 20,
     alignItems: 'center',
@@ -58,7 +60,7 @@ const globalStyles = StyleSheet.create({
   },
 
   buttonText: {
-    color: colors.white,
+    color: colors.WHITE,
     fontSize: sizeFonts.small,
     fontWeight: 'bold',
   },
@@ -67,7 +69,7 @@ const globalStyles = StyleSheet.create({
 
   label: {
     alignSelf: 'flex-start',
-    color: colors.blue,
+    color: colors.BLUE,
     fontSize: sizeFonts.small,
     marginBottom: 10,
   },
@@ -79,26 +81,26 @@ const globalStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 30,
-    backgroundColor: colors.white,
-    borderColor: colors.blue,
+    backgroundColor: colors.WHITE,
+    borderColor: colors.BLUE,
     borderWidth: 2,
     borderRadius: 10,
     paddingHorizontal: 10,
   },
 
   filledInput: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.BLUE,
   },
 
   inputText: {
     flex: 1,
     fontSize: sizeFonts.small,
     paddingVertical: 15,
-    color: colors.blue,
+    color: colors.BLUE,
   },
 
   filledInputText: {
-    color: colors.white,
+    color: colors.WHITE,
   },
 });
 

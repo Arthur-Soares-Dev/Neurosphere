@@ -11,7 +11,7 @@ const GoBackButton = ({ title }) => {
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={30} color={colors.yellow} />
+          <Ionicons name="arrow-back" size={30} color={colors.YELLOW} />
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
       </View>
@@ -43,12 +43,12 @@ const styles = StyleSheet.create({
     fontSize: sizeFonts.medium,
     fontWeight: 'bold',
     marginLeft: 10,
-    color: colors.yellow,
+    color: colors.YELLOW,
   },
   line: {
     width: '100%',
     height: 2,
-    backgroundColor: colors.yellow,
-    marginTop: 8,
+    backgroundColor: colors.YELLOW,
+    marginTop: 15,
   },
 });

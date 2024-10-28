@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -78,7 +77,7 @@ const LoginScreen = () => {
                 <Ionicons
                   name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
                   size={24}
-                  color={validateEmail(email) ? colors.blue : colors.blue}
+                  color={validateEmail(email) ? colors.BLUE : colors.BLUE}
                   style={styles.inputIcon}
                 />
               )}
@@ -99,7 +98,7 @@ const LoginScreen = () => {
                 <Ionicons
                   name={showPassword ? "eye" : "eye-off"}
                   size={24}
-                  color={colors.white}
+                  color={colors.WHITE}
                   style={styles.inputIcon}
                 />
               </TouchableOpacity>
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   forgotPasswordText: {
-    color: colors.blue,
+    color: colors.BLUE,
     fontSize: 16,
   },
   loginButton: {

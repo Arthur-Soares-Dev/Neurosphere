@@ -8,12 +8,12 @@ const SocialLoginButtons = () => {
     <View style={styles.socialButtonsContainer}>
         <View style={styles.line}/>
       <TouchableOpacity style={styles.socialButton}>
-        <Ionicons name="logo-google" size={30} color={colors.white} style={styles.icon} />
+        <Ionicons name="logo-google" size={30} color={colors.WHITE} style={styles.icon} />
         <Text style={styles.socialTextGoogle}>LOGAR COM O GOOGLE</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.socialButton, styles.socialButtonFacebook]}>
-        <Ionicons name="logo-facebook" size={33} color={colors.blue} style={styles.icon} />
+        <Ionicons name="logo-facebook" size={33} color={colors.BLUE} style={styles.icon} />
         <Text style={styles.socialTextFacebook}>LOGAR COM O FACEBOOK</Text>
       </TouchableOpacity>
     </View>
@@ -32,15 +32,15 @@ const styles = StyleSheet.create({
   line:{
     width: '100%',
     height: 2,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.BLUE,
     marginBottom: 25,
   },
 
   socialButton: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: colors.purple,
-    borderColor: colors.purple,
+    backgroundColor: colors.PURPLE,
+    borderColor: colors.PURPLE,
     borderWidth: 2,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -52,19 +52,19 @@ const styles = StyleSheet.create({
   },
 
   socialTextGoogle: {
-    color: colors.white,
+    color: colors.WHITE,
     fontSize: sizeFonts.small,
     textAlign: 'center',
     flex: 1,
   },
 
   socialButtonFacebook: {
-    backgroundColor: colors.white,
-    borderColor: colors.blue,
+    backgroundColor: colors.WHITE,
+    borderColor: colors.BLUE,
   },
 
   socialTextFacebook: {
-    color: colors.blue,
+    color: colors.BLUE,
     fontSize: sizeFonts.small,
     textAlign: 'center', 
     flex: 1,
