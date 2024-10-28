@@ -1,71 +1,77 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
 import { colors, sizeFonts } from '../../Styles/GlobalStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-
 const SocialLoginButtons = () => {
-  
   return (
     <View style={styles.socialButtonsContainer}>
-        <TouchableOpacity style={styles.socialButton}>
+        <View style={styles.line}/>
+      <TouchableOpacity style={styles.socialButton}>
+        <Ionicons name="logo-google" size={30} color={colors.white} style={styles.icon} />
+        <Text style={styles.socialTextGoogle}>LOGAR COM O GOOGLE</Text>
+      </TouchableOpacity>
 
-            <Ionicons name="logo-google" size={30} color={colors.white} style={styles.icon}/>
-
-            <Text style={styles.socialTextGoogle}> LOGAR COM O GOOGLE </Text>
-
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.socialButton, styles.socialButtonFacebook]}>
-
-            <Ionicons name="logo-facebook" size={30} color={colors.blue} style={styles.icon}/>
-
-            <Text style={styles.socialTextFacebook}> LOGAR COM O FACEBOOK </Text>
-
-        </TouchableOpacity>
+      <TouchableOpacity style={[styles.socialButton, styles.socialButtonFacebook]}>
+        <Ionicons name="logo-facebook" size={33} color={colors.blue} style={styles.icon} />
+        <Text style={styles.socialTextFacebook}>LOGAR COM O FACEBOOK</Text>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 export default SocialLoginButtons;
 
 const styles = StyleSheet.create({
+  socialButtonsContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
 
-    socialButtonsContainer: {
-        width: '100%',
-        alignItems: 'center',
-        marginBottom: 40,
-    },
-    
-    socialButton: {
-        width: '100%',
-        flexDirection: 'row',
-        backgroundColor: colors.purple,
-        borderColor: colors.purple,
-        borderWidth: 2,
-        padding: 10,
-        marginBottom: 20,
-        borderRadius: 10,
-        alignItems: 'center'
-    },
+  line:{
+    width: '100%',
+    height: 2,
+    backgroundColor: colors.blue,
+    marginBottom: 25,
+  },
 
-    socialTextGoogle: {
-        color: colors.white,
-        fontSize: sizeFonts.small,
-    },
+  socialButton: {
+    width: '100%',
+    flexDirection: 'row',
+    backgroundColor: colors.purple,
+    borderColor: colors.purple,
+    borderWidth: 2,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
 
-    socialButtonFacebook: {
-        backgroundColor: colors.white,
-        borderColor: colors.blue,
-    },
+  socialTextGoogle: {
+    color: colors.white,
+    fontSize: sizeFonts.small,
+    textAlign: 'center',
+    flex: 1,
+  },
 
-    socialTextFacebook: {
-        color: colors.blue,
-        fontSize: sizeFonts.small,
-    },
+  socialButtonFacebook: {
+    backgroundColor: colors.white,
+    borderColor: colors.blue,
+  },
 
-    icon : {
-        marginRight: 5,
-    },
-  
+  socialTextFacebook: {
+    color: colors.blue,
+    fontSize: sizeFonts.small,
+    textAlign: 'center', 
+    flex: 1,
+  },
+
+  icon: {
+    position: 'absolute',
+    left: 10, 
+  },
 });

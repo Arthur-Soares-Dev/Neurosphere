@@ -18,19 +18,32 @@ export const sizeFonts = {
 const globalStyles = StyleSheet.create({
 
   /* Views */
-  outercontainer: {
+  // outercontainer: {
+  //   flex: 1,
+  //   
+  //   backgroundColor: colors.white,
+  //   justifyContent: 'center',
+  //    alignItems: 'center',
+  // },
+
+  outerContainer: {
     flex: 1,
-    flexGrow: 1,
     backgroundColor: colors.white,
+  },
+
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
-    paddingVertical: 30,
+    paddingVertical: '20%',
+    backgroundColor: colors.white,
+    paddingHorizontal: 19,
   },
 
   container: {
+    flex: 1,
     width: '100%',
     alignItems: 'stretch',
     justifyContent: 'center',
-    paddingHorizontal: 20,
   },
 
   /* Buttons */
@@ -38,16 +51,25 @@ const globalStyles = StyleSheet.create({
   button: {
     width: '100%',
     backgroundColor: colors.pink,
-    padding: 15,
+    padding: 17,
     borderRadius: 20,
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 25,
   },
 
   buttonText: {
     color: colors.white,
     fontSize: sizeFonts.small,
     fontWeight: 'bold',
+  },
+
+  /* Textos */
+
+  label: {
+    alignSelf: 'flex-start',
+    color: colors.blue,
+    fontSize: sizeFonts.small,
+    marginBottom: 10,
   },
 
   /* Inputs */
@@ -60,7 +82,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: colors.white,
     borderColor: colors.blue,
     borderWidth: 2,
-    borderRadius: 20,
+    borderRadius: 10,
     paddingHorizontal: 10,
   },
 

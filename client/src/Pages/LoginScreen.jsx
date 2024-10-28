@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,12 +10,13 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {useAuth} from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import globalStyles, { colors } from '../Styles/GlobalStyle';
 import SocialLoginButtons from '../components/SocialLoginButtons';
-import {ScreenNames} from "../enums/ScreenNames";
+import GoBackButton from '../components/GoBackButton';
+import { ScreenNames } from "../enums/ScreenNames";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -23,21 +24,17 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
   const [error, setError] = useState();
-  const {login, forgetPassword, user} = useAuth();
+  const { login, forgetPassword, user } = useAuth();
 
   useEffect(() => {
     if (user) {
-      navigation.navigate(ScreenNames.DASHBOARD); // Se o usuário estiver logado, navega para o DashboardScreen
+      navigation.navigate(ScreenNames.DASHBOARD);
     }
   }, [user]);
 
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  };
+  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
   const handleLogin = async (email, password) => {
-    console.log('handleLogin', email, password)
     try {
       await login(email, password);
       navigation.navigate(ScreenNames.DASHBOARD);
@@ -53,102 +50,91 @@ const LoginScreen = () => {
     } catch (error) {
       setError(error.message);
     }
-
   };
 
-
   return (
-    <SafeAreaView style={globalStyles.outercontainer}>
+    <View style={globalStyles.outerContainer}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
-      <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
-        <View style={globalStyles.container}>
-          
-          <Text style={styles.label}>Email</Text>
+        
+        <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
 
-          <View style={globalStyles.input}>
-            <TextInput
-              style={globalStyles.inputText}
-              onChangeText={(email) => setEmail(email)}
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={email}
-            />
+        <GoBackButton title={"LOGIN"}/>
 
-            {email.length > 0 && (
-              <Ionicons
-                name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
-                size={24}
-                color={validateEmail(email) ? colors.blue : colors.blue}
-                style={styles.inputIcon}
-              />
-            )}
-          </View>
+          <View style={globalStyles.container}>
 
-          <Text style={styles.label}>Senha</Text>
+            <Text style={globalStyles.label}>EMAIL</Text>
 
-          <View style={[globalStyles.input, globalStyles.filledInput]}>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(password) => setPassword(password)}
-              autoCapitalize="none"
-              autoCorrect={false}
-              secureTextEntry={!showPassword}
-              value={password}
-            />
-
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-
-              <Ionicons
-                name={showPassword ? "eye" : "eye-off"}
-                size={24}
-                color={colors.white}
-                style={styles.inputIcon}
+            <View style={globalStyles.input}>
+              <TextInput
+                style={globalStyles.inputText}
+                onChangeText={(email) => setEmail(email)}
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={email}
               />
 
+              {email.length > 0 && (
+                <Ionicons
+                  name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
+                  size={24}
+                  color={validateEmail(email) ? colors.blue : colors.blue}
+                  style={styles.inputIcon}
+                />
+              )}
+            </View>
+
+            <Text style={globalStyles.label}>SENHA</Text>
+
+            <View style={[globalStyles.input, globalStyles.filledInput]}>
+              <TextInput
+                style={[globalStyles.inputText, globalStyles.filledInputText]}
+                onChangeText={(password) => setPassword(password)}
+                autoCapitalize="none"
+                autoCorrect={false}
+                secureTextEntry={!showPassword}
+                value={password}
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={24}
+                  color={colors.white}
+                  style={styles.inputIcon}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity onPress={handleForgetPassword} style={styles.forgotPasswordContainer}>
+              <Text style={styles.forgotPasswordText}>ESQUECEU A SENHA?</Text>
             </TouchableOpacity>
-          </View>
 
-          <TouchableOpacity onPress={handleForgetPassword} style={styles.forgotPasswordContainer}>
-
-            <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
-
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleLogin(email, password)}
-            style={globalStyles.button}
-          >
-
-            <Text style={globalStyles.buttonText}>Logar</Text>
-
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}
-            style={globalStyles.button}
-          >
-            <Text style={globalStyles.buttonText}>Login Rápido</Text>
-
-          </TouchableOpacity>
-
-          <SocialLoginButtons/>
-
-          <View style={styles.signUpContainer}>
-            <Text style={styles.signUpText}>Não possui uma conta?</Text>
-
-            <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.REGISTER)}>
-
-              <Text style={styles.signUpLink}>Cadastrar</Text>
-
+            <TouchableOpacity
+              onPress={() => handleLogin(email, password)}
+              style={globalStyles.button}
+            >
+              <Text style={globalStyles.buttonText}>Logar</Text>
             </TouchableOpacity>
-          </View>
 
-        </View>    
+            <TouchableOpacity
+              onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}
+              style={globalStyles.button}
+            >
+              <Text style={globalStyles.buttonText}>Login Rápido</Text>
+            </TouchableOpacity>
+
+            <SocialLoginButtons />
+
+            <View style={styles.signUpContainer}>
+              <Text style={styles.signUpText}>Não possui uma conta?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.REGISTER)}>
+                <Text style={styles.signUpLink}>Cadastrar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
-    
+    </View>
   );
 };
 
@@ -157,13 +143,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
 
 
-  profileImage: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: '#E0E0E0',
-    marginBottom: 40,
-  },
+
   label: {
     alignSelf: 'flex-start',
     color: '#FD7FAC',
@@ -192,7 +172,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   forgotPasswordText: {
-    color: '#999',
+    color: colors.blue,
     fontSize: 16,
   },
   loginButton: {
