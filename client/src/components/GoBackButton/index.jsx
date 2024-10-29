@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: sizeFonts.MEDIUM,
-    fontWeight: 'bold',
     marginLeft: 10,
     color: colors.YELLOW,
     fontFamily: 'MinhaFonte'

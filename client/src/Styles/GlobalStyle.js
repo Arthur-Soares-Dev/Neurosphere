@@ -91,6 +91,7 @@ const globalStyles = StyleSheet.create({
     fontSize: sizeFonts.SMALL,
     paddingVertical: 15,
     color: colors.BLUE,
+    fontFamily: 'MinhaFonte'
   },
 
   filledInputText: {

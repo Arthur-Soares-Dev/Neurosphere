@@ -13,6 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from "../contexts/AuthContext";
 import {ScreenNames} from "../enums/ScreenNames";
+import globalStyles, { colors } from '../Styles/GlobalStyle';
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -63,20 +64,17 @@ const RegisterScreen = () => {
   const { registerUser } = useAuth();
 
   return (
-    <View style={styles.outerContainer}>
+    <View style={globalStyles.outerContainer}>
       <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
-          <View style={styles.profilePlaceholder} />
+      <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
+        <View style={globalStyles.container}>
 
-          <Text style={styles.label}>Nome</Text>
-          <View style={styles.inputWrapper}>
+          <Text style={globalStyles.label}>Nome</Text>
+          <View style={globalStyles.input}>
             <TextInput
-              style={styles.textInput}
-              placeholder="Nome"
-              placeholderTextColor="rgba(53,53,53,.6)"
+              style={globalStyles.inputText}
               onChangeText={(name) => setName(name)}
               autoCorrect={false}
               value={name}
@@ -85,7 +83,7 @@ const RegisterScreen = () => {
               <Ionicons 
                 name={isNameValid(name) ? "checkmark-circle" : "close-circle"} 
                 size={24} 
-                color={isNameValid(name) ? "gray" : "gray"} 
+                color={isNameValid(name) ? colors.BLUE : colors.BLUE} 
                 style={styles.inputIcon} 
               />
             )}
