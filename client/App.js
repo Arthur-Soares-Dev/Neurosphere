@@ -8,14 +8,22 @@ import AuthStack from './src/AuthStack';
 import { LoadingProvider } from './src/contexts/LoadingContext';
 import Loading from './src/components/Loading';
 import LaunchScreen from './src/Pages/LaunchScreen';
+import { useFonts } from 'expo-font';
 
 function App() {
-    const [isLaunchVisible, setIsLaunchVisible] = useState(true); // Estado para controlar a visibilidade da LaunchScreen
+    const [isLaunchVisible, setIsLaunchVisible] = useState(true);
 
-    // Função para esconder a LaunchScreen
+    const [fontsLoaded] = useFonts({
+        'MinhaFonte': require('./src/Asset/fonts/Candy Beans.otf'),
+    });
+
     const hideLaunchScreen = () => {
         setIsLaunchVisible(false);
     };
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <LoadingProvider>

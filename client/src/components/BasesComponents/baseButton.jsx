@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import globalStyles from '../../Styles/GlobalStyle';
 
-const SocialLoginButtons = (tittle, {...props}) => {
+const SocialLoginButtons = (tittle, ...props) => {
   return (
     <TouchableOpacity
     onPress={() => handleLogin(email, password)}

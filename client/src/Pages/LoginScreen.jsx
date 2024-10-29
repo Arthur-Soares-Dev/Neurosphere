@@ -151,68 +151,21 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
 
-
-
-  label: {
-    alignSelf: 'flex-start',
-    color: '#FD7FAC',
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  inputWrapper: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 30,
-    backgroundColor: '#f4f4f4',
-    borderRadius: 12,
-    paddingHorizontal: 10,
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 18,
-    paddingVertical: 15,
-  },
   inputIcon: {
     marginLeft: 10,
   },
+
   forgotPasswordContainer: {
     alignSelf: 'flex-end',
     marginBottom: 40,
   },
+
   forgotPasswordText: {
     color: colors.BLUE,
     fontSize: 16,
+    fontFamily: 'MinhaFonte'
   },
-  loginButton: {
-    width: '100%',
-    backgroundColor: '#7C9DD9',
-    padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  loginButtonText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  socialButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginBottom: 40,
-  },
-  socialButton: {
-    flexDirection: 'row',
-    backgroundColor: '#f4f4f4',
-    padding: 15,
-    paddingRight: 83,
-    borderRadius: 12,
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
+
   signUpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
