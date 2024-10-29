@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { useAuth } from '../contexts/AuthContext';
-import globalStyles, { colors } from '../Styles/GlobalStyle';
+import React, {useEffect, useState} from 'react';
+import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useAuth} from '../contexts/AuthContext';
+import globalStyles, {colors} from '../Styles/GlobalStyle';
 import SocialLoginButtons from '../components/SocialLoginButtons';
 import GoBackButton from '../components/GoBackButton';
-import { ScreenNames } from "../enums/ScreenNames";
+import {ScreenNames} from "../enums/ScreenNames";
+import StyledInput from "../components/BasesComponents/baseInput";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
   const [error, setError] = useState();
   const { login, forgetPassword, user } = useAuth();
@@ -63,46 +53,66 @@ const LoginScreen = () => {
           <View style={globalStyles.container}>
 
             <Text style={globalStyles.label}>EMAIL</Text>
-
-            <View style={globalStyles.input}>
-              <TextInput
-                style={globalStyles.inputText}
+            <StyledInput
+                variant={'email'}
                 onChangeText={(email) => setEmail(email)}
                 autoCapitalize="none"
                 autoCorrect={false}
                 value={email}
-              />
+            />
 
-              {email.length > 0 && (
-                <Ionicons
-                  name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
-                  size={24}
-                  color={validateEmail(email) ? colors.BLUE : colors.BLUE}
-                  style={styles.inputIcon}
-                />
-              )}
-            </View>
+
+            {/*<View style={globalStyles.input}>*/}
+              {/*<TextInput*/}
+              {/*  style={globalStyles.inputText}*/}
+              {/*  onChangeText={(email) => setEmail(email)}*/}
+              {/*  autoCapitalize="none"*/}
+              {/*  autoCorrect={false}*/}
+              {/*  value={email}*/}
+              {/*/>*/}
+
+              {/*{email.length > 0 && (*/}
+              {/*  <Ionicons*/}
+              {/*    name={validateEmail(email) ? "checkmark-circle" : "close-circle"}*/}
+              {/*    size={24}*/}
+              {/*    color={validateEmail(email) ? colors.BLUE : colors.BLUE}*/}
+              {/*    style={styles.inputIcon}*/}
+              {/*  />*/}
+              {/*)}*/}
+            {/*</View>*/}
 
             <Text style={globalStyles.label}>SENHA</Text>
 
-            <View style={[globalStyles.input, globalStyles.filledInput]}>
-              <TextInput
-                style={[globalStyles.inputText, globalStyles.filledInputText]}
+            <StyledInput
+                variant={'password'}
+                filled={true}
                 onChangeText={(password) => setPassword(password)}
                 autoCapitalize="none"
                 autoCorrect={false}
-                secureTextEntry={!showPassword}
+                // secureTextEntry={!showPassword}
                 value={password}
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Ionicons
-                  name={showPassword ? "eye" : "eye-off"}
-                  size={24}
-                  color={colors.WHITE}
-                  style={styles.inputIcon}
-                />
-              </TouchableOpacity>
-            </View>
+                // setShowPassword={setShowPassword}
+                // showPassword={showPassword}
+            />
+
+            {/*<View style={[globalStyles.input, globalStyles.filledInput]}>*/}
+            {/*  <TextInput*/}
+            {/*    style={[globalStyles.inputText, globalStyles.filledInputText]}*/}
+            {/*    onChangeText={(password) => setPassword(password)}*/}
+            {/*    autoCapitalize="none"*/}
+            {/*    autoCorrect={false}*/}
+            {/*    secureTextEntry={!showPassword}*/}
+            {/*    value={password}*/}
+            {/*  />*/}
+            {/*  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>*/}
+            {/*    <Ionicons*/}
+            {/*      name={showPassword ? "eye" : "eye-off"}*/}
+            {/*      size={24}*/}
+            {/*      color={colors.WHITE}*/}
+            {/*      style={styles.inputIcon}*/}
+            {/*    />*/}
+            {/*  </TouchableOpacity>*/}
+            {/*</View>*/}
 
             <TouchableOpacity onPress={handleForgetPassword} style={styles.forgotPasswordContainer}>
               <Text style={styles.forgotPasswordText}>ESQUECEU A SENHA?</Text>

@@ -6,7 +6,7 @@ import { useLoading } from '../contexts/LoadingContext';
 
 const LaunchScreen = ({ onHide }) => {
     const { isLoading } = useLoading();
-    const launchDuration = 3000;
+    const launchDuration = 10;
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {

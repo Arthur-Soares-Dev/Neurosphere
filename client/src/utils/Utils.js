@@ -9,4 +9,6 @@ export default class Utils {
     }) => {
         Speech.speak(thingToSay, options);
     };
+
+    static validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 }
