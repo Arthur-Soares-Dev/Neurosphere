@@ -53,9 +53,10 @@ const styles = StyleSheet.create({
 
   socialTextGoogle: {
     color: colors.WHITE,
-    fontSize: sizeFonts.small,
+    fontSize: sizeFonts.SMALL,
     textAlign: 'center',
     flex: 1,
+    fontFamily: 'MinhaFonte'
   },
 
   socialButtonFacebook: {
@@ -65,13 +66,14 @@ const styles = StyleSheet.create({
 
   socialTextFacebook: {
     color: colors.BLUE,
-    fontSize: sizeFonts.small,
+    fontSize: sizeFonts.SMALL,
     textAlign: 'center', 
     flex: 1,
+    fontFamily: 'MinhaFonte'
   },
 
   icon: {
     position: 'absolute',
-    left: 10, 
+    left: 5, 
   },
 });

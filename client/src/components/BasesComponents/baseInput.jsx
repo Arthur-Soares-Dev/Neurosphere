@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import globalStyles from '../../Styles/GlobalStyle';
 
-const SocialLoginButtons = ({...props}) => {
+const SocialLoginButtons = (...props) => {
   return (
     <View style={globalStyles.input}>
     <TextInput

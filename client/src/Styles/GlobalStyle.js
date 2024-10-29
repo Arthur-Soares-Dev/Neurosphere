@@ -12,21 +12,14 @@ export const colors =  Object.freeze(
   }
 );
 
-export const sizeFonts = {
-  small: 20,
-  medium: 24,
-};
+export const sizeFonts =  Object.freeze( {
+  SMALL: 18,
+  MEDIUM: 20,
+});
 
 const globalStyles = StyleSheet.create({
 
   /* Views */
-  // outercontainer: {
-  //   flex: 1,
-  //   
-  //   backgroundColor: colors.WHITE,
-  //   justifyContent: 'center',
-  //    alignItems: 'center',
-  // },
 
   outerContainer: {
     flex: 1,
@@ -61,8 +54,8 @@ const globalStyles = StyleSheet.create({
 
   buttonText: {
     color: colors.WHITE,
-    fontSize: sizeFonts.small,
-    fontWeight: 'bold',
+    fontSize: sizeFonts.SMALL,
+    fontFamily: 'MinhaFonte'
   },
 
   /* Textos */
@@ -70,8 +63,9 @@ const globalStyles = StyleSheet.create({
   label: {
     alignSelf: 'flex-start',
     color: colors.BLUE,
-    fontSize: sizeFonts.small,
+    fontSize: sizeFonts.SMALL,
     marginBottom: 10,
+    fontFamily: 'MinhaFonte'
   },
 
   /* Inputs */
@@ -94,7 +88,7 @@ const globalStyles = StyleSheet.create({
 
   inputText: {
     flex: 1,
-    fontSize: sizeFonts.small,
+    fontSize: sizeFonts.SMALL,
     paddingVertical: 15,
     color: colors.BLUE,
   },

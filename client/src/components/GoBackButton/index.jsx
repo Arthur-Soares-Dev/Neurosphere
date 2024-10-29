@@ -40,10 +40,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: sizeFonts.medium,
+    fontSize: sizeFonts.MEDIUM,
     fontWeight: 'bold',
     marginLeft: 10,
     color: colors.YELLOW,
+    fontFamily: 'MinhaFonte'
   },
   line: {
     width: '100%',
