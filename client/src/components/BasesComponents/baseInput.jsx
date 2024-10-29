@@ -23,7 +23,7 @@ const StyledInput = ({...props}) => {
         <View style={viewStyles}>
             <TextInput
                 style={inputStyles}
-                secureTextEntry={!showPassword}
+                secureTextEntry={(variant === 'password') ? !showPassword : false}
                 {...props}
             />
 
