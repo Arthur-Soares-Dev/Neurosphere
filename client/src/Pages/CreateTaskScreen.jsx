@@ -203,7 +203,6 @@ const CreateTaskScreen = ({ route, navigation }) => {
                               maxLength={200}
                               multiline
                             />
-                            <Text style={styles.characterCount}>{description.length}/200</Text>
                         </View>
                     </View>
 

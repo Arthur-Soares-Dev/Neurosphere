@@ -1,7 +1,7 @@
 // src/styles/globalStyles.js
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
-export const colors =  Object.freeze(
+export const colors = Object.freeze(
   {
     BLUE: '#3B8AC4',
     YELLOW: '#FBAE17',
@@ -13,7 +13,7 @@ export const colors =  Object.freeze(
   }
 );
 
-export const sizeFonts =  Object.freeze( {
+export const sizeFonts = Object.freeze({
   SMALL: 18,
   MEDIUM: 20,
 });
@@ -97,6 +97,14 @@ const globalStyles = StyleSheet.create({
 
   filledInputText: {
     color: colors.WHITE,
+  },
+
+  characterCount: {
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
+    color: '#353535',
+    fontSize: 12,
   },
 });
 

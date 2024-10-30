@@ -1,10 +1,19 @@
-import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import globalStyles, {colors} from '../../Styles/GlobalStyle';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Utils from "../../utils/Utils";
 
-const StyledInput = ({filled, variant, value, onChangeText, style = [], ...props}) => {
+const StyledInput = ({style = [], ...props}) => {
+
+    const {
+        filled,
+        variant,
+        value,
+        onChangeText,
+        maxLength
+    } = props;
+
     const [showPassword, setShowPassword] = useState(false);
     const inputStyles = [globalStyles.inputText];
     const viewStyles = [globalStyles.input];
@@ -41,6 +50,9 @@ const StyledInput = ({filled, variant, value, onChangeText, style = [], ...props
                     />
                 </TouchableOpacity>
             )}
+            { maxLength &&
+             <Text style={globalStyles.characterCount}>{value.length}/{maxLength}</Text>
+            }
         </View>
     );
 };
