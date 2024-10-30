@@ -4,44 +4,39 @@ import globalStyles, {colors} from '../../Styles/GlobalStyle';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Utils from "../../utils/Utils";
 
-const StyledInput = ({...props}) => {
+const StyledInput = ({filled, variant, value, onChangeText, style = [], ...props}) => {
     const [showPassword, setShowPassword] = useState(false);
-    const {
-        filled,
-        variant,
-        value,
-    } = props;
-    let inputStyles = [globalStyles.inputText];
-    let viewStyles = [globalStyles.input];
-    if (filled) {
-        inputStyles.push(globalStyles.filledInputText)
-        viewStyles.push(globalStyles.filledInput)
-    }
+    const inputStyles = [globalStyles.inputText];
+    const viewStyles = [globalStyles.input];
 
+    if (filled) {
+        inputStyles.push(globalStyles.filledInputText);
+        viewStyles.push(globalStyles.filledInput);
+    }
 
     return (
         <View style={viewStyles}>
             <TextInput
-                style={inputStyles}
-                secureTextEntry={(variant === 'password') ? !showPassword : false}
+                style={[...inputStyles, ...(Array.isArray(style) ? style : [style])]}
+                secureTextEntry={variant === 'password' ? !showPassword : false}
+                value={value} // controle do valor
+                onChangeText={onChangeText} // função de atualização do texto
                 {...props}
             />
-
             {(value && variant === 'email') && (
                 <Ionicons
                     name={Utils.validateEmail(value) ? "checkmark-circle" : "close-circle"}
                     size={24}
-                    color={Utils.validateEmail(value) ? colors.BLUE : colors.BLUE}
+                    color={Utils.validateEmail(value) ? colors.BLUE : colors.RED}
                     style={styles.inputIcon}
                 />
             )}
-
-            {(variant === 'password') && (
+            {variant === 'password' && (
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                     <Ionicons
                         name={showPassword ? "eye" : "eye-off"}
                         size={24}
-                        color={colors.WHITE}
+                        color={filled ? colors.WHITE : colors.BLUE}
                         style={styles.inputIcon}
                     />
                 </TouchableOpacity>

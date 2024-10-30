@@ -5,6 +5,9 @@ import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from "../contexts/AuthContext";
 import {ScreenNames} from "../enums/ScreenNames";
+import StyledButton from "../components/BasesComponents/baseButton";
+import {colors} from "../Styles/GlobalStyle";
+import StyledInput from "../components/BasesComponents/baseInput";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -105,98 +108,63 @@ const ProfileScreen = () => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Nome</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
+          <StyledInput
             value={name}
             onChangeText={setName}
             placeholder="Nome"
           />
-          {name.trim() !== '' && (
-            <Ionicons
-              name={isNameValid(name) ? "checkmark-circle" : "close-circle"}
-              size={24}
-              color={isNameValid(name) ? "gray" : "gray"}
-              style={styles.icon}
-            />
-          )}
-        </View>
       </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Email</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
+          <StyledInput
+            variant={'email'}
             value={email}
             onChangeText={setEmail}
             placeholder="Email"
             keyboardType="email-address"
           />
-          {email.trim() !== '' && (
-            <Ionicons
-              name={validateEmail(email) ? "checkmark-circle" : "close-circle"}
-              size={24}
-              color={validateEmail(email) ? "gray" : "gray"}
-              style={styles.icon}
-            />
-          )}
-        </View>
       </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Senha Atual</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
+          <StyledInput
+            variant={'password'}
             value={currentPassword}
             onChangeText={setCurrentPassword}
             placeholder="Senha Atual"
-            secureTextEntry={!showCurrentPassword}
+            // secureTextEntry={!showCurrentPassword}
           />
-          <TouchableOpacity onPress={() => setShowCurrentPassword(!showCurrentPassword)}>
-            <Ionicons name={showCurrentPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon}/>
-          </TouchableOpacity>
-        </View>
       </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Senha Nova</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
+          <StyledInput
+            variant={'password'}
             value={newPassword}
             onChangeText={setNewPassword}
             placeholder="Senha Nova"
-            secureTextEntry={!showNewPassword}
+            // secureTextEntry={!showNewPassword}
           />
-          <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)}>
-            <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="gray" style={styles.icon}/>
-          </TouchableOpacity>
-        </View>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-        <Text style={styles.buttonText}>Atualizar</Text>
-      </TouchableOpacity>
+        <StyledButton
+            title="Atualizar"
+            onPress={handleUpdate}
+        />
 
-      <TouchableOpacity
-        style={[styles.button, {marginTop: 20}]}
-        onPress={() => {
-          navigation.navigate(ScreenNames.FEEDBACK_LIST)
-        }}
-      >
-        <Text style={styles.buttonText}>Feedbacks</Text>
-      </TouchableOpacity>
+        <StyledButton
+            title="Feedbacks"
+            onPress={() => navigation.navigate(ScreenNames.FEEDBACK_LIST)}
+            blueBackground={true}
+        />
 
-      <TouchableOpacity
-        style={[styles.button, {backgroundColor: '#FD7FAC', marginTop: 20}]}
-        onPress={() => {
-          handleLogout()
-        }}
-      >
-        <Text style={styles.buttonText}>Sair</Text>
-      </TouchableOpacity>
+        <StyledButton
+            title="Sair"
+            onPress={handleLogout}
+            style={{backgroundColor: colors.PURPLE}}
+        />
+
     </View>
   );
 };
@@ -226,7 +194,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '100%',
-    marginBottom: 24,
+    // marginBottom: 24,
   },
   label: {
     marginBottom: 8,

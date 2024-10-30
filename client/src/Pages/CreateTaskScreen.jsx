@@ -5,9 +5,11 @@ import { useTasks } from "../contexts/TasksContext";
 import { Task } from "../models/Task";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {ScreenNames} from "../enums/ScreenNames";
+import StyledInput from "../components/BasesComponents/baseInput";
+import StyledButton from "../components/BasesComponents/baseButton";
 
 const CreateTaskScreen = ({ route, navigation }) => {
-    const [name, setName] = useState('');
+    const [nameValue, setNameValue] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date().toISOString());
     const [startTime, setStartTime] = useState(new Date().toISOString());
@@ -26,7 +28,7 @@ const CreateTaskScreen = ({ route, navigation }) => {
             const { task } = route.params;
             setEdit(true);
             setTaskId(task.id);
-            setName(task.name || '');
+            setNameValue(task.name || '');
             setDescription(task.description || '');
             setDate(task.date || new Date().toISOString());
             setStartTime(task.startTime || new Date().toISOString());
@@ -61,37 +63,42 @@ const CreateTaskScreen = ({ route, navigation }) => {
         setTags(newTags);
     };
 
-    const handleAddTask = async (name, description, date, startTime, endTime, tags) => {
+    const handleAddTask = async () => {
         try {
             const task = new Task(
                 null,
-                name,
+                nameValue,
                 description,
                 date,
                 startTime,
                 endTime,
                 false,
                 false,
-                Array.isArray(tags) ? tags : []
+                tags
             );
+
             if (edit) {
                 await updateTask(taskId, task.toPlainObject());
                 navigation.navigate(ScreenNames.VIEW_TASKS);
             } else {
                 await addTask(task.toPlainObject());
             }
-            setName('');
+
+            console.log('Tarefa criada:', task); // Confirmação de valor
+
+            // Resetar valores dos inputs
+            setNameValue('');
             setDescription('');
             setDate(new Date().toISOString());
             setStartTime(new Date().toISOString());
             setEndTime(new Date(new Date().getTime() + 5 * 60 * 1000).toISOString());
             setTags([]);
             setTagInput('');
-
         } catch (e) {
             console.error('Erro ao adicionar tarefa:', e);
         }
     };
+
 
     const handleDateChange = (event, selectedDate) => {
         if (event.type === 'set' && selectedDate) {
@@ -129,13 +136,12 @@ const CreateTaskScreen = ({ route, navigation }) => {
 
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Título</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Nome"
-                            onChangeText={(name) => setName(name)}
-                            value={name}
-                        />
                     </View>
+                    <StyledInput
+                      placeholder="Nome"
+                      onChangeText={(nameValue) => setNameValue(nameValue)}
+                      value={nameValue}
+                    />
 
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Data</Text>
@@ -188,13 +194,14 @@ const CreateTaskScreen = ({ route, navigation }) => {
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Descrição</Text>
                         <View style={styles.descriptionContainer}>
-                            <TextInput
-                                style={styles.descriptionInput}
-                                placeholder="Descrição"
-                                onChangeText={(text) => setDescription(text)}
-                                value={description}
-                                maxLength={200}
-                                multiline
+                            <StyledInput
+                              filled={true}
+                              style={{height: 150,textAlignVertical: 'top', width: '100%',padding: 12}}
+                              placeholder="Descrição"
+                              onChangeText={(text) => setDescription(text)}
+                              value={description}
+                              maxLength={200}
+                              multiline
                             />
                             <Text style={styles.characterCount}>{description.length}/200</Text>
                         </View>
@@ -203,16 +210,19 @@ const CreateTaskScreen = ({ route, navigation }) => {
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Etiqueta</Text>
                         <View style={styles.tagInputContainer}>
-                            <TextInput
-                                style={[styles.textInput, {width: '80%'}]}
-                                placeholder="Adicionar Etiqueta"
-                                onChangeText={(text) => setTagInput(text)}
-                                value={tagInput}
-                                onSubmitEditing={handleAddTag}
-                            />
-                            <TouchableOpacity onPress={handleAddTag} style={styles.plusButton}>
-                                <Ionicons name="add-outline" size={30} color="#353535" />
-                            </TouchableOpacity>
+                            <View style={{width: '80%'}}>
+                                <StyledInput
+                                    placeholder="Adicionar Etiqueta"
+                                    onChangeText={(text) => setTagInput(text)}
+                                    value={tagInput}
+                                    onSubmitEditing={handleAddTag}
+                                />
+                            </View>
+                            <View>
+                                <TouchableOpacity onPress={handleAddTag} style={styles.plusButton}>
+                                    <Ionicons name="add-outline" size={30} color="#353535" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <FlatList
                             data={tags}
@@ -229,12 +239,12 @@ const CreateTaskScreen = ({ route, navigation }) => {
                         />
                     </View>
 
-                    <TouchableOpacity
-                        onPress={() => handleAddTask(name, description, date, startTime, endTime, tags)}
-                        style={styles.button}
-                    >
-                        <Text style={styles.buttonText}>{(edit ? 'Editar' : 'Criar')}</Text>
-                    </TouchableOpacity>
+                    <StyledButton
+                        title={edit ? 'Editar' : 'Criar'}
+                        onPress={async () => handleAddTask()}
+                        blueBackground={true}
+                    />
+
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -301,6 +311,7 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         justifyContent: 'center', 
         alignItems: 'center',
+        height: 'auto'
     },
     plusButtonText: {
         color: '#fff',

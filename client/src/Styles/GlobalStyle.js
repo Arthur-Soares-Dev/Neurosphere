@@ -9,6 +9,7 @@ export const colors =  Object.freeze(
     PINK: '#F76D8E',
     PURPLE: '#A57EDE',
     WHITE: '#FFF6EE',
+    GRAY: '#B0B0B0',
   }
 );
 

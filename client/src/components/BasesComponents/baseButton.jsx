@@ -1,20 +1,47 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import React from 'react';
-import globalStyles from '../../Styles/GlobalStyle';
+import globalStyles, { colors } from '../../Styles/GlobalStyle';
 
-const SocialLoginButtons = (tittle, ...props) => {
-  return (
-    <TouchableOpacity
-    onPress={() => handleLogin(email, password)}
-    style={globalStyles.button}
-    >
-        <Text style={globalStyles.buttonText}> {tittle} </Text>
-    </TouchableOpacity>
-  );
+const StyledButton = ({
+                          title = '',
+                          onPress = () => {},
+                          loading = false,
+                          disabled = false,
+                          style = [],
+                          textStyle = [],
+                          blueBackground = false,
+                      }) => {
+    const buttonStyles = [
+        globalStyles.button,
+        blueBackground && styles.blueButton,
+        disabled && styles.disabledButton,
+        ...(Array.isArray(style) ? style : [style]),
+    ];
+
+    const buttonTextStyles = [globalStyles.buttonText, ...textStyle];
+
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={buttonStyles}
+            disabled={disabled || loading}
+        >
+            {loading ? (
+                <ActivityIndicator color={colors.WHITE} />
+            ) : (
+                <Text style={buttonTextStyles}>{title}</Text>
+            )}
+        </TouchableOpacity>
+    );
 };
 
-export default SocialLoginButtons;
+export default StyledButton;
 
 const styles = StyleSheet.create({
-
+    disabledButton: {
+        backgroundColor: colors.GRAY,
+    },
+    blueButton: {
+        backgroundColor: colors.BLUE,
+    },
 });

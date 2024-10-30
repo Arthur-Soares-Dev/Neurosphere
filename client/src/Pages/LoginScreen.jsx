@@ -7,6 +7,7 @@ import SocialLoginButtons from '../components/SocialLoginButtons';
 import GoBackButton from '../components/GoBackButton';
 import {ScreenNames} from "../enums/ScreenNames";
 import StyledInput from "../components/BasesComponents/baseInput";
+import StyledButton from "../components/BasesComponents/baseButton";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -118,19 +119,18 @@ const LoginScreen = () => {
               <Text style={styles.forgotPasswordText}>ESQUECEU A SENHA?</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => handleLogin(email, password)}
-              style={globalStyles.button}
-            >
-              <Text style={globalStyles.buttonText}>Logar</Text>
-            </TouchableOpacity>
+              <StyledButton
+                  title="Logar"
+                  onPress={() => handleLogin(email, password)}
+              />
 
-            <TouchableOpacity
-              onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}
-              style={globalStyles.button}
-            >
-              <Text style={globalStyles.buttonText}>Login Rápido</Text>
-            </TouchableOpacity>
+              <StyledButton
+                  title="Login Rápido"
+                  onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}
+                  loading={false}
+                  style={[]}
+                  textStyle={[]}
+              />
 
             <SocialLoginButtons />
 
