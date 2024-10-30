@@ -15,6 +15,7 @@ import EmotionGameScreen from "./Pages/Games/EmotionGameScreen";
 import ColorGameScreen from "./Pages/Games/ColorGameScreen";
 import FeedbackListScreen from "./Pages/FeedbackListScreen";
 import { ScreenNames } from "./enums/ScreenNames";
+import LandingScreen from "./Pages/LandingScreen";
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ const AuthStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false }}
-            initialRouteName={user ? ScreenNames.DASHBOARD : ScreenNames.LOGIN}
+            initialRouteName={user ? ScreenNames.DASHBOARD : ScreenNames.LANDING}
         >
             {user ? (
                 <>
@@ -44,6 +45,7 @@ const AuthStack = () => {
                 <>
                     <Stack.Screen name={ScreenNames.LOGIN} component={LoginScreen} />
                     <Stack.Screen name={ScreenNames.REGISTER} component={RegisterScreen} />
+                    <Stack.Screen name={ScreenNames.LANDING} component={LandingScreen} />
                 </>
             )}
         </Stack.Navigator>

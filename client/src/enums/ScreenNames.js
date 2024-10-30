@@ -12,4 +12,5 @@ export const ScreenNames = Object.freeze({
   EMOTION_GAME: 'EmotionGameScreen',
   COLOR_GAME: 'ColorGameScreen',
   FEEDBACK_LIST: 'FeedbackListScreen',
+  LANDING: 'LandingScreen',
 });
