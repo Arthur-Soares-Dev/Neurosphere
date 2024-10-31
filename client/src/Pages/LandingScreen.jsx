@@ -1,26 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import StyledButton from '../components/BasesComponents/baseButton';
-import globalStyles, { colors } from '../Styles/GlobalStyle';
-import {ScreenNames} from "../enums/ScreenNames";
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
+import { ScreenNames } from "../enums/ScreenNames";
+import NeuroSphereLogo from "../Asset/NeuroSphereLogo.svg"
+import NeuroSphereLandingPage from "../Asset/NeuroSphereLandingPage.svg"
 
 const LandingScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcomeText}>BEM VINDO!</Text>
+    <View style={[globalStyles.scrollContainer, styles.container]}>
+      <Text style={[globalStyles.label, styles.welcomeText]}>BEM VINDO!</Text>
 
       <StyledButton
         title="CADASTRAR"
         onPress={() => navigation.navigate(ScreenNames.REGISTER)}
-        style={styles.registerButton}
-        // textStyle={styles.buttonText}
+        style={[globalStyles.button, styles.registerButton]}
+        textStyle={[globalStyles.buttonText, styles.registerText]}
       />
 
       <StyledButton
         title="LOGAR"
         onPress={() => navigation.navigate(ScreenNames.LOGIN)}
-        style={styles.loginButton}
-        // textStyle={styles.buttonText}
+        style={[globalStyles.button, styles.loginButton]}
+        textStyle={[globalStyles.buttonText, styles.loginText]}
       />
 
       <View style={styles.line} />
@@ -30,39 +32,40 @@ const LandingScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.BLUE, // Altere para a cor de fundo desejada
-    justifyContent: 'center',
+    backgroundColor: colors.BLUE,
     alignItems: 'center',
   },
+
   welcomeText: {
-    fontSize: 24,
-    color: colors.YELLOW, // Ajuste de acordo com a cor desejada
+    fontSize: 30,
+    color: colors.YELLOW, 
     marginBottom: 40,
-    fontFamily: 'MinhaFonte', // Altere para a fonte desejada, se houver
+    alignSelf: 'center',
   },
+
   registerButton: {
     backgroundColor: colors.YELLOW,
-    paddingHorizontal: 40,
-    paddingVertical: 15,
-    borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 30,
+    paddingVertical: 25,
   },
+
   loginButton: {
     backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: colors.YELLOW,
-    paddingHorizontal: 40,
-    paddingVertical: 15,
-    borderRadius: 10,
+    paddingVertical: 25,
   },
-  buttonText: {
+
+  registerText: {
+    color: colors.BLUE,
+  },
+
+  loginText: {
     color: colors.YELLOW,
-    fontSize: 16,
-    fontFamily: 'MinhaFonte',
   },
+
   line: {
-    width: '80%',
+    width: '100%',
     height: 1,
     backgroundColor: colors.YELLOW,
     marginTop: 20,

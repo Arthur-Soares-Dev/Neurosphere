@@ -120,7 +120,7 @@ const LoginScreen = () => {
             </TouchableOpacity>
 
               <StyledButton
-                  title="Logar"
+                  title="LOGAR"
                   onPress={() => handleLogin(email, password)}
               />
 
@@ -134,12 +134,6 @@ const LoginScreen = () => {
 
             <SocialLoginButtons />
 
-            <View style={styles.signUpContainer}>
-              <Text style={styles.signUpText}>Não possui uma conta?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.REGISTER)}>
-                <Text style={styles.signUpLink}>Cadastrar</Text>
-              </TouchableOpacity>
-            </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -151,10 +145,6 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
 
-  inputIcon: {
-    marginLeft: 10,
-  },
-
   forgotPasswordContainer: {
     alignSelf: 'flex-end',
     marginBottom: 40,
@@ -165,19 +155,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'MinhaFonte'
   },
-
-  signUpContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  signUpText: {
-    color: '#353535',
-    fontSize: 16,
-  },
-  signUpLink: {
-    color: '#FD7FAC',
-    fontSize: 16,
-    marginLeft: 5,
-  }
 });

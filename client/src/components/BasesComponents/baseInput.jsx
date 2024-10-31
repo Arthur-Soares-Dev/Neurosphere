@@ -51,7 +51,7 @@ const StyledInput = ({style = [], ...props}) => {
                 </TouchableOpacity>
             )}
             { maxLength &&
-             <Text style={globalStyles.characterCount}>{value.length}/{maxLength}</Text>
+             <Text style={styles.characterCount}>{value.length}/{maxLength}</Text>
             }
         </View>
     );
@@ -59,4 +59,17 @@ const StyledInput = ({style = [], ...props}) => {
 
 export default StyledInput;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    inputIcon: {
+        marginLeft: 10,
+    },
+
+    characterCount: {
+        position: 'absolute',
+        bottom: 12,
+        right: 12,
+        color: '#353535',
+        fontSize: 12,
+    },
+
+});

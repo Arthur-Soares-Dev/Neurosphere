@@ -16,6 +16,7 @@ export const colors = Object.freeze(
 export const sizeFonts = Object.freeze({
   SMALL: 18,
   MEDIUM: 20,
+  LARGE: 24,
 });
 
 const globalStyles = StyleSheet.create({
@@ -99,13 +100,13 @@ const globalStyles = StyleSheet.create({
     color: colors.WHITE,
   },
 
-  characterCount: {
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
-    color: '#353535',
-    fontSize: 12,
-  },
+  // characterCount: {
+  //   position: 'absolute',
+  //   bottom: 12,
+  //   right: 12,
+  //   color: '#353535',
+  //   fontSize: 12,
+  // },
 });
 
 export default globalStyles;
