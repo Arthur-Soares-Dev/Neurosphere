@@ -3,12 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import StyledButton from '../components/BasesComponents/baseButton';
 import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 import { ScreenNames } from "../enums/ScreenNames";
-import NeuroSphereLogo from "../Asset/NeuroSphereLogo.svg"
-import NeuroSphereLandingPage from "../Asset/NeuroSphereLandingPage.svg"
+import NeuroSphereLogo from "../components/customSvg/NeuroSphereLogo"
+import NeuroSphereLandingPage from '../components/customSvg/NeuroSphereLandingPage';
 
 const LandingScreen = ({ navigation }) => {
   return (
     <View style={[globalStyles.scrollContainer, styles.container]}>
+
+      <NeuroSphereLogo style={styles.icon}/>
+
       <Text style={[globalStyles.label, styles.welcomeText]}>BEM VINDO!</Text>
 
       <StyledButton
@@ -26,6 +29,8 @@ const LandingScreen = ({ navigation }) => {
       />
 
       <View style={styles.line} />
+
+      <NeuroSphereLandingPage style={styles.iconBottom}/>
     </View>
   );
 };
@@ -70,6 +75,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.YELLOW,
     marginTop: 20,
   },
+
+  icon: {
+    marginBottom: 10,
+  },
+
+  iconBottom: {
+    position: 'absolute',
+    bottom: -150,
+  }
 });
 
 export default LandingScreen;

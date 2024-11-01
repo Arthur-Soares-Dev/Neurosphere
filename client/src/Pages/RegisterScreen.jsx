@@ -13,6 +13,9 @@ import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from "../contexts/AuthContext";
 import {ScreenNames} from "../enums/ScreenNames";
+import GoBackButton from '../components/GoBackButton';
+import StyledInput from "../components/BasesComponents/baseInput";
+import StyledButton from "../components/BasesComponents/baseButton";
 import globalStyles, { colors } from '../Styles/GlobalStyle';
 
 const RegisterScreen = () => {
@@ -71,7 +74,9 @@ const RegisterScreen = () => {
       <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
         <View style={globalStyles.container}>
 
-          <Text style={globalStyles.label}>Nome</Text>
+          <GoBackButton title={"CADASTRAR"}/>
+
+          <Text style={globalStyles.label}>USUARIO</Text>
           <View style={globalStyles.input}>
             <TextInput
               style={globalStyles.inputText}
@@ -89,26 +94,14 @@ const RegisterScreen = () => {
             )}
           </View>
 
-          <Text style={styles.label}>Email</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Email"
-              placeholderTextColor="rgba(53,53,53,.6)"
-              onChangeText={(email) => setEmail(email)}
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={email}
+          <Text style={globalStyles.label}>EMAIL</Text>
+            <StyledInput
+                variant={'email'}
+                onChangeText={(email) => setEmail(email)}
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={email}
             />
-            {email.length > 0 && (
-              <Ionicons 
-                name={validateEmail(email) ? "checkmark-circle" : "close-circle"} 
-                size={24} 
-                color={validateEmail(email) ? "gray" : "gray"} 
-                style={styles.inputIcon} 
-              />
-            )}
-          </View>
 
           <Text style={styles.label}>Senha</Text>
           <View style={styles.inputWrapper}>
