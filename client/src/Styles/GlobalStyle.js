@@ -98,6 +98,7 @@ const globalStyles = StyleSheet.create({
 
   filledInputText: {
     color: colors.WHITE,
+    fontFamily: 'MinhaFonte'
   },
 
   // characterCount: {

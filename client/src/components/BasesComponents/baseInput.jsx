@@ -36,7 +36,7 @@ const StyledInput = ({style = [], ...props}) => {
                 <Ionicons
                     name={Utils.validateEmail(value) ? "checkmark-circle" : "close-circle"}
                     size={24}
-                    color={Utils.validateEmail(value) ? colors.BLUE : colors.RED}
+                    color={Utils.validateEmail(value) ? colors.BLUE : colors.BLUE}
                     style={styles.inputIcon}
                 />
             )}
