@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import StyledButton from '../components/BasesComponents/baseButton';
-import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
+import globalStyles, { colors } from '../Styles/GlobalStyle';
 import { ScreenNames } from "../enums/ScreenNames";
 import NeuroSphereLogo from "../components/customSvg/NeuroSphereLogo"
 import NeuroSphereLandingPage from '../components/customSvg/NeuroSphereLandingPage';
