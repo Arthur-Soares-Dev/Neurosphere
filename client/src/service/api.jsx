@@ -9,7 +9,8 @@ if (BASE_URL) {
 }
 
 const api = axios.create({
-  baseURL: `http://${url}:5000/`,
+  // baseURL: `http://${url}:5000/`,
+  baseURL: `https://neurosphere-server.vercel.app/`,
 });
 
 export default api;
