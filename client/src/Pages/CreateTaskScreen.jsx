@@ -5,6 +5,8 @@ import { useTasks } from "../contexts/TasksContext";
 import { Task } from "../models/Task";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {ScreenNames} from "../enums/ScreenNames";
+import GoBackButton from '../components/GoBackButton';
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 import StyledInput from "../components/BasesComponents/baseInput";
 import StyledButton from "../components/BasesComponents/baseButton";
 
@@ -47,7 +49,7 @@ const CreateTaskScreen = ({ route, navigation }) => {
     }, [startTime]);
 
     const getRandomColor = () => {
-        const colors = ['#7FACD630', '#FD7FAC30', '#35353530'];
+        const colors = [colors.BLUE, '#FD7FAC30', '#35353530'];
         return colors[Math.floor(Math.random() * colors.length)];
     };
 
@@ -122,31 +124,26 @@ const CreateTaskScreen = ({ route, navigation }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                <Ionicons name="arrow-back" size={30} color="#FD7FAC" />
-            </TouchableOpacity>
+        <SafeAreaView style={globalStyles.outerContainer}>
 
-            <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+            <ScrollView contentContainerStyle={globalStyles.scrollContainer} keyboardShouldPersistTaps="handled">
+
+                <GoBackButton title={(edit ? 'EDITAR TAREFA' : 'CRIAR TAREFA')}/>
         
-                <View>
-                    <Text style={styles.title}>
-                        {(edit ? 'Editar Tarefa' : 'Criar Tarefa')}
-                    </Text>
+                <View style={globalStyles.container}>
 
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Título</Text>
-                    </View>
+                    
+                    <Text style={globalStyles.label}>TÍTULO</Text>
                     <StyledInput
-                      placeholder="Nome"
+                      filled={true}
                       onChangeText={(nameValue) => setNameValue(nameValue)}
                       value={nameValue}
                     />
 
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Data</Text>
+                    <Text style={globalStyles.label}>DATA</Text>
+                    <View style={globalStyles.input}>
                         <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                            <Text style={styles.textInput}>{new Date(date).toLocaleDateString('pt-BR')}</Text>
+                            <Text style={globalStyles.inputText}>{new Date(date).toLocaleDateString('pt-BR')}</Text>
                         </TouchableOpacity>
                         {showDatePicker && (
                             <DateTimePicker
@@ -159,10 +156,11 @@ const CreateTaskScreen = ({ route, navigation }) => {
                     </View>
 
                     <View style={styles.timeContainer}>
-                        <View style={styles.timeInputContainer}>
-                            <Text style={styles.label}>Início</Text>
+
+                        <View style={[styles.timeInputContainer]}>
+                            <Text style={globalStyles.label}>INÍCIO</Text>
                             <TouchableOpacity onPress={() => setShowStartTimePicker(true)}>
-                                <Text style={styles.textInput}>{new Date(startTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</Text>
+                                <Text style={[globalStyles.inputText, styles.textInput]}>{new Date(startTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</Text>
                             </TouchableOpacity>
                             {showStartTimePicker && (
                                 <DateTimePicker
@@ -174,10 +172,11 @@ const CreateTaskScreen = ({ route, navigation }) => {
                                 />
                             )}
                         </View>
+                        
                         <View style={styles.timeInputContainer}>
-                            <Text style={styles.label}>Fim</Text>
+                            <Text style={globalStyles.label}>FIM</Text>
                             <TouchableOpacity onPress={() => setShowEndTimePicker(true)}>
-                                <Text style={styles.textInput}>{new Date(endTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</Text>
+                                <Text style={[globalStyles.inputText, styles.textInput]}>{new Date(endTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</Text>
                             </TouchableOpacity>
                             {showEndTimePicker && (
                                 <DateTimePicker
@@ -191,27 +190,23 @@ const CreateTaskScreen = ({ route, navigation }) => {
                         </View>
                     </View>
 
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Descrição</Text>
-                        <View style={styles.descriptionContainer}>
+                    <Text style={globalStyles.label}>DESCRIÇÃO</Text>
+                    <View style={[globalStyles.input, styles.descriptionContainer]}>
                             <StyledInput
                               filled={true}
-                              style={{height: 150,textAlignVertical: 'top', width: '100%',padding: 12}}
-                              placeholder="Descrição"
+                              style={{height: 150,textAlignVertical: 'top', width: '100%'}}
                               onChangeText={(text) => setDescription(text)}
                               value={description}
                               maxLength={200}
                               multiline
                             />
-                        </View>
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Etiqueta</Text>
+                        <Text style={globalStyles.label}>ETIQUETAS</Text>
                         <View style={styles.tagInputContainer}>
                             <View style={{width: '80%'}}>
                                 <StyledInput
-                                    placeholder="Adicionar Etiqueta"
                                     onChangeText={(text) => setTagInput(text)}
                                     value={tagInput}
                                     onSubmitEditing={handleAddTag}
@@ -219,7 +214,7 @@ const CreateTaskScreen = ({ route, navigation }) => {
                             </View>
                             <View>
                                 <TouchableOpacity onPress={handleAddTag} style={styles.plusButton}>
-                                    <Ionicons name="add-outline" size={30} color="#353535" />
+                                    <Ionicons name="add-outline" size={30} color={colors.WHITE} />
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -231,7 +226,7 @@ const CreateTaskScreen = ({ route, navigation }) => {
                                 <View style={[styles.tag, { backgroundColor: item.color }]} key={index}>
                                     <Text style={styles.tagText}>{item.text}</Text>
                                     <TouchableOpacity onPress={() => handleRemoveTag(index)} style={styles.removeTagButton}>
-                                        <Ionicons name="close-outline" size={20} color="#353535" />
+                                        <Ionicons name="close-outline" size={20} color={colors.BLUE} />
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -241,7 +236,6 @@ const CreateTaskScreen = ({ route, navigation }) => {
                     <StyledButton
                         title={edit ? 'Editar' : 'Criar'}
                         onPress={async () => handleAddTask()}
-                        blueBackground={true}
                     />
 
                 </View>
@@ -253,27 +247,6 @@ const CreateTaskScreen = ({ route, navigation }) => {
 export default CreateTaskScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        padding: 15,
-    },
-    scrollContainer: {
-        flexGrow: 1,
-        marginVertical: 20
-    },
-    backButton: {
-        width: 30,
-        height: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 30,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
     inputContainer: {
         marginBottom: 16,
     },
@@ -285,8 +258,8 @@ const styles = StyleSheet.create({
     textInput: {
         borderRadius: 8,
         padding: 12,
-        fontSize: 16,
-        backgroundColor: '#f4f4f4',
+        borderWidth: 2,
+        borderColor: colors.BLUE,
     },
     timeContainer: {
         flexDirection: 'row',
@@ -300,13 +273,13 @@ const styles = StyleSheet.create({
     tagInputContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 20,
+        marginBottom: 1,
     },
     plusButton: {
         width: 60,
-        backgroundColor: '#f4f4f4',
+        backgroundColor: colors.PURPLE,
         borderRadius: 10,
-        padding: 10,
+        padding: 15,
         marginLeft: 8,
         justifyContent: 'center', 
         alignItems: 'center',
@@ -321,14 +294,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#BBDEFB',
+        backgroundColor: colors.GREEN,
         padding: 8,
         borderRadius: 16,
         marginRight: 8,
     },
     tagText: {
-        color: '#353535',
+        color: colors.BLUE,
         marginRight: 8,
+        fontFamily: 'MinhaFonte'
     },
     removeTagButton: {
         borderRadius: 10,
@@ -355,20 +329,7 @@ const styles = StyleSheet.create({
     },
     descriptionContainer: {
         position: 'relative',
-    },
-    descriptionInput: {
-        borderRadius: 8,
-        padding: 12,
-        fontSize: 16,
-        backgroundColor: '#f4f4f4',
-        height: 150,
-        textAlignVertical: 'top',
-    },
-    characterCount: {
-        position: 'absolute',
-        bottom: 12,
-        right: 12,
-        color: '#353535',
-        fontSize: 12,
+        backgroundColor: colors.BLUE,
+        marginBottom: 16
     },
 });

@@ -1,6 +1,6 @@
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import globalStyles, {colors} from '../../Styles/GlobalStyle';
+import globalStyles, {colors, sizeFonts} from '../../Styles/GlobalStyle';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Utils from "../../utils/Utils";
 
@@ -36,7 +36,7 @@ const StyledInput = ({style = [], ...props}) => {
                 <Ionicons
                     name={Utils.validateEmail(value) ? "checkmark-circle" : "close-circle"}
                     size={24}
-                    color={Utils.validateEmail(value) ? colors.BLUE : colors.RED}
+                    color={Utils.validateEmail(value) ? colors.BLUE : colors.BLUE}
                     style={styles.inputIcon}
                 />
             )}
@@ -66,10 +66,11 @@ const styles = StyleSheet.create({
 
     characterCount: {
         position: 'absolute',
-        bottom: 12,
-        right: 12,
-        color: '#353535',
-        fontSize: 12,
+        bottom: -25,
+        right: 0,
+        color: colors.WHITE,
+        fontSize: 14,
+        fontFamily: 'MinhaFonte'
     },
 
 });

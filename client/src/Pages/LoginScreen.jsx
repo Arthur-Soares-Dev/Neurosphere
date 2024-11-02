@@ -22,8 +22,6 @@ const LoginScreen = () => {
     }
   }, [user]);
 
-  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
-
   const handleLogin = async (email, password) => {
     try {
       await login(email, password);
@@ -90,10 +88,7 @@ const LoginScreen = () => {
                 onChangeText={(password) => setPassword(password)}
                 autoCapitalize="none"
                 autoCorrect={false}
-                // secureTextEntry={!showPassword}
                 value={password}
-                // setShowPassword={setShowPassword}
-                // showPassword={showPassword}
             />
 
             {/*<View style={[globalStyles.input, globalStyles.filledInput]}>*/}

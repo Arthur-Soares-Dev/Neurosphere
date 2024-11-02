@@ -13,6 +13,10 @@ import {useNavigation} from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useAuth} from "../contexts/AuthContext";
 import {ScreenNames} from "../enums/ScreenNames";
+import GoBackButton from '../components/GoBackButton';
+import StyledInput from "../components/BasesComponents/baseInput";
+import StyledButton from "../components/BasesComponents/baseButton";
+import SocialLoginButtons from '../components/SocialLoginButtons';
 import globalStyles, { colors } from '../Styles/GlobalStyle';
 
 const RegisterScreen = () => {
@@ -33,11 +37,6 @@ const RegisterScreen = () => {
     }
     alert(error);
   }, [error]);
-  
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  };
 
   const isNameValid = (name) => {
     return name.length > 0;
@@ -71,7 +70,9 @@ const RegisterScreen = () => {
       <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
         <View style={globalStyles.container}>
 
-          <Text style={globalStyles.label}>Nome</Text>
+          <GoBackButton title={"CADASTRAR"}/>
+
+          <Text style={globalStyles.label}>USUARIO</Text>
           <View style={globalStyles.input}>
             <TextInput
               style={globalStyles.inputText}
@@ -89,91 +90,41 @@ const RegisterScreen = () => {
             )}
           </View>
 
-          <Text style={styles.label}>Email</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Email"
-              placeholderTextColor="rgba(53,53,53,.6)"
-              onChangeText={(email) => setEmail(email)}
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={email}
+          <Text style={globalStyles.label}>EMAIL</Text>
+            <StyledInput
+                variant={'email'}
+                filled={true}
+                onChangeText={(email) => setEmail(email)}
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={email}
             />
-            {email.length > 0 && (
-              <Ionicons 
-                name={validateEmail(email) ? "checkmark-circle" : "close-circle"} 
-                size={24} 
-                color={validateEmail(email) ? "gray" : "gray"} 
-                style={styles.inputIcon} 
-              />
-            )}
-          </View>
 
-          <Text style={styles.label}>Senha</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Senha"
-              placeholderTextColor="rgba(53,53,53,.6)"
-              onChangeText={(password) => setPassword(password)}
-              autoCapitalize="none"
-              autoCorrect={false}
-              secureTextEntry={!showPassword}
-              value={password}
+          <Text style={globalStyles.label}>SENHA</Text>
+          <StyledInput
+                variant={'password'}
+                onChangeText={(password) => setPassword(password)}
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={password}
             />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <Ionicons 
-                name={showPassword ? "eye" : "eye-off"} 
-                size={24} 
-                color="gray" 
-                style={styles.inputIcon} 
-              />
-            </TouchableOpacity>
-          </View>
 
-          <Text style={styles.label}>Confirmar Senha</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Confirmar Senha"
-              placeholderTextColor="rgba(53,53,53,.6)"
-              onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
-              autoCapitalize="none"
-              autoCorrect={false}
-              secureTextEntry={!showConfirmPassword}
-              value={confirmPassword}
-            />
-            <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-              <Ionicons 
-                name={showConfirmPassword ? "eye" : "eye-off"} 
-                size={24} 
-                color="gray" 
-                style={styles.inputIcon} 
-              />
-            </TouchableOpacity>
-          </View>
+          <Text style={globalStyles.label}>CONFIRMAR SENHA</Text>
+          <StyledInput
+                variant={'password'}
+                filled={true}
+                onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={confirmPassword}
+          />
 
-          <TouchableOpacity
-            onPress={() => handleRegister(email, password, name)}
-            style={styles.registerButton}
-          >
-            <Text style={styles.registerButtonText}>Cadastrar</Text>
-          </TouchableOpacity>
+          <StyledButton
+              title="CADASTRAR"
+              onPress={() => handleRegister(email, password, name)}
+          />
 
-          <View style={styles.socialButtonsContainer}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-google" size={30} color="#FD7FAC" />
-              <Text style={styles.signInText}> Cadastrar com o <Text style={styles.signInLink}>Google</Text>?</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.signInContainer}>
-            <Text style={styles.signInText}>Já possui uma conta?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.LOGIN)}>
-              <Text style={styles.signInLink}>Logar</Text>
-            </TouchableOpacity>
-          </View>
+          <SocialLoginButtons />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
