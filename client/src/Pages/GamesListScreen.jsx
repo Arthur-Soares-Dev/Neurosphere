@@ -60,34 +60,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-  cardWrapper: {
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  card: {
-    width: '100%',
-    height: 150,
-    borderRadius: 10,
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardText: {
-    marginTop: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'center',
-  },
-  iconWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: 'transparent',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
 export default GamesListScreen;
