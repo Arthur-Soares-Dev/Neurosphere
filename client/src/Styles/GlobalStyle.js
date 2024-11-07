@@ -31,7 +31,7 @@ const globalStyles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingVertical: '20%',
+    paddingTop: '17%',
     backgroundColor: colors.WHITE,
     paddingHorizontal: 35,
   },
@@ -61,6 +61,13 @@ const globalStyles = StyleSheet.create({
   },
 
   /* Textos */
+
+  tittle: {
+    color: colors.BLUE,
+    fontSize: sizeFonts.SMALL,
+    marginBottom: 10,
+    fontFamily: 'MinhaFonte'
+  },
 
   label: {
     alignSelf: 'flex-start',

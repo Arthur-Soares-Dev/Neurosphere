@@ -49,8 +49,8 @@ const CreateTaskScreen = ({ route, navigation }) => {
     }, [startTime]);
 
     const getRandomColor = () => {
-        const colors = [colors.BLUE, '#FD7FAC30', '#35353530'];
-        return colors[Math.floor(Math.random() * colors.length)];
+        const colorValues = [colors.YELLOW, colors.GREEN, colors.PURPLE, colors.PINK, colors.BLUE];
+        return colorValues[Math.floor(Math.random() * colorValues.length)];
     };
 
     const handleAddTag = () => {
@@ -141,11 +141,12 @@ const CreateTaskScreen = ({ route, navigation }) => {
                     />
 
                     <Text style={globalStyles.label}>DATA</Text>
-                    <View style={globalStyles.input}>
-                        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                    <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                        <View style={globalStyles.input}>
+        
                             <Text style={globalStyles.inputText}>{new Date(date).toLocaleDateString('pt-BR')}</Text>
-                        </TouchableOpacity>
-                        {showDatePicker && (
+                        
+                            {showDatePicker && (
                             <DateTimePicker
                                 value={new Date(date)}
                                 mode="date"
@@ -153,7 +154,8 @@ const CreateTaskScreen = ({ route, navigation }) => {
                                 onChange={handleDateChange}
                             />
                         )}
-                    </View>
+                        </View>
+                    </TouchableOpacity>
 
                     <View style={styles.timeContainer}>
 
@@ -226,7 +228,7 @@ const CreateTaskScreen = ({ route, navigation }) => {
                                 <View style={[styles.tag, { backgroundColor: item.color }]} key={index}>
                                     <Text style={styles.tagText}>{item.text}</Text>
                                     <TouchableOpacity onPress={() => handleRemoveTag(index)} style={styles.removeTagButton}>
-                                        <Ionicons name="close-outline" size={20} color={colors.BLUE} />
+                                        <Ionicons name="close-outline" size={20} color={colors.WHITE} />
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -250,31 +252,37 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginBottom: 16,
     },
+    
     label: {
         fontSize: 16,
         color: '#FD7FAC',
         marginBottom: 8,
     },
+
     textInput: {
         borderRadius: 8,
         padding: 12,
         borderWidth: 2,
         borderColor: colors.BLUE,
     },
+
     timeContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 16,
     },
+
     timeInputContainer: {
         flex: 1,
         marginRight: 8,
     },
+
     tagInputContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 1,
     },
+
     plusButton: {
         width: 60,
         backgroundColor: colors.PURPLE,
@@ -285,11 +293,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 'auto'
     },
+
     plusButtonText: {
         color: '#fff',
         fontSize: 24,
         fontWeight: 'bold',
     },
+
     tag: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -299,11 +309,13 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         marginRight: 8,
     },
+
     tagText: {
-        color: colors.BLUE,
+        color: colors.WHITE,
         marginRight: 8,
         fontFamily: 'MinhaFonte'
     },
+
     removeTagButton: {
         borderRadius: 10,
         width: 25,
@@ -311,10 +323,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     removeTagButtonText: {
         color: 'black',
         fontSize: 12,
     },
+
     button: {
         backgroundColor: '#7FACD6',
         borderRadius: 8,
@@ -322,11 +336,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     buttonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
     },
+
     descriptionContainer: {
         position: 'relative',
         backgroundColor: colors.BLUE,

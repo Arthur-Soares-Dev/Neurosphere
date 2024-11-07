@@ -3,7 +3,6 @@ import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableO
 import {useNavigation} from '@react-navigation/native';
 import {useAuth} from '../contexts/AuthContext';
 import globalStyles, {colors} from '../Styles/GlobalStyle';
-import SocialLoginButtons from '../components/SocialLoginButtons';
 import GoBackButton from '../components/GoBackButton';
 import {ScreenNames} from "../enums/ScreenNames";
 import StyledInput from "../components/BasesComponents/baseInput";
@@ -126,8 +125,6 @@ const LoginScreen = () => {
                   style={[]}
                   textStyle={[]}
               />
-
-            <SocialLoginButtons />
 
           </View>
         </ScrollView>

@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 
   iconBottom: {
     position: 'absolute',
-    bottom: -150,
+    bottom: -160,
   }
 });
 

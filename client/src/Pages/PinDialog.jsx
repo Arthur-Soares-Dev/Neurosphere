@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import {ScreenNames} from "../enums/ScreenNames";
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const PinDialog = ({ isOpen, onClose, navigation }) => {
   const [pin, setPin] = useState('');
@@ -47,30 +49,35 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
     <Modal visible={isOpen} animationType="slide" transparent={true}>
       <View style={styles.overlay}>
         <View style={styles.dialog}>
-          <Text style={styles.title}>
-            {user?.pin ? 'Inserir PIN' : 'Criar Novo PIN'}
-          </Text>
-          <Text style={styles.label}>
-            Digite seu PIN:
+          <View style = {styles.container}>
+            <Text style={[globalStyles.tittle, styles.title]}>
+              {user?.pin ? 'INSERIR PIN' : 'CRIAR NOVO PIN'}
+            </Text>
+            <TouchableOpacity style = {styles.closebutton} onPress={onClose}>
+                <Ionicons name="close-outline" size={30} color={colors.YELLOW} />
+            </TouchableOpacity>
+          </View>
+          <Text style={[globalStyles.label, styles.label]}>
+            DIGITE SEU PIN:
           </Text>
           <TextInput
-            style={styles.textInput}
+            style={[globalStyles.input, styles.textInput, globalStyles.inputText]}
             value={pin}
             onChangeText={text => {
               // Permitir apenas números
               const numericText = text.replace(/[^0-9]/g, '');
               setPin(numericText);
             }}
-            placeholder="Digite um PIN (4 dígitos)"
+            // placeholder="Digite um PIN (4 dígitos)"
             keyboardType="numeric" // Mostra o teclado numérico
             maxLength={4} // Limita o comprimento do PIN
           />
-          <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-            <Text style={styles.confirmButtonText}>Confirmar</Text>
+          <TouchableOpacity style={globalStyles.button} onPress={handleConfirm}>
+            <Text style={globalStyles.buttonText}>DESBLOQUEAR</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text style={styles.cancelButtonText}>Cancelar</Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity style={globalStyles.button} onPress={onClose}>
+            <Text style={globalStyles.buttonText}>Cancelar</Text>
+          </TouchableOpacity> */}
         </View>
       </View>
     </Modal>
@@ -84,36 +91,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
+
   dialog: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: colors.WHITE,
     padding: 20,
     borderRadius: 10,
     width: '85%',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#FF4081',
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    alignSelf: 'flex-start',
-    marginBottom: 10,
-    color: '#FF4081',
-  },
-  textInput: {
+
+  container: {
     width: '100%',
-    padding: 10,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 5,
-    minHeight: 50,
-    textAlignVertical: 'top',
-    marginBottom: 20,
-    backgroundColor: '#f0f0f0',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
+
+  title: {
+    fontSize: sizeFonts.MEDIUM,
+    color: colors.YELLOW,
+    marginBottom: 20,
+    marginLeft: '33%',
+  },
+
+  label: {
+    alignSelf: 'center',
+    marginBottom: 20
+  },
+
+  textInput: {
+    padding: 10,
+    minHeight: 50,
+    marginBottom: 20,
+  },
+
   confirmButton: {
     backgroundColor: '#87CEFA',
     padding: 12,
@@ -127,18 +138,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  cancelButton: {
-    backgroundColor: '#FFB6C1',
-    padding: 12,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
+
+  closebutton: {
+    marginBottom: 20,
   },
-  cancelButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
+
 });
 
 export default PinDialog;

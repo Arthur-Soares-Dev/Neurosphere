@@ -123,8 +123,7 @@ const RegisterScreen = () => {
               title="CADASTRAR"
               onPress={() => handleRegister(email, password, name)}
           />
-
-          <SocialLoginButtons />
+          
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
