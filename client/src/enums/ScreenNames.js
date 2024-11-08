@@ -13,4 +13,5 @@ export const ScreenNames = Object.freeze({
   COLOR_GAME: 'ColorGameScreen',
   FEEDBACK_LIST: 'FeedbackListScreen',
   LANDING: 'LandingScreen',
+  EDIT_PROFILE: 'EditProfileScreen',
 });

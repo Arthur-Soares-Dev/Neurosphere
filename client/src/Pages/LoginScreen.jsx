@@ -59,26 +59,6 @@ const LoginScreen = () => {
                 value={email}
             />
 
-
-            {/*<View style={globalStyles.input}>*/}
-              {/*<TextInput*/}
-              {/*  style={globalStyles.inputText}*/}
-              {/*  onChangeText={(email) => setEmail(email)}*/}
-              {/*  autoCapitalize="none"*/}
-              {/*  autoCorrect={false}*/}
-              {/*  value={email}*/}
-              {/*/>*/}
-
-              {/*{email.length > 0 && (*/}
-              {/*  <Ionicons*/}
-              {/*    name={validateEmail(email) ? "checkmark-circle" : "close-circle"}*/}
-              {/*    size={24}*/}
-              {/*    color={validateEmail(email) ? colors.BLUE : colors.BLUE}*/}
-              {/*    style={styles.inputIcon}*/}
-              {/*  />*/}
-              {/*)}*/}
-            {/*</View>*/}
-
             <Text style={globalStyles.label}>SENHA</Text>
 
             <StyledInput
@@ -89,25 +69,6 @@ const LoginScreen = () => {
                 autoCorrect={false}
                 value={password}
             />
-
-            {/*<View style={[globalStyles.input, globalStyles.filledInput]}>*/}
-            {/*  <TextInput*/}
-            {/*    style={[globalStyles.inputText, globalStyles.filledInputText]}*/}
-            {/*    onChangeText={(password) => setPassword(password)}*/}
-            {/*    autoCapitalize="none"*/}
-            {/*    autoCorrect={false}*/}
-            {/*    secureTextEntry={!showPassword}*/}
-            {/*    value={password}*/}
-            {/*  />*/}
-            {/*  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>*/}
-            {/*    <Ionicons*/}
-            {/*      name={showPassword ? "eye" : "eye-off"}*/}
-            {/*      size={24}*/}
-            {/*      color={colors.WHITE}*/}
-            {/*      style={styles.inputIcon}*/}
-            {/*    />*/}
-            {/*  </TouchableOpacity>*/}
-            {/*</View>*/}
 
             <TouchableOpacity onPress={handleForgetPassword} style={styles.forgotPasswordContainer}>
               <Text style={styles.forgotPasswordText}>ESQUECEU A SENHA?</Text>

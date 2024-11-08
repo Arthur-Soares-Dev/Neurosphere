@@ -1,170 +1,116 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, Text, TouchableOpacity, View, ScrollView, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {useAuth} from "../contexts/AuthContext";
-import {ScreenNames} from "../enums/ScreenNames";
+import { useAuth } from "../contexts/AuthContext";
+import { ScreenNames } from "../enums/ScreenNames";
 import StyledButton from "../components/BasesComponents/baseButton";
-import {colors} from "../Styles/GlobalStyle";
-import StyledInput from "../components/BasesComponents/baseInput";
+import GoBackButton from '../components/GoBackButton';
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const { user, logout } = useAuth();
   const [profileImage, setProfileImage] = useState('');
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
 
   useEffect(() => {
-    setName(user.name)
-    setEmail(user.email)
-    setProfileImage(user.profileImage)
+    setProfileImage(user.profileImage);
   }, []);
-
-  const isNameValid = (name) => {
-    return name.length > 0;
-  };
-
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  };
 
   const handleImagePick = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
+    if (!permissionResult.granted) {
       Alert.alert('Permission required', 'Permission to access camera roll is required!');
       return;
     }
-
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.canceled) {
-      const source = {uri: result.assets[0].uri};
+      const source = { uri: result.assets[0].uri };
       setProfileImage(source);
-
-      await handleUpdate()
-    }
-  };
-
-  const handleUpdate = async () => {
-    if (!user || !user.uid) {
-      console.error('Usuário não está autenticado ou o UID está faltando');
-      return;
-    }
-
-    const updatedData = {
-      name: name || undefined,
-      email: email || undefined,
-      currentPassword: currentPassword || undefined,
-      newPassword: newPassword || undefined,
-      profileImage: profileImage || undefined
-    };
-
-    try {
-      console.log('UID', user.uid);
-      await updateUser(user.uid, updatedData);
-      console.log("Atualização de usuário concluída com sucesso!");
-      alert("Atualização de usuário concluída com sucesso!");
-    } catch (error) {
-      console.error("Erro ao atualizar o usuário:", error);
-      alert("Erro ao atualizar o usuário: " + error.message);
     }
   };
 
   const handleLogout = async () => {
-    try {
-      logout().then(() => {
-        navigation.navigate(ScreenNames.LOGIN);
-      });
-    } catch (e) {
-      console.error("Erro ao fazer logout:", e);
-    }
-  }
+    logout().then(() => {
+      navigation.navigate(ScreenNames.LOGIN);
+    });
+  };
 
-  const {updateUser, user, logout} = useAuth();
+  const handleForgetPassword = async () => {
+    try {
+      await forgetPassword(email);
+      alert("Email para troca de senha enviado");
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={30} color="#FD7FAC"/>
-      </TouchableOpacity>
+    <View style={globalStyles.outerContainer}>
 
-      <TouchableOpacity onPress={handleImagePick}>
-        <Image
-          source={profileImage ? {uri: profileImage} : require('../../assets/default-avatar.png')}
-          style={styles.avatar}
-        />
-      </TouchableOpacity>
+      <ScrollView contentContainerStyle={[globalStyles.scrollContainer]}>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Nome</Text>
-          <StyledInput
-            value={name}
-            onChangeText={setName}
-            placeholder="Nome"
+        <View style={[globalStyles.container, , { alignItems: 'flex-start', justifyContent: 'flex-start'}]}>
+          <GoBackButton title="MEU PERFIL" />
+
+          <View style={styles.profileHeader}>
+            <TouchableOpacity onPress={handleImagePick}>
+              <Image
+                source={profileImage ? { uri: profileImage } : require('../../assets/default-avatar.png')}
+                style={styles.avatar}
+              />
+            </TouchableOpacity>
+            <View style={styles.userInfo}>
+              <Text style={[globalStyles.tittle, {marginBottom: 5}]}>{user.name}</Text>
+              <Text style={{ color: colors.BLUE, fontSize: sizeFonts.SMALL }}>{user.email}</Text>
+              <TouchableOpacity
+                style={styles.editProfileButton}
+                onPress={() => navigation.navigate(ScreenNames.EDIT_PROFILE)}
+              >
+                <Text style={styles.buttonText}>Editar Perfil</Text>
+                <Ionicons name="create-outline" size={20} color={colors.WHITE} />
+              </TouchableOpacity>
+            </View>
+
+          </View>
+
+          <View style={[styles.separator]} />
+
+          <StyledButton
+            title="ESQUECEU SUA SENHA?"
+            onPress={handleForgetPassword}
+            style={styles.forgotPasswordButton}
           />
-      </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
-          <StyledInput
-            variant={'email'}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Email"
-            keyboardType="email-address"
+          <View style={styles.separator} />
+
+          <StyledButton
+            title="CRIAR TAREFA"
+            onPress={() => navigation.navigate(ScreenNames.CREATE_TASK)}
+            style={[globalStyles.button, { backgroundColor: colors.WHITE, borderColor: colors.BLUE, borderWidth: 1 }]}
+            textStyle={{ color: colors.BLUE }}
           />
-      </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Senha Atual</Text>
-          <StyledInput
-            variant={'password'}
-            value={currentPassword}
-            onChangeText={setCurrentPassword}
-            placeholder="Senha Atual"
-            // secureTextEntry={!showCurrentPassword}
-          />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Senha Nova</Text>
-          <StyledInput
-            variant={'password'}
-            value={newPassword}
-            onChangeText={setNewPassword}
-            placeholder="Senha Nova"
-            // secureTextEntry={!showNewPassword}
-          />
-      </View>
-
-        <StyledButton
-            title="Atualizar"
-            onPress={handleUpdate}
-        />
-
-        <StyledButton
-            title="Feedbacks"
+          <StyledButton
+            title="VER FEEDBACKS"
             onPress={() => navigation.navigate(ScreenNames.FEEDBACK_LIST)}
-            blueBackground={true}
-        />
+            style={[globalStyles.button, { backgroundColor: colors.PURPLE }]}
+          />
 
-        <StyledButton
+          <StyledButton
             title="Sair"
             onPress={handleLogout}
-            style={{backgroundColor: colors.PURPLE}}
-        />
-
+            style={{ backgroundColor: colors.PINK }}
+            textStyle={{ color: colors.WHITE }}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -172,60 +118,50 @@ const ProfileScreen = () => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+  profileHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingTop: 40,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
-    marginTop: 10,
+    marginBottom: 24,
   },
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    marginBottom: 24,
+    marginRight: 20,
   },
-  inputContainer: {
-    width: '100%',
-    // marginBottom: 24,
+  userInfo: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  label: {
-    marginBottom: 8,
-    color: '#FD7FAC',
-    fontSize: 16,
-  },
-  inputWrapper: {
+
+  editProfileButton: {
+    backgroundColor: colors.YELLOW,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginTop: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f4f4f4',
-    borderRadius: 12,
-    paddingHorizontal: 10,
+    justifyContent: 'center',
   },
-  input: {
-    flex: 1,
-    paddingVertical: 15,
-    fontSize: 16,
-  },
-  icon: {
-    marginLeft: 10,
-  },
-  button: {
-    width: '100%',
-    backgroundColor: '#7C9DD9',
-    paddingVertical: 15,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
+    
   buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: colors.WHITE,
+    fontSize: sizeFonts.SMALL,
+    marginRight: 20,
+    fontFamily: 'MinhaFonte',
+  },
+  
+  separator: {
+    width: '100%',
+    height: 1,
+    backgroundColor: colors.BLUE,
+    marginBottom: 25
+  },
+  forgotPasswordButton: {
+    alignSelf: 'center',
+    backgroundColor: colors.PINK,
+    padding: 16,
+    borderRadius: 10,
   },
 });
+
