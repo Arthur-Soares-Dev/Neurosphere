@@ -11,12 +11,14 @@ import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-  const { user, logout } = useAuth();
-  const [profileImage, setProfileImage] = useState('');
+  const { user, logout, updateUserProfileImage } = useAuth();
+  const [profileImage, setProfileImage] = useState(user?.profileImage || ''); // Usando o encadeamento opcional
 
   useEffect(() => {
-    setProfileImage(user.profileImage);
-  }, []);
+    if (user) {
+      setProfileImage(user.profileImage);
+    }
+  }, [user]);
 
   const handleImagePick = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -31,15 +33,21 @@ const ProfileScreen = () => {
       quality: 1,
     });
     if (!result.canceled) {
-      const source = { uri: result.assets[0].uri };
+      const source = result.assets[0].uri;
       setProfileImage(source);
+
+      // Atualize no banco de dados e no contexto
+      await updateUserProfileImage(source);
     }
   };
 
   const handleLogout = async () => {
-    logout().then(() => {
-      navigation.navigate(ScreenNames.LOGIN);
-    });
+    try {
+      await logout();
+      navigation.navigate(ScreenNames.LANDING);
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   };
 
   const handleForgetPassword = async () => {
@@ -53,10 +61,8 @@ const ProfileScreen = () => {
 
   return (
     <View style={globalStyles.outerContainer}>
-
       <ScrollView contentContainerStyle={[globalStyles.scrollContainer]}>
-
-        <View style={[globalStyles.container, , { alignItems: 'flex-start', justifyContent: 'flex-start'}]}>
+        <View style={[globalStyles.container, { alignItems: 'flex-start', justifyContent: 'flex-start' }]}>
           <GoBackButton title="MEU PERFIL" />
 
           <View style={styles.profileHeader}>
@@ -67,8 +73,14 @@ const ProfileScreen = () => {
               />
             </TouchableOpacity>
             <View style={styles.userInfo}>
-              <Text style={[globalStyles.tittle, {marginBottom: 5}]}>{user.name}</Text>
-              <Text style={{ color: colors.BLUE, fontSize: sizeFonts.SMALL }}>{user.email}</Text>
+              {user ? (
+                <>
+                  <Text style={[globalStyles.tittle, { marginBottom: 5 }]}>{user.name}</Text>
+                  <Text style={{ color: colors.BLUE, fontSize: sizeFonts.SMALL }}>{user.email}</Text>
+                </>
+              ) : (
+                <Text style={{ color: colors.RED }}>Usuário não encontrado</Text>
+              )}
               <TouchableOpacity
                 style={styles.editProfileButton}
                 onPress={() => navigation.navigate(ScreenNames.EDIT_PROFILE)}
@@ -77,17 +89,14 @@ const ProfileScreen = () => {
                 <Ionicons name="create-outline" size={20} color={colors.WHITE} />
               </TouchableOpacity>
             </View>
-
           </View>
 
           <View style={[styles.separator]} />
-
           <StyledButton
             title="ESQUECEU SUA SENHA?"
             onPress={handleForgetPassword}
             style={styles.forgotPasswordButton}
           />
-
           <View style={styles.separator} />
 
           <StyledButton
@@ -95,6 +104,12 @@ const ProfileScreen = () => {
             onPress={() => navigation.navigate(ScreenNames.CREATE_TASK)}
             style={[globalStyles.button, { backgroundColor: colors.WHITE, borderColor: colors.BLUE, borderWidth: 1 }]}
             textStyle={{ color: colors.BLUE }}
+          />
+
+          <StyledButton
+            title="VER TAREFAS"
+            onPress={() => navigation.navigate(ScreenNames.VIEW_TASKS)}
+            style={[globalStyles.button, { backgroundColor: colors.BLUE }]}
           />
 
           <StyledButton
@@ -123,12 +138,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
+
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
     marginRight: 20,
   },
+
   userInfo: {
     flex: 1,
     justifyContent: 'center',
@@ -143,20 +160,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-    
+
   buttonText: {
     color: colors.WHITE,
     fontSize: sizeFonts.SMALL,
     marginRight: 20,
     fontFamily: 'MinhaFonte',
   },
-  
+
   separator: {
     width: '100%',
     height: 1,
     backgroundColor: colors.BLUE,
-    marginBottom: 25
+    marginBottom: 25,
   },
+  
   forgotPasswordButton: {
     alignSelf: 'center',
     backgroundColor: colors.PINK,
@@ -164,4 +182,3 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-

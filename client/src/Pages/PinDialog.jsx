@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
-import {ScreenNames} from "../enums/ScreenNames";
+import { ScreenNames } from "../enums/ScreenNames";
 import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -10,7 +10,6 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
   const { user, updateUser } = useAuth();
 
   useEffect(() => {
-    console.log('user',user)
     if (user) {
       setPin('');
     }
@@ -18,7 +17,6 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
 
   const handleConfirm = async () => {
     try {
-      console.log('user2',user)
       if (user?.pin) {
         if (pin === user.pin) {
           Alert.alert('Sucesso', 'PIN correto!');
@@ -29,7 +27,6 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
           setPin('');
         }
       } else {
-        // Lógica para criar um novo PIN
         if (pin.length === 4) {
           await updateUser(user.uid, { pin });
           Alert.alert('Sucesso', 'Novo PIN criado com sucesso!');
@@ -49,17 +46,23 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
     <Modal visible={isOpen} animationType="slide" transparent={true}>
       <View style={styles.overlay}>
         <View style={styles.dialog}>
-          <View style = {styles.container}>
+
+          <View style={styles.header}>
+            {/* Container para centralizar o título */}
             <Text style={[globalStyles.tittle, styles.title]}>
               {user?.pin ? 'INSERIR PIN' : 'CRIAR NOVO PIN'}
             </Text>
-            <TouchableOpacity style = {styles.closebutton} onPress={onClose}>
-                <Ionicons name="close-outline" size={30} color={colors.YELLOW} />
+
+            {/* Botão de fechar no canto direito */}
+            <TouchableOpacity style={styles.closebutton} onPress={onClose}>
+              <Ionicons name="close-outline" size={30} color={colors.YELLOW} />
             </TouchableOpacity>
           </View>
+
           <Text style={[globalStyles.label, styles.label]}>
             DIGITE SEU PIN:
           </Text>
+
           <TextInput
             style={[globalStyles.input, styles.textInput, globalStyles.inputText]}
             value={pin}
@@ -68,16 +71,14 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
               const numericText = text.replace(/[^0-9]/g, '');
               setPin(numericText);
             }}
-            // placeholder="Digite um PIN (4 dígitos)"
             keyboardType="numeric" // Mostra o teclado numérico
             maxLength={4} // Limita o comprimento do PIN
           />
+
           <TouchableOpacity style={globalStyles.button} onPress={handleConfirm}>
             <Text style={globalStyles.buttonText}>DESBLOQUEAR</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity style={globalStyles.button} onPress={onClose}>
-            <Text style={globalStyles.buttonText}>Cancelar</Text>
-          </TouchableOpacity> */}
+
         </View>
       </View>
     </Modal>
@@ -100,29 +101,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  container: {
+  header: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'relative',
   },
 
   title: {
     fontSize: sizeFonts.MEDIUM,
     color: colors.YELLOW,
+    textAlign: 'center',
+    flex: 1,
     marginBottom: 20,
-    marginLeft: '33%',
   },
 
   label: {
     alignSelf: 'center',
-    marginBottom: 20
+    marginBottom: 20,
   },
 
   textInput: {
     padding: 10,
     minHeight: 50,
     marginBottom: 20,
+  },
+
+  closebutton: {
+    position: 'absolute',
+    top: -2,
+    right: 0,
   },
 
   confirmButton: {
@@ -133,16 +142,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+
   confirmButtonText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
   },
-
-  closebutton: {
-    marginBottom: 20,
-  },
-
 });
 
 export default PinDialog;

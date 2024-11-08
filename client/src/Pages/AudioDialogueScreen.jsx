@@ -5,13 +5,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Speech from 'expo-speech';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { cardProps } from '../components/AudioDialogue/CardProps';
+import GoBackButton from '../components/GoBackButton';
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 
 const AudioDialogueScreen = () => {
   const navigation = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState('emotions');
   const [selectedCards, setSelectedCards] = useState([]);
 
-  const borderColors = ['#FD7FAC', '#7FACD6', '#353535'];
+  const borderColors = [colors.BLUE, colors.PINK, colors.PURPLE, colors.YELLOW, colors.GREEN];
 
   const speakCard = (card) => {
     const options = {
@@ -61,12 +63,12 @@ const AudioDialogueScreen = () => {
   };
 
   const categories = [
-    { key: 'emotions', icon: 'happy-outline', label: 'Emotions' },
-    { key: 'food', icon: 'pizza-outline', label: 'Food' },
-    { key: 'actions', icon: 'hand-left-outline', label: 'Actions' },
-    { key: 'health', icon: 'medkit-outline', label: 'Health' },
-    { key: 'places', icon: 'home-outline', label: 'Places' },
-    { key: 'responses', icon: 'chatbox-outline', label: 'Responses' }
+    { key: 'emotions', icon: 'happy-outline', label: 'EMOÇÕES' },
+    { key: 'food', icon: 'pizza-outline', label: 'COMIDAS' },
+    { key: 'actions', icon: 'hand-left-outline', label: 'AÇÕES' },
+    { key: 'health', icon: 'medkit-outline', label: 'SAÚDE' },
+    { key: 'places', icon: 'home-outline', label: 'LUGARES' },
+    { key: 'responses', icon: 'chatbox-outline', label: 'RESPOSTAS' }
   ];
 
   const renderSelectedItem = ({ item, index, drag, isActive }) => {
@@ -89,56 +91,60 @@ const AudioDialogueScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={30} color="#FD7FAC" />
-      </TouchableOpacity>
-      <Text style={styles.menuContainer}>Painel de Frases</Text>
+    <SafeAreaView style={globalStyles.outerContainer}>
 
-      <View style={styles.topSection}>
-        <DraggableFlatList
-          data={selectedCards}
-          renderItem={renderSelectedItem}
-          keyExtractor={(item, index) => `draggable-item-${item.title}`}
-          onDragEnd={({ data }) => setSelectedCards(data)}
-          horizontal={true}
+      <View style={globalStyles.scrollContainer}>
+
+        <GoBackButton title={"PAINEL DE FRASES"}/>
+
+        <View style={styles.topSection}>
+          <DraggableFlatList
+            data={selectedCards}
+            renderItem={renderSelectedItem}
+            keyExtractor={(item, index) => `draggable-item-${item.title}`}
+            onDragEnd={({ data }) => setSelectedCards(data)}
+            horizontal={true}
+          />
+        </View>
+
+        <View style={styles.actionButtons}>
+        <TouchableOpacity style={styles.trashButton} onPress={clearCards}>
+            <Ionicons name="trash-outline" size={24} color={colors.PURPLE} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionButton} onPress={speakAll}>
+            <Ionicons name="play" size={30} color={colors.WHITE} />
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          data={cardProps[selectedCategory]}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.title}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          showsVerticalScrollIndicator={false}
         />
+
       </View>
 
-      <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.actionButton} onPress={speakAll}>
-          <Text style={styles.actionButtonText}>Falar Frases</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton} onPress={clearCards}>
-          <Text style={styles.actionButtonText}>Limpar</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.bottomBar}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category.key}
+                style={[styles.iconContainer,
+                  selectedCategory === category.key, 
+                ]}
+                onPress={() => setSelectedCategory(category.key)}
+              >
+                <Ionicons name={category.icon} size={28} color={selectedCategory === category.key ? colors.PINK : colors.BLUE} />
+                <Text style={styles.iconText}>{category.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
 
-      <FlatList
-        data={cardProps[selectedCategory]}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.title}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        showsVerticalScrollIndicator={false}
-      />
-
-      <View style={styles.bottomBar}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.key}
-              style={[styles.iconContainer,
-                selectedCategory === category.key && styles.selectedIconContainer,
-              ]}
-              onPress={() => setSelectedCategory(category.key)}
-            >
-              <Ionicons name={category.icon} size={28} color={selectedCategory === category.key ? '#FD7FAC' : '#7FACD6'} />
-              <Text style={styles.iconText}>{category.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
     </SafeAreaView>
   );
 };
@@ -146,100 +152,106 @@ const AudioDialogueScreen = () => {
 export default AudioDialogueScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 10,
-    backgroundColor: '#f0f0f0',
-  },
-  backButton: {
-    marginLeft: 5,
-    marginBottom: 10,
-  },
-  menuContainer: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
+
   row: {
     justifyContent: 'space-between',
     marginBottom: 20,
   },
+
   button: {
     height: 150,
     width: '48%',
-    backgroundColor: '#f0f0f0',
-    borderColor: '#026efd',
+    backgroundColor: colors.WHITE,
+    borderColor: colors.PINK,
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
   },
+
   buttonText: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#353535',
+    color: colors.BLUE,
     marginBottom: 20,
+    fontFamily: 'MinhaFonte'
   },
+
   tinyLogo: {
     width: 50,
     height: 50,
   },
+
   bottomBar: {
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 10,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: 'transparent',
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    borderTopColor: colors.BLUE,
   },
+
   iconContainer: {
     alignItems: 'center',
     paddingHorizontal: 15,
   },
-  selectedIconContainer: {
-    borderBottomWidth: 3,
-    borderBottomColor: '#FD7FAC',
+
+  selecticonText: {
+    color: colors.PINK,
   },
+
   iconText: {
     fontSize: 12,
-    color: '#7FACD6',
+    color: colors.BLUE,
     marginTop: 5,
+    fontFamily: 'MinhaFonte',
   },
+
   topSection: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 100,
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    borderRadius: 15,
+    height: 150,
+    backgroundColor: colors.WHITE,
+    borderWidth: 2,
+    borderColor: colors.BLUE,
+    marginBottom: 20,
+    borderRadius: 10,
     paddingHorizontal: 10,
   },
+
   selectedCard: {
     alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 10,
   },
+
   selectedCardText: {
     fontSize: 16,
-    color: '#353535',
+    color: colors.BLUE,
   },
+
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
-    paddingHorizontal: 10,
   },
+
   actionButton: {
-    backgroundColor: '#FD7FAC',
+    backgroundColor: colors.PINK,
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 115,
+    borderRadius: 10,
+    justifyContent: ' center',
+    alignItems: 'center',
+  },
+
+  trashButton: {
+    backgroundColor: colors.WHITE,
+    borderWidth: 1,
+    borderColor: colors.PURPLE,
+    paddingVertical: 15,
+    paddingHorizontal: 25,
     borderRadius: 10,
   },
-  actionButtonText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
-  },
+
 });

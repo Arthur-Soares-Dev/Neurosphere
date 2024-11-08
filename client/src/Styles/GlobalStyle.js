@@ -33,7 +33,7 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: '17%',
     backgroundColor: colors.WHITE,
-    paddingHorizontal: 35,
+    paddingHorizontal: 30,
   },
 
   container: {
@@ -107,14 +107,6 @@ const globalStyles = StyleSheet.create({
     color: colors.WHITE,
     fontFamily: 'MinhaFonte'
   },
-
-  // characterCount: {
-  //   position: 'absolute',
-  //   bottom: 12,
-  //   right: 12,
-  //   color: '#353535',
-  //   fontSize: 12,
-  // },
 });
 
 export default globalStyles;

@@ -3,7 +3,6 @@ import api from '../service/api'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useLoading} from './LoadingContext';
 
-
 const AuthContext = createContext();
 
 export function AuthProvider({children}) {
@@ -44,21 +43,35 @@ export function AuthProvider({children}) {
     }
   };
 
-  const logout = async () => {
-    startLoading();
-    try {
-      await api.post(`/auth/logout`, {}, {withCredentials: true});
-      setUser(null);
-      await AsyncStorage.removeItem('userId'); // Remove o ID do usuário do AsyncStorage
-      const savedUser = await AsyncStorage.getItem('user');
-      console.log("Dados no AsyncStorage após logout:", savedUser);
-    } catch (error) {
-      console.error("Erro ao fazer logout:", error);
-      throw new Error(error.message);
-    } finally {
-      stopLoading();
-    }
-  };
+//   const logout = async () => {
+//     startLoading();
+//     try {
+//       await api.post(`/auth/logout`, {}, {withCredentials: true});
+//       setUser(null);
+//       await AsyncStorage.removeItem('userId'); // Remove o ID do usuário do AsyncStorage
+//       const savedUser = await AsyncStorage.getItem('user');
+//       console.log("Dados no AsyncStorage após logout:", savedUser);
+//     } catch (error) {
+//       console.error("Erro ao fazer logout:", error);
+//       throw new Error(error.message);
+//     } finally {
+//       stopLoading();
+//     }
+//   };
+
+const logout = async () => {
+  startLoading();
+  try {
+    await api.post(`/auth/logout`, {}, { withCredentials: true });
+    setUser(null); // Limpa o estado do usuário após logout
+    await AsyncStorage.removeItem('userId'); // Remove o ID do usuário do AsyncStorage
+  } catch (error) {
+    console.error("Erro ao fazer logout:", error);
+    throw new Error(error.message);
+  } finally {
+    stopLoading();
+  }
+};
 
 
   const forgetPassword = async (email) => {
@@ -77,22 +90,40 @@ export function AuthProvider({children}) {
     }
   };
 
-  const registerUser = async (email, password, name) => {
-    startLoading();
-    console.log("Tentando registrar com", email);
-    try {
-      const response = await api.post(`/auth/register`, {email, password, name});
-      setUser(response.data);
-      await AsyncStorage.setItem('userId', response.data.id);
+  // const registerUser = async (email, password, name) => {
+  //   startLoading();
+  //   console.log("Tentando registrar com", email);
+  //   try {
+  //     const response = await api.post(`/auth/register`, {email, password, name});
+  //     setUser(response.data);
+  //     await AsyncStorage.setItem('userId', response.data.id);
 
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao registrar usuário:", error);
-      throw new Error(error.response.data.message || error.message);
-    } finally {
-      stopLoading();
-    }
-  };
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Erro ao registrar usuário:", error);
+  //     throw new Error(error.response.data.message || error.message);
+  //   } finally {
+  //     stopLoading();
+  //   }
+  // };
+
+  const registerUser = async (email, password, name) => {
+  startLoading();
+  console.log("Tentando registrar com", email);
+  try {
+    const response = await api.post(`/auth/register`, { email, password, name });
+    setUser(response.data);
+    await AsyncStorage.setItem('userId', response.data.id);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao registrar usuário:", error);
+    console.error("Detalhes do erro:", error.response ? error.response.data : error.message);
+    throw new Error(error.response?.data?.message || error.message);
+  } finally {
+    stopLoading();
+  }
+};
+
 
   const updateUser = async (uid, updatedData) => {
     startLoading();
@@ -121,6 +152,31 @@ export function AuthProvider({children}) {
     }
   };
 
+  // const checkCurrentPassword = async (currentPassword) => {
+  //   try {
+  //     // Verifique se o caminho correto é esse
+  //     const response = await api.post(`/auth/check-password`, {
+  //       email: user.email,
+  //       password: currentPassword,
+  //     });
+  //     return response.data.valid;
+  //   } catch (error) {
+  //     // Logue o erro detalhado para verificar a resposta
+  //     console.error('Erro ao verificar a senha atual:', error.response ? error.response.data : error.message);
+  //     return false;
+  //   }
+  // };
+  
+
+  const updateUserProfileImage = async (newImageUri) => {
+    try {
+      const updatedUser = await updateUser(user.uid, { profileImage: newImageUri });
+      setUser(updatedUser);
+      return updatedUser;
+    } catch (error) {
+      console.error("Erro ao atualizar a imagem de perfil:", error);
+    }
+  };
 
   const getAuthToken = async () => {
     if (user) {
@@ -130,7 +186,17 @@ export function AuthProvider({children}) {
   };
 
   return (
-    <AuthContext.Provider value={{user, login, logout, forgetPassword, registerUser, updateUser, getAuthToken}}>
+    <AuthContext.Provider value={
+      {user, 
+      login, 
+      logout, 
+      forgetPassword, 
+      registerUser, 
+      updateUser,
+      // checkCurrentPassword, 
+      updateUserProfileImage,
+      getAuthToken}
+    }>
       {children}
     </AuthContext.Provider>
   );

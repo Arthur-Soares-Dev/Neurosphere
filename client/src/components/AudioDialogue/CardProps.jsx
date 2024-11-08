@@ -2,12 +2,12 @@ export const cardProps = {
     "emotions": [
         {
             title: "TRISTE",
-            audio: "Eu estou triste.",
+            audio: "triste.",
             uri: require('./CardImages/triste.png')
         },
         {
             title: "FELIZ",
-            audio: "Eu estou feliz.",
+            audio: "feliz.",
             uri: require('./CardImages/feliz.png')
         },
         {
@@ -19,34 +19,34 @@ export const cardProps = {
     "food": [
         {
             title: "COMER",
-            audio: "Eu quero comer.",
+            audio: "comer.",
             uri: require('./CardImages/comer.png')
         },
         {
             title: "SEDE",
-            audio: "Eu estou com sede.",
+            audio: "beber.",
             uri: require('./CardImages/sede.png')
         }
     ],
     "actions": [
         {
             title: "AJUDA",
-            audio: "Eu preciso de ajuda.",
+            audio: "Eu quero ajuda.",
             uri: require('./CardImages/ajuda.png')
         },
         {
             title: "BRINCAR",
-            audio: "Eu quero brincar.",
+            audio: "brincar.",
             uri: require('./CardImages/brincar.png')
         },
         {
             title: "DESCANSAR",
-            audio: "Eu quero descansar.",
+            audio: "descansar.",
             uri: require('./CardImages/descansar.png')
         },
         {
             title: "DORMIR",
-            audio: "Eu quero dormir.",
+            audio: "dormir.",
             uri: require('./CardImages/dormir.png')
         }
     ],
@@ -54,7 +54,7 @@ export const cardProps = {
         {
             title: "DOR",
             audio: "Eu estou com dor.",
-            uri: require('./CardImages/check.png')
+            uri: require('./CardImages/dor.png')
         },
         {
             title: "BANHEIRO",
@@ -65,7 +65,7 @@ export const cardProps = {
     "places": [
         {
             title: "CASA",
-            audio: "Eu quero ir para casa.",
+            audio: "casa.",
             uri: require('./CardImages/casa.png')
         }
     ],

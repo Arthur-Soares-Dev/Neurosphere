@@ -16,6 +16,7 @@ import ColorGameScreen from "./Pages/Games/ColorGameScreen";
 import FeedbackListScreen from "./Pages/FeedbackListScreen";
 import { ScreenNames } from "./enums/ScreenNames";
 import LandingScreen from "./Pages/LandingScreen";
+import EditProfileScreen from './Pages/EditProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,7 @@ const AuthStack = () => {
                     <Stack.Screen name={ScreenNames.VIEW_TASKS} component={ViewTasksScreen} />
                     <Stack.Screen name={ScreenNames.CREATE_TASK} component={CreateTaskScreen} />
                     <Stack.Screen name={ScreenNames.PROFILE} component={ProfileScreen} />
+                    <Stack.Screen name={ScreenNames.EDIT_PROFILE} component={EditProfileScreen} />
                     <Stack.Screen name={ScreenNames.AUDIO_DIALOGUE} component={AudioDialogueScreen} />
                     <Stack.Screen name={ScreenNames.GAMES_LIST} component={GamesListScreen} />
                     <Stack.Screen name={ScreenNames.MATH_GAME} component={MathGameScreen} />

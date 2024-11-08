@@ -1,5 +1,4 @@
 // src/App.js
-
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider } from './src/contexts/AuthContext';
@@ -9,6 +8,7 @@ import { LoadingProvider } from './src/contexts/LoadingContext';
 import Loading from './src/components/Loading';
 import LaunchScreen from './src/Pages/LaunchScreen';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 function App() {
     const [isLaunchVisible, setIsLaunchVisible] = useState(true);
@@ -36,6 +36,7 @@ function App() {
                     </NavigationContainer>
                 </TasksProvider>
             </AuthProvider>
+            <StatusBar style="dark" translucent={true} backgroundColor="transparent" />
         </LoadingProvider>
     );
 }

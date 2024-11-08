@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import {useTasks} from "../contexts/TasksContext"; // Atualize para FontAwesome5 se necessário
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {useTasks} from "../contexts/TasksContext";
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 
 const DialogTask = ({ isOpen, onClose, taskId }) => {
     const [selectedEmoji, setSelectedEmoji] = useState('');
@@ -40,10 +42,19 @@ const DialogTask = ({ isOpen, onClose, taskId }) => {
     return (
         <Modal visible={isOpen} animationType="slide" transparent={true}>
             <View style={styles.overlay}>
-                <View style={styles.dialog}>
-                    <Text style={styles.title}>Avaliação de Tarefa</Text>
 
-                    <Text style={styles.label}>Como você se sentiu ao realizar essa tarefa?</Text>
+                <View style={styles.dialog}>
+
+                    <View style = {styles.container}>
+
+                        <TouchableOpacity style = {styles.closebutton} onPress={onClose}>
+                            <Ionicons name="close-outline" size={30} color={colors.YELLOW} />
+                        </TouchableOpacity>
+
+                        <Text style={[globalStyles.tittle, styles.title]}>AVALIAÇÃO DA TAREFA</Text>
+
+                    </View>
+
                     <View style={styles.emojiContainer}>
                         {emojis.map((item) => (
                             <TouchableOpacity
@@ -54,29 +65,28 @@ const DialogTask = ({ isOpen, onClose, taskId }) => {
                                     selectedEmoji === item.value && styles.selectedEmoji,
                                 ]}
                             >
-                                <FontAwesome5 name={item.emoji} size={32} color={selectedEmoji === item.value ? '#FF4081' : '#888'} />
+                                <FontAwesome5 name={item.emoji} size={32} color={selectedEmoji === item.value ? colors.PINK : colors.BLUE} />
                             </TouchableOpacity>
                         ))}
                     </View>
 
-                    <Text style={styles.label}>Descreva como foi</Text>
+                    <Text style={[globalStyles.label, styles.label]}>DESCREVA COMO FOI A REALIZAÇÃO DA TAREFA:</Text>
                     <TextInput
-                        style={styles.textInput}
+                        style={[globalStyles.input, styles.textInput, globalStyles.inputText]}
                         value={textInput}
                         onChangeText={setTextInput}
-                        placeholder="Escreva algo..."
                         multiline={true}
                     />
 
-                    <TouchableOpacity style={styles.submitButton} onPress={() => handleSendFeedback()}>
+                    <TouchableOpacity style={globalStyles.button} onPress={() => handleSendFeedback()}>
                         <Text
-                            style={styles.submitButtonText}>Enviar</Text>
+                            style={globalStyles.buttonText}>ENVIAR</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.submitButton} onPress={() => onClose()}>
+                    {/* <TouchableOpacity style={globalStyles.button} onPress={() => onClose()}>
                         <Text
-                            style={styles.submitButtonText}>Fechar</Text>
-                    </TouchableOpacity>
+                            style={globalStyles.buttonText}>Fechar</Text>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         </Modal>
@@ -90,73 +100,60 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
+
     dialog: {
-        backgroundColor: '#f9f9f9',
-        padding: 20,
+        backgroundColor: colors.WHITE,
+        padding: 30,
+        paddingBottom: 65,
         borderRadius: 10,
         width: '85%',
         alignItems: 'center',
     },
+
     title: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#FF4081',
+        color: colors.YELLOW,
         marginBottom: 20,
+        marginRight: '17%',
     },
+
     label: {
-        fontSize: 16,
         alignSelf: 'flex-start',
         marginBottom: 10,
-        color: '#FF4081',
     },
+
+    container: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+
+    closebutton: {
+        marginBottom: 20,
+    },
+
     emojiContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
         marginBottom: 20,
     },
+
     emojiButton: {
         padding: 10,
     },
+
     selectedEmoji: {
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#ffdbe6',
         borderRadius: 50,
     },
+    
     textInput: {
-        width: '100%',
         padding: 10,
-        borderColor: '#ddd',
-        borderWidth: 1,
         borderRadius: 5,
-        minHeight: 80,
+        minHeight: 100,
         textAlignVertical: 'top',
         marginBottom: 20,
-        backgroundColor: '#f0f0f0',
-    },
-    submitButton: {
-        backgroundColor: '#87CEFA',
-        padding: 12,
-        borderRadius: 5,
-        width: '100%',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    submitButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-    cancelButton: {
-        backgroundColor: '#FFB6C1',
-        padding: 12,
-        borderRadius: 5,
-        width: '100%',
-        alignItems: 'center',
-    },
-    cancelButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
     },
 });
 
