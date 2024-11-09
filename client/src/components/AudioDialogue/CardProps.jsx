@@ -26,6 +26,16 @@ export const cardProps = {
             title: "SEDE",
             audio: "beber.",
             uri: require('./CardImages/sede.png')
+        },
+        {
+            title: "CARNE",
+            audio: "carne.",
+            uri: require('./CardImages/carne.png')
+        },
+        {
+            title: "VEGETAIS",
+            audio: "vegetais.",
+            uri: require('./CardImages/vegetais.png')
         }
     ],
     "actions": [
