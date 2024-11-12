@@ -6,7 +6,10 @@ import GoBackButton from '../components/GoBackButton';
 import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 import BaseGameCard from '../components/BasesComponents/baseGameCard';
 
+
 const GamesListScreen = ({ navigation }) => {
+
+
   return (
     <View style={globalStyles.outerContainer}>
 
@@ -26,7 +29,7 @@ const GamesListScreen = ({ navigation }) => {
 
           <BaseGameCard
               gameTitle="FORCA - JOGO DE PALAVRAS"
-              score={1000}
+              score={100}
               navigation={navigation}
               gameScreen={ScreenNames.WORD_GAME}
               index={1}
@@ -47,6 +50,7 @@ const GamesListScreen = ({ navigation }) => {
               gameScreen={ScreenNames.EMOTION_GAME}
               index={3}
           />
+          
         </View>
       </ScrollView>
     </View>

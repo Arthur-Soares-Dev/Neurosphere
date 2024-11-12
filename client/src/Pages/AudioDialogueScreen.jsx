@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   actionButton: {
     backgroundColor: colors.PINK,
     paddingVertical: 10,
-    paddingHorizontal: 115,
+    paddingHorizontal: 105,
     borderRadius: 10,
     justifyContent: ' center',
     alignItems: 'center',

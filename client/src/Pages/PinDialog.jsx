@@ -48,12 +48,12 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
         <View style={styles.dialog}>
 
           <View style={styles.header}>
-            {/* Container para centralizar o título */}
+           
             <Text style={[globalStyles.tittle, styles.title]}>
               {user?.pin ? 'INSERIR PIN' : 'CRIAR NOVO PIN'}
             </Text>
 
-            {/* Botão de fechar no canto direito */}
+            
             <TouchableOpacity style={styles.closebutton} onPress={onClose}>
               <Ionicons name="close-outline" size={30} color={colors.YELLOW} />
             </TouchableOpacity>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   closebutton: {
     position: 'absolute',
     top: -2,
-    right: 0,
+    left: 0,
   },
 
   confirmButton: {

@@ -83,10 +83,6 @@ const DialogTask = ({ isOpen, onClose, taskId }) => {
                             style={globalStyles.buttonText}>ENVIAR</Text>
                     </TouchableOpacity>
 
-                    {/* <TouchableOpacity style={globalStyles.button} onPress={() => onClose()}>
-                        <Text
-                            style={globalStyles.buttonText}>Fechar</Text>
-                    </TouchableOpacity> */}
                 </View>
             </View>
         </Modal>
