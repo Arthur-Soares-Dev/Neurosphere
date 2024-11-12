@@ -11,7 +11,7 @@ const DashboardScreen = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
-
+console.log('USER',user)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>

@@ -12,7 +12,7 @@ const EditProfileScreen = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  // const [currentPassword, setCurrentPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const { updateUser, user, checkCurrentPassword } = useAuth();
@@ -85,8 +85,8 @@ const EditProfileScreen = () => {
           <Text style={globalStyles.label}>Senha Atual</Text>
           <StyledInput 
             variant="password" 
-            // onChangeText={setCurrentPassword} 
-            // value={currentPassword} 
+            onChangeText={setCurrentPassword}
+            value={currentPassword}
             autoCapitalize="none" 
           />
 
