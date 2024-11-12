@@ -8,6 +8,7 @@ import { ScreenNames } from "../enums/ScreenNames";
 import StyledButton from "../components/BasesComponents/baseButton";
 import GoBackButton from '../components/GoBackButton';
 import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
+import api from '../service/api'
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -26,18 +27,58 @@ const ProfileScreen = () => {
       Alert.alert('Permission required', 'Permission to access camera roll is required!');
       return;
     }
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
+
     if (!result.canceled) {
       const source = result.assets[0].uri;
       setProfileImage(source);
 
-      // Atualize no banco de dados e no contexto
-      await updateUserProfileImage(source);
+      try {
+        const fileExtension = source.split('.').pop().toLowerCase(); // Detecta a extensão do arquivo
+        let mimeType;
+
+        // Determina o tipo MIME baseado na extensão do arquivo
+        switch (fileExtension) {
+          case 'jpg':
+          case 'jpeg':
+            mimeType = 'image/jpeg';
+            break;
+          case 'png':
+            mimeType = 'image/png';
+            break;
+          case 'gif':
+            mimeType = 'image/gif';
+            break;
+          case 'bmp':
+            mimeType = 'image/bmp';
+            break;
+          case 'webp':
+            mimeType = 'image/webp';
+            break;
+          default:
+            mimeType = 'image/*'; // Para garantir que qualquer imagem seja aceita
+        }
+
+        const formData = new FormData();
+        formData.append('image', {
+          uri: source,
+          name: `profile_image.${fileExtension}`,
+          type: mimeType,
+        });
+
+        await updateUserProfileImage(formData);
+
+        Alert.alert('Sucesso', 'Imagem de perfil atualizada com sucesso.');
+      } catch (error) {
+        console.error('Erro ao atualizar imagem de perfil:', error);
+        Alert.alert('Erro', 'Não foi possível atualizar a imagem de perfil.');
+      }
     }
   };
 

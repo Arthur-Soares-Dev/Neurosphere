@@ -166,15 +166,25 @@ const logout = async () => {
   //     return false;
   //   }
   // };
-  
 
-  const updateUserProfileImage = async (newImageUri) => {
+
+  const updateUserProfileImage = async (formData) => {
+    startLoading();
+    console.log("Tentando atualizar a imagem de perfil", formData);
     try {
-      const updatedUser = await updateUser(user.uid, { profileImage: newImageUri });
+      const response = await api.put(`/auth/update/${user.uid}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const updatedUser = response.data;
       setUser(updatedUser);
-      return updatedUser;
+
     } catch (error) {
       console.error("Erro ao atualizar a imagem de perfil:", error);
+    } finally {
+      stopLoading();
     }
   };
 
