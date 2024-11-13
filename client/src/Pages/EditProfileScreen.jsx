@@ -53,17 +53,14 @@ const EditProfileScreen = () => {
   return (
     <View style={globalStyles.outerContainer}>
 
-      <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0}]}>
+        <GoBackButton title="EDITAR PERFIL" />
+      </View>
+
+      <ScrollView contentContainerStyle={[globalStyles.scrollContainer,  { paddingTop: "0%"}]}>
 
         <View style={[globalStyles.container, { alignItems: 'center', justifyContent: 'flex-start' }]}>
-          <GoBackButton title="EDITAR PERFIL" />
-
-          <View>
-            <Image
-              source={profileImage ? { uri: profileImage } : require('../../assets/default-avatar.png')}
-              style={styles.avatar}
-            />
-          </View>
+          
 
           <Text style={globalStyles.label}>Nome</Text>
           <StyledInput 
@@ -109,12 +106,3 @@ const EditProfileScreen = () => {
 };
 
 export default EditProfileScreen;
-
-const styles = StyleSheet.create({
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginRight: 20,
-  },
-});

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 30,
     color: colors.YELLOW, 
-    marginBottom: 40,
+    marginBottom: 30,
     alignSelf: 'center',
   },
 
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 
   iconBottom: {
     position: 'absolute',
-    bottom: -160,
+    bottom: -170,
   }
 });
 

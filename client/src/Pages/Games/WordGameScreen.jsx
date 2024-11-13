@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Alert, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import globalStyles, { colors, sizeFonts } from '../../Styles/GlobalStyle';
+import globalStyles, { colors } from '../../Styles/GlobalStyle';
 import GoBackButton from '../../components/GoBackButton';
 import StyledButton from "../../components/BasesComponents/baseButton";
 import gameStyle from '../../Styles/gameStyle';
 import Hearts from '../../components/GameComponents/hearts';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const palavrasAleatorias = require('../../../assets/palavras-simples.json');
 
@@ -59,19 +60,26 @@ const WordGameScreen = () => {
     if (newMaskedWord === maskedWord) {
       setAttempts(attempts + 1);
       if (attempts + 1 >= 3) {
-        Alert.alert('Vidas esgotadas!', 'Todas as vidas foram usadas. O jogo será reiniciado.', [
-          { text: 'OK', onPress: () => {
-            setNewWord();
-            setScore(0); 
-          }}
-        ]);
+        Alert.alert(
+          'Vidas esgotadas!',
+          `Todas as vidas foram usadas. A palavra correta era "${currentWord}". O jogo será reiniciado.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                setNewWord();
+                setScore(0);
+              },
+            },
+          ]
+        );
       }
     } else {
       setMaskedWord(newMaskedWord);
       if (newMaskedWord === currentWord) {
         Alert.alert('Parabéns!', `Você ganhou! A palavra era ${currentWord}`);
         setNewWord();
-        setScore(score + 100);  // Aumenta a pontuação em 100 quando acerta
+        setScore(score + 100); // Aumenta a pontuação em 100 quando acerta
       }
     }
     setGuess('');
@@ -79,9 +87,12 @@ const WordGameScreen = () => {
 
   return (
     <View style={globalStyles.outerContainer}>
-      <View style={[globalStyles.scrollContainer, gameStyle.container]}>
-        
+
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0 }]}>
         <GoBackButton title="FORCA" />
+      </View>
+
+      <ScrollView contentContainerStyle={[globalStyles.scrollContainer, { paddingTop: 0 }, gameStyle.container]}>
 
         <View style={gameStyle.header}>
           <Hearts attempts={attempts} />
@@ -112,15 +123,15 @@ const WordGameScreen = () => {
         <StyledButton 
           title="ADIVINHAR" 
           onPress={handleGuess} 
-          style={{marginBottom: 0}}
+          style={{ marginBottom: 0 }}
         />
 
         <View style={gameStyle.testedLettersContainer}>
-          <Text style={[globalStyles.label,gameStyle.testedLabel]}>LETRAS TESTADAS:</Text>
+          <Text style={[globalStyles.label, gameStyle.testedLabel]}>LETRAS TESTADAS:</Text>
           <Text style={gameStyle.testedLetters}>{testedLetters.join(' ')}</Text>
         </View>
         
-      </View>
+      </ScrollView>
     </View>
   );
 };

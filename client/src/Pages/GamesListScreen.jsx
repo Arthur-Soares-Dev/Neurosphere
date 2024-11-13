@@ -13,12 +13,14 @@ const GamesListScreen = ({ navigation }) => {
   return (
     <View style={globalStyles.outerContainer}>
 
-      <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0}]}>
+        <GoBackButton title={"JOGOS"}/>
+      </View>
+
+      <ScrollView contentContainerStyle={[globalStyles.scrollContainer, {paddingTop: 0}]}>
 
         <View style={[globalStyles.container, styles.cardContainer]}>
 
-          <GoBackButton title={"JOGOS"}/>
-          
           <BaseGameCard
               gameTitle="CONTINHAS - JOGO DE MATEMÁTICA"
               score={200}

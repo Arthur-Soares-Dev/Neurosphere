@@ -47,7 +47,7 @@ export const cardProps = {
             uri: require('./CardImages/comer.png')
         },
         {
-            title: "SEDE",
+            title: "BEBER",
             audio: "beber.",
             uri: require('./CardImages/sede.png')
         },

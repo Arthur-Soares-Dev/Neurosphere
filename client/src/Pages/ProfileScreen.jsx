@@ -102,17 +102,24 @@ const ProfileScreen = () => {
 
   return (
     <View style={globalStyles.outerContainer}>
-      <ScrollView contentContainerStyle={[globalStyles.scrollContainer]}>
+
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0}]}>
+        <GoBackButton title="MEU PERFIL" />
+      </View>
+
+      <ScrollView contentContainerStyle={[globalStyles.scrollContainer, {paddingTop: 0}]}>
+
         <View style={[globalStyles.container, { alignItems: 'flex-start', justifyContent: 'flex-start' }]}>
-          <GoBackButton title="MEU PERFIL" />
 
           <View style={styles.profileHeader}>
+
             <TouchableOpacity onPress={handleImagePick}>
               <Image
                 source={profileImage ? { uri: profileImage } : require('../../assets/default-avatar.png')}
                 style={styles.avatar}
               />
             </TouchableOpacity>
+
             <View style={styles.userInfo}>
               {user ? (
                 <>
@@ -130,6 +137,7 @@ const ProfileScreen = () => {
                 <Ionicons name="create-outline" size={20} color={colors.WHITE} />
               </TouchableOpacity>
             </View>
+
           </View>
 
           <View style={[styles.separator]} />
@@ -165,8 +173,11 @@ const ProfileScreen = () => {
             style={{ backgroundColor: colors.PINK }}
             textStyle={{ color: colors.WHITE }}
           />
+
         </View>
+
       </ScrollView>
+
     </View>
   );
 };

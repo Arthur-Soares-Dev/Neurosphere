@@ -126,10 +126,12 @@ const CreateTaskScreen = ({ route, navigation }) => {
     return (
         <SafeAreaView style={globalStyles.outerContainer}>
 
-            <ScrollView contentContainerStyle={globalStyles.scrollContainer} keyboardShouldPersistTaps="handled">
-
+            <View style={[globalStyles.scrollContainer]}>
                 <GoBackButton title={(edit ? 'EDITAR TAREFA' : 'CRIAR TAREFA')}/>
-        
+            </View>
+
+            <ScrollView contentContainerStyle={[globalStyles.scrollContainer, {paddingTop: 0}]} keyboardShouldPersistTaps="handled">
+
                 <View style={globalStyles.container}>
 
                     

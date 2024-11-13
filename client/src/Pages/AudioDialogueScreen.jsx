@@ -93,9 +93,11 @@ const AudioDialogueScreen = () => {
   return (
     <SafeAreaView style={globalStyles.outerContainer}>
 
-      <View style={globalStyles.scrollContainer}>
-
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0}]}>
         <GoBackButton title={"PAINEL DE FRASES"}/>
+      </View>
+
+      <View style={[globalStyles.scrollContainer, {paddingTop: 0}]}>
 
         <View style={styles.topSection}>
           <DraggableFlatList
@@ -108,13 +110,18 @@ const AudioDialogueScreen = () => {
         </View>
 
         <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.trashButton} onPress={clearCards}>
+          <TouchableOpacity style={styles.trashButton} onPress={clearCards}>
             <Ionicons name="trash-outline" size={24} color={colors.PURPLE} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.actionButton} onPress={speakAll}>
             <Ionicons name="play" size={30} color={colors.WHITE} />
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.trashButton} onPress={clearCards}>
+            <Ionicons name="star-outline" size={24} color={colors.PURPLE} />
+          </TouchableOpacity>
+          
         </View>
 
         <FlatList
@@ -124,26 +131,28 @@ const AudioDialogueScreen = () => {
           numColumns={2}
           columnWrapperStyle={styles.row}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: '100%' }}
         />
+
 
       </View>
 
-        <View style={styles.bottomBar}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {categories.map((category) => (
-              <TouchableOpacity
-                key={category.key}
-                style={[styles.iconContainer,
-                  selectedCategory === category.key, 
-                ]}
-                onPress={() => setSelectedCategory(category.key)}
-              >
-                <Ionicons name={category.icon} size={28} color={selectedCategory === category.key ? colors.PINK : colors.BLUE} />
-                <Text style={styles.iconText}>{category.label}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
+      <View style={styles.bottomBar}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {categories.map((category) => (
+            <TouchableOpacity
+              key={category.key}
+              style={[styles.iconContainer,
+                selectedCategory === category.key, 
+              ]}
+              onPress={() => setSelectedCategory(category.key)}
+            >
+              <Ionicons name={category.icon} size={28} color={selectedCategory === category.key ? colors.PINK : colors.BLUE} />
+              <Text style={styles.iconText}>{category.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
     </SafeAreaView>
   );
@@ -182,10 +191,12 @@ const styles = StyleSheet.create({
   },
 
   bottomBar: {
+    position: 'absolute',
+    bottom: 0,
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 10,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.WHITE,
     borderTopWidth: 1,
     borderTopColor: colors.BLUE,
   },
@@ -234,15 +245,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+    width: '100%',
   },
 
   actionButton: {
     backgroundColor: colors.PINK,
     paddingVertical: 10,
-    paddingHorizontal: 105,
     borderRadius: 10,
     justifyContent: ' center',
     alignItems: 'center',
+    width: '50%',
   },
 
   trashButton: {

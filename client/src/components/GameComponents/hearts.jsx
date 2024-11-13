@@ -5,7 +5,7 @@ import { colors } from '../../Styles/GlobalStyle';
 import gameStyle from '../../Styles/gameStyle';
 
 const Hearts = ({ attempts }) => {
-  const totalLives = 3; // Número total de vidas
+  const totalLives = 3;
 
   return (
     <View style={gameStyle.heartsContainer}>
