@@ -71,7 +71,7 @@ const MathGameScreen = () => {
       setAttempts(prev => prev + 1);
       setTestedAnswers(prev => [...prev, userAnswer]); // Adiciona a resposta incorreta ao array de respostas testadas
       if (attempts + 1 >= 3) {
-        Alert.alert("Vidas esgotadas!", `A resposta correta é ${correctAnswer}. O jogo será reiniciado.`);
+        Alert.alert("Vidas esgotadas!", `A resposta correta era ${correctAnswer}. O jogo será reiniciado.`);
         setScore(0);
         resetGame(true);
       } else {

@@ -22,34 +22,34 @@ const GamesListScreen = ({ navigation }) => {
         <View style={[globalStyles.container, styles.cardContainer]}>
 
           <BaseGameCard
-              gameTitle="CONTINHAS - JOGO DE MATEMÁTICA"
-              score={200}
+              gameTitle="CONTINHAS"
               navigation={navigation}
               gameScreen={ScreenNames.MATH_GAME}
+              tema={"JOGO DE MATEMÁTICA"}
               index={0}
           />
 
           <BaseGameCard
-              gameTitle="FORCA - JOGO DE PALAVRAS"
-              score={100}
+              gameTitle="FORCA"
               navigation={navigation}
               gameScreen={ScreenNames.WORD_GAME}
+              tema={"JOGO DE PALAVRAS"}
               index={1}
           />
 
           <BaseGameCard
-              gameTitle="SEQUÊNCIA COLORIDA - JOGO DAS CORES"
-              score={1000}
+              gameTitle="SEQUÊNCIA COLORIDA"
               navigation={navigation}
               gameScreen={ScreenNames.COLOR_GAME}
+              tema={"JOGO DAS CORES"}
               index={2}
           />
 
           <BaseGameCard
-              gameTitle="EMOCIONÁRIO - DICIONÁRIO DAS EMOÇÕES"
-              score={1000}
+              gameTitle="EMOCIONÁRIO"
               navigation={navigation}
               gameScreen={ScreenNames.EMOTION_GAME}
+              tema={"DICIONÁRIO DAS EMOÇÕES"}
               index={3}
           />
           

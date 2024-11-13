@@ -4,6 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {ScreenNames} from "../../../enums/ScreenNames";
 
+
 const ButtonCards = () => {
   const navigation = useNavigation();
 
@@ -54,17 +55,6 @@ const ButtonCards = () => {
             Jogos
           </Text>
         </TouchableOpacity>
-
-        {/* <TouchableOpacity style={styles.card}
-          onPress={() => changePassword()}
-        >
-          <View style={styles.circle}>
-            <Text style={{ color: "#FD7FAC", fontSize: 40, marginTop: -6, }}></Text>
-          </View>
-          <Text style={{ color: "white", fontSize: 14, textAlign: 'center' }}>
-            Trocar a {"\n"} Senha
-          </Text>
-        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -73,20 +63,6 @@ const ButtonCards = () => {
 export default ButtonCards;
 
 const styles = StyleSheet.create({
-  button: {
-    marginTop: 20,
-    height: 70,
-    width: '100%',
-    backgroundColor: '#026efd',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 15,
-  },
-  buttonText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
   containerAtalhos: {
     height: 200
   },
@@ -126,11 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
   },
 });
 

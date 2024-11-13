@@ -8,7 +8,7 @@ const colorOrder = [colors.BLUE, colors.PINK, colors.PURPLE, colors.GREEN, color
 const BaseGameCard = ({ style = [], index = 0, ...props }) => {
     const {
         gameTitle,
-        score,
+        tema,
         navigation,
         gameScreen,
     } = props;
@@ -29,7 +29,7 @@ const BaseGameCard = ({ style = [], index = 0, ...props }) => {
             <View style={styles.iconContainer}>
                 <Ionicons name="play" size={24} color={colors.WHITE} />
             </View>
-            <Text style={styles.scoreText}>MAIOR PONTUACAO: {score}</Text>
+            <Text style={styles.scoreText}>{tema}</Text>
             <Text style={styles.gameTitle}>{gameTitle}</Text>
         </TouchableOpacity>
     );

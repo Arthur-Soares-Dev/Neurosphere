@@ -1,12 +1,13 @@
 import {StyleSheet, Text, View} from 'react-native'
 import React from 'react'
+import globalStyles, {colors, sizeFonts} from '../../../Styles/GlobalStyle'
 
 const Card = () => {
 
   return (
-    <View style={{width: "95%"}}>
+    <View style={{width: "100%"}}>
         <View style={styles.menuContainer}>
-            <Text style={{fontSize: 25}}>Início</Text>
+            <Text style={{fontSize: sizeFonts.MEDIUM, color: colors.YELLOW, fontFamily: 'MinhaFonte',}}>INÍCIO</Text>
         </View>
         <View style={styles.card}>
         </View>
