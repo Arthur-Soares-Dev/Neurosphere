@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 
 const ptBR = {
   monthNames: [
@@ -57,20 +58,18 @@ const MyCalendar = ({ onDayChange, markedDates }) => {
         backgroundColor: 'white',
         calendarBackground: 'white',
         textSectionTitleColor: 'black',
-        selectedDayBackgroundColor: '#FF6B6B',
-        todayTextColor: '#FF6B6B',
+        selectedDayBackgroundColor: colors.PINK,
+        todayTextColor: colors.PINK,
         dayTextColor: 'black',
         textDisabledColor: 'grey',
         monthTextColor: 'black',
         indicatorColor: 'blue',
-        textDayFontFamily: 'monospace',
-        textMonthFontFamily: 'monospace',
-        textDayHeaderFontFamily: 'monospace',
-        textDayFontWeight: 'bold',
-        textMonthFontWeight: 'bold',
-        textDayFontSize: 16,
+        textDayFontFamily: 'MinhaFonte',
+        textMonthFontFamily: 'MinhaFonte',
+        textDayHeaderFontFamily: 'MinhaFonte',
+        textDayFontSize: sizeFonts.SMALL,
         textMonthFontSize: 20,
-        textDayHeaderFontSize: 14,
+        textDayHeaderFontSize: 16,
       }}
       markedDates={markedDates}
     />

@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import globalStyles, { colors, sizeFonts } from '../../Styles/GlobalStyle';
+import gameStyle from '../../Styles/gameStyle';
+import GoBackButton from '../../components/GoBackButton';
+import StyledButton from '../../components/BasesComponents/baseButton';
+import Hearts from '../../components/GameComponents/hearts';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const colors = ['🔴', '🟢', '🔵', '🟡', '🟣', '🟡', '🟤', '⚫'];
+const colorsGuess = ['🔴', '🟢', '🔵', '🟡', '🟣', '🟡', '🟤', '⚫'];
 
 const getRandomSequence = () => {
   return Array(3)
       .fill(null)
-      .map(() => colors[Math.floor(Math.random() * colors.length)]);
+      .map(() => colorsGuess[Math.floor(Math.random() * colorsGuess.length)]);
 };
 
 const getRandomSequences = (correctSequence) => {
@@ -79,129 +87,118 @@ export default function ColorGameScreen() {
 
   if (gameOver) {
     return (
-        <View style={styles.container}>
-          <Text style={styles.gameOverText}>
-            {success ? '🎉 Parabéns, você ganhou! 🎉' : '😢 Você errou! Tente de novo!'}
-          </Text>
-          <TouchableOpacity onPress={resetGame} style={styles.button}>
-            <Text style={styles.buttonText}>Reiniciar Jogo</Text>
-          </TouchableOpacity>
+      <SafeAreaView style={globalStyles.outerContainer}>
+
+        <View style={[globalStyles.scrollContainer, { flexGrow: 0, paddingTop: '10%' }]}>
+          <GoBackButton title="SEQUÊNCIA COLORIDA" />
         </View>
+
+        <View style={[globalStyles.scrollContainer, { paddingTop: 0, alignItems: 'center' }]}>
+
+          <Text style={[globalStyles.label, {alignSelf: 'center', fontSize: sizeFonts.LARGE}]}>
+            {success ? 'PARABÉNS, VOCÊ GANHOU!\n' : 'VOCÊ PERDEU! TENTE DE NOVO!\n'}
+          </Text>
+
+          <StyledButton title="REINICIAR JOGO" onPress={resetGame} />
+
+        </View>
+
+      </SafeAreaView>
     );
   }
 
   return (
-      <View style={styles.container}>
-        <Text style={styles.header}>Rodada {round} / 3</Text>
+    <View style={globalStyles.outerContainer}>
 
-        <View style={styles.livesContainer}>
-          {Array.from({ length: 3 }).map((_, index) => (
-              <Text key={index} style={lives > index ? styles.heart : styles.outlinedHeart}>
-                {lives > index ? '❤️' : '🤍'} {/* Coração vermelho ou coração branco */}
-              </Text>
-          ))}
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0 }]}>
+        <GoBackButton title="SEQUÊNCIA COLORIDA" />
+      </View>
+
+      <ScrollView contentContainerStyle={[globalStyles.scrollContainer, { paddingTop: 0 }, gameStyle.container]}>
+
+        <View style={gameStyle.header}>
+
+          <Hearts attempts={3 - lives} />
+
+          <TouchableOpacity 
+            onPress={() => resetGame(true)} 
+            style={gameStyle.refazerButton}
+          >
+            <Text style={gameStyle.refazerButtonText}>REFAZER</Text>
+            <Ionicons name="refresh-outline" size={20} color={colors.PINK} style={gameStyle.icon} />
+          </TouchableOpacity>
+
         </View>
 
-        {showSequence ? (
-            <>
-              <Text style={styles.subHeader}>Memorize a sequência de cores:</Text>
-              <View style={styles.sequenceContainer}>
-                {correctSequence.map((color, index) => (
-                    <Text key={index} style={styles.colorBlock}>
-                      {color}
-                    </Text>
-                ))}
-              </View>
-              <Text style={styles.timerText}>A sequência desaparecerá em {timer} segundos...</Text>
-            </>
+        <View style={[gameStyle.header, {marginBottom: 20}]}>
+
+          <Text style={gameStyle.points}> RODADA: {round} / 3</Text>
+
+        </View>
+
+
+      {showSequence ? (
+          <>
+            <Text style={[globalStyles.label, {alignSelf: 'center', textAlign: 'center', color: colors.PINK}]}>MEMORIZE A SEQUÊNCIA DE CORES:</Text>
+            <View style={styles.sequenceContainer}>
+              {correctSequence.map((color, index) => (
+                  <Text key={index} style={styles.colorBlock}>
+                    {color}
+                  </Text>
+              ))}
+            </View>
+            <Text style={[globalStyles.label, {alignSelf: 'center', textAlign: 'center'}]}>A SEQUÊNCIA DESAPARECERÁ EM {timer} SEGUNDOS...</Text>
+          </>
         ) : (
-            <>
-              <Text style={styles.subHeader}>Escolha a sequência correta:</Text>
-              <View style={styles.optionsContainer}>
-                {options.map((sequence, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={styles.optionButton}
-                        onPress={() => handleOptionPress(sequence)}>
-                      {sequence.map((color, idx) => (
-                          <Text key={idx} style={styles.colorBlock}>{color}</Text>
-                      ))}
-                    </TouchableOpacity>
-                ))}
-              </View>
-            </>
-        )}
-      </View>
-  );
+          <>
+            <Text style={[globalStyles.label, {alignSelf: 'center', textAlign: 'center'}]}>ESCOLHA A SEQUÊNCIA CORRETA:</Text>
+            <View style={styles.optionsContainer}>
+              {options.map((sequence, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.optionButton}
+                  onPress={() => handleOptionPress(sequence)}>
+                  {sequence.map((color, idx) => (
+                    <Text key={idx} style={styles.colorBlock}>{color}</Text>
+                  ))}
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
+      )}
+      </ScrollView>
+    </View>
+);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#f8f8f8',
-  },
-  header: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  subHeader: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
   sequenceContainer: {
     flexDirection: 'row',
     marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
+
   colorBlock: {
     fontSize: 40,
     marginHorizontal: 10,
   },
+
   optionsContainer: {
     marginTop: 20,
     width: '100%',
   },
+
   optionButton: {
     flexDirection: 'row',
     justifyContent: 'center',
     padding: 10,
     marginVertical: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.WHITE,
+    borderWidth: 1,
+    borderColor: colors.PURPLE,
     borderRadius: 10,
-    elevation: 2,
+    
   },
-  gameOverText: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#333',
-    padding: 15,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-  },
-  timerText: {
-    fontSize: 18,
-    marginTop: 10,
-  },
-  livesContainer: {
-    flexDirection: 'row',
-    marginBottom: 20,
-  },
-  heart: {
-    fontSize: 30,
-    marginHorizontal: 5,
-  },
-  outlinedHeart: {
-    fontSize: 30,
-    marginHorizontal: 5,
-    color: '#ccc', // Cor cinza para coração contornado
-  },
+
 });

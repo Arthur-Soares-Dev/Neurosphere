@@ -4,16 +4,21 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTasks } from '../contexts/TasksContext';
 import MyCalendar from "../components/MyCalendar";
 import DialogTask from "../components/DialogTask";
-import {ScreenNames} from "../enums/ScreenNames";
+import { ScreenNames } from "../enums/ScreenNames";
+import GoBackButton from '../components/GoBackButton';
+import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
+import StyledButton from "../components/BasesComponents/baseButton";
+import BaseTaskCard from '../components/BasesComponents/baseTaskCard';
 
 const ViewTasksScreen = ({ navigation }) => {
   const { tasks, toggleCompleted, favoriteTask, deleteTask, speakTask } = useTasks();
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
-  const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [expandedTaskId, setExpandedTaskId] = useState(null);
 
+  
 
   const daysOfWeek = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
 
@@ -26,32 +31,19 @@ const ViewTasksScreen = ({ navigation }) => {
     setShowCalendar(false);
   };
 
-  const hasTasksForDay = (day) => {
-    return tasks.some(task => new Date(task.date).toDateString() === day.toDateString() && task.completed === false);
-  };
-
-  const handleExpandTask = (taskId) => {
-    setExpandedTaskId(expandedTaskId === taskId ? null : taskId);
-  };
-
   const filteredAndSortedTasks = tasks
     .filter(task => !task.completed && new Date(task.date).toDateString() === selectedDay.toDateString())
     .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
 
   const parseCustomDate = (dateString) => {
-    console.log('dateString', dateString);
-
     if (dateString._seconds && dateString._nanoseconds) {
       const seconds = dateString._seconds;
       const nanoseconds = dateString._nanoseconds;
-
       return new Date(seconds * 1000 + Math.floor(nanoseconds / 1000000));
     }
-
     const date = new Date(dateString);
     return isNaN(date.getTime()) ? null : date;
   };
-
 
   const markedDates = tasks.reduce((acc, task) => {
     const taskDate = parseCustomDate(task.date);
@@ -62,84 +54,65 @@ const ViewTasksScreen = ({ navigation }) => {
     return acc;
   }, {});
 
+  const handleConcludeTask = (taskId) => {
+    setSelectedTaskId(taskId);
+    setDialogVisible(true);
+  };
+
+  const handleExpandTask = (taskId) => {
+    setExpandedTaskId(expandedTaskId === taskId ? null : taskId);
+  };
 
   const renderItem = ({ item }) => {
-    const isExpanded = item.id === expandedTaskId;
-
-    const startTime = new Date(item.startTime);
-    const endTime = new Date(item.endTime);
-
     return (
-      <View style={[styles.taskContainer, isExpanded && styles.taskContainerExpanded]}>
-        <TouchableOpacity onPress={() => handleExpandTask(item.id)} style={styles.taskHeader}>
-          <Text style={styles.taskTitle}>{item.name.toUpperCase()}</Text>
-          <TouchableOpacity onPress={() => speakTask(item.name, item.description)}>
-            <Ionicons name="volume-high-outline" size={18} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.taskDate}>
-            Início: {startTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-            {' - '}
-            Fim: {endTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-          </Text>
-          <Ionicons
-            name={item.favorite ? "star" : "star-outline"}
-            size={18}
-            color="white"
-            style={styles.favoriteIcon}
-          />
-        </TouchableOpacity>
-        {isExpanded && (
-          <View style={styles.taskContent}>
-            <Text style={styles.taskDescription}>{item.description}</Text>
-            <View style={styles.taskButtons}>
-              <TouchableOpacity onPress={() => {
-                setSelectedTaskId(item.id);
-                setDialogVisible(true);
-              }} style={styles.taskButton}>
-                <Text style={styles.taskButtonText}>Concluir</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.CREATE_TASK, { task: item })} style={styles.taskButton}>
-                <Ionicons name="create-outline" size={16} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.taskButton}>
-                <Ionicons name="trash-outline" size={16} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => favoriteTask(item.id)} style={styles.taskButton}>
-                <Ionicons name={item.favorite ? "star" : "star-outline"} size={16} color="white" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </View>
+      <BaseTaskCard
+        task={item}
+        isExpanded={expandedTaskId === item.id}
+        onExpand={() => handleExpandTask(item.id)}
+        onConclude={() => handleConcludeTask(item.id)}
+        onEdit={() => navigation.navigate(ScreenNames.CREATE_TASK, { task: item })}
+        onDelete={() => deleteTask(item.id)}
+        onFavorite={() => favoriteTask(item.id)}
+        onSpeak={() => speakTask(item.name, item.description)}
+      />
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={30} color="black" />
-      </TouchableOpacity>
-
-      <View style={styles.header}>
-        {Array.from({ length: 4 }, (_, i) => {
-          const day = new Date(selectedDay);
-          day.setDate(selectedDay.getDate() + i - 1);
-          return (
-            <TouchableOpacity
-              key={i}
-              onPress={() => handleDayChange(day)}
-              style={[styles.dayButton]}
-            >
-              <Text style={[styles.dayButtonText]}>
-                {day.getDate()} {daysOfWeek[day.getDay()]}
-              </Text>
-              {hasTasksForDay(day) && <Ionicons name="checkmark-circle" size={16} color="green" style={styles.taskIndicator} />}
-            </TouchableOpacity>
-          );
-        })}
-        <TouchableOpacity onPress={() => setShowCalendar(true)} style={styles.dayButton}>
-          <Ionicons name="calendar-outline" size={24} color="black" />
-        </TouchableOpacity>
+    <SafeAreaView style={globalStyles.outerContainer}>
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0, paddingHorizontal: 20 }]}>
+        <GoBackButton title={"TAREFAS"} />
+        <View style={styles.header}>
+          {Array.from({ length: 4 }, (_, i) => {
+            const day = new Date(selectedDay);
+            day.setDate(selectedDay.getDate() + i - 1);
+            const isSelected = day.toDateString() === selectedDay.toDateString();
+            return (
+              <TouchableOpacity
+                key={i}
+                onPress={() => handleDayChange(day)}
+                style={[
+                  styles.dayButton,
+                  isSelected && { backgroundColor: colors.BLUE }
+                ]}
+              >
+                <View>
+                  <Text style={styles.dayOfWeekText}>{daysOfWeek[day.getDay()]}</Text>
+                  <Text style={styles.dayNumberText}>{day.getDate()}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+          <TouchableOpacity
+            onPress={() => setShowCalendar(true)}
+            style={[
+              styles.dayButton,
+              { justifyContent: 'center', alignItems: 'center', backgroundColor: colors.PURPLE }
+            ]}
+          >
+            <Ionicons name="calendar-outline" size={30} color={colors.WHITE} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {showCalendar && (
@@ -148,13 +121,17 @@ const ViewTasksScreen = ({ navigation }) => {
             onDayChange={handleCalendarChange}
             markedDates={markedDates}
           />
-          <TouchableOpacity onPress={() => setShowCalendar(false)} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Fechar</Text>
-          </TouchableOpacity>
+          <StyledButton
+            title="FECHAR"
+            onPress={() => setShowCalendar(false)}
+            style={{ marginTop: 10 }}
+          />
         </View>
       )}
 
-      <Text style={styles.dateText}>{selectedDay.toLocaleDateString('pt-BR')}</Text>
+      <Text style={[globalStyles.tittle, { textAlign: 'center', fontSize: sizeFonts.MEDIUM }]}>
+        TAREFAS DO DIA - {selectedDay.toLocaleDateString('pt-BR')}
+      </Text>
 
       <FlatList
         data={filteredAndSortedTasks}
@@ -163,6 +140,7 @@ const ViewTasksScreen = ({ navigation }) => {
         style={[styles.list, showCalendar && styles.listDisabled]}
         contentContainerStyle={styles.listContainer}
       />
+
       <DialogTask
         isOpen={dialogVisible}
         onClose={() => setDialogVisible(false)}
@@ -175,28 +153,40 @@ const ViewTasksScreen = ({ navigation }) => {
 export default ViewTasksScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAEBD7',
-  },
-  backButton: {
-    margin: 10,
-  },
+
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: 10,
-    marginBottom: 5,
+    marginBottom: 20,
   },
+
   dayButton: {
+    width:"20%",
     padding: 10,
     borderRadius: 5,
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    marginRight: 5,
-    elevation: 2,
+    backgroundColor: colors.PINK,
+    marginRight: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+
+  dayOfWeekText: {
+    fontSize: sizeFonts.SMALL,
+    color: colors.WHITE,
+    fontFamily: 'MinhaFonte',
+    textAlign: 'center',
+  },
+  
+  dayNumberText: {
+    fontSize: sizeFonts.SMALL,
+    color: colors.WHITE,
+    fontFamily: 'MinhaFonte',
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  
+  
   dayButtonWithTasks: {
     backgroundColor: '#E8F5E9',
   },
@@ -204,8 +194,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF6B6B',
   },
   dayButtonText: {
-    fontSize: 14,
-    color: '#4A4A4A',
+    fontSize: sizeFonts.SMALL,
+    color: colors.WHITE,
+    fontFamily: 'MinhaFonte',
+    textAlign: 'center',
   },
   dayButtonTextSelected: {
     color: 'white',
@@ -221,7 +213,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   list: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   listDisabled: {
     opacity: 0.5,
@@ -276,26 +268,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginRight: 5,
   },
+
   calendarDialog: {
     position: 'absolute',
-    top: 50,
-    left: 0,
-    right: 0,
-    zIndex: 10,
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -165 }, { translateY: -200 }],
+    width: '80%', 
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 10,
-    elevation: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    elevation: 10,
+    zIndex: 1,
   },
-  closeButton: {
-    backgroundColor: '#FF6B6B',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  closeButtonText: {
-    color: 'white',
-    fontSize: 16,
-  },
+  
+
 });

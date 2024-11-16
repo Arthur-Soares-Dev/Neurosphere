@@ -106,8 +106,13 @@ export default function EmotionGameScreen() {
 
       <View style={[globalStyles.scrollContainer, { paddingTop: 0, alignItems: 'center' }]}>
 
-        <Text style={[globalStyles.label, {alignSelf: 'center', fontSize: sizeFonts.LARGE}]}>{success ? 'VOCÊ VENCEU!' : 'VOCÊ PERDEU!'}</Text>
-        <Text style={[gameStyle.points,  {alignSelf: 'center', fontSize: sizeFonts.LARGE, marginBottom: 30}]}>PONTOS: {points}</Text>
+        <Text style={[globalStyles.label, {alignSelf: 'center', fontSize: sizeFonts.LARGE}]}>
+          {success ? 'VOCÊ VENCEU!' : 'VOCÊ PERDEU!'}
+        </Text>
+        <Text style={[gameStyle.points,  {alignSelf: 'center', fontSize: sizeFonts.LARGE, marginBottom: 30}]}>
+          PONTOS: {points}
+        </Text>
+        
         <StyledButton title="REINICIAR JOGO" onPress={resetGame} />
 
       </View>
@@ -143,7 +148,7 @@ export default function EmotionGameScreen() {
 
           <Text style={gameStyle.points}> RODADA: {round} / 5</Text>
 
-          <Text style={gameStyle.points}> TEMPO: {timer}s</Text>
+          <Text style={[gameStyle.points, {color: colors.PINK, fontSize: sizeFonts.MEDIUM}]}> TEMPO: {timer}s</Text>
 
         </View>
 

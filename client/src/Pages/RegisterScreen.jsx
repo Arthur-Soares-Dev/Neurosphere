@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -16,7 +15,6 @@ import {ScreenNames} from "../enums/ScreenNames";
 import GoBackButton from '../components/GoBackButton';
 import StyledInput from "../components/BasesComponents/baseInput";
 import StyledButton from "../components/BasesComponents/baseButton";
-import SocialLoginButtons from '../components/SocialLoginButtons';
 import globalStyles, { colors } from '../Styles/GlobalStyle';
 
 const RegisterScreen = () => {
@@ -92,36 +90,36 @@ const RegisterScreen = () => {
 
           <Text style={globalStyles.label}>EMAIL</Text>
             <StyledInput
-                variant={'email'}
-                filled={true}
-                onChangeText={(email) => setEmail(email)}
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={email}
+              variant={'email'}
+              filled={true}
+              onChangeText={(email) => setEmail(email)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={email}
             />
 
           <Text style={globalStyles.label}>SENHA</Text>
           <StyledInput
-                variant={'password'}
-                onChangeText={(password) => setPassword(password)}
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={password}
+              variant={'password'}
+              onChangeText={(password) => setPassword(password)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={password}
             />
 
           <Text style={globalStyles.label}>CONFIRMAR SENHA</Text>
           <StyledInput
-                variant={'password'}
-                filled={true}
-                onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={confirmPassword}
+              variant={'password'}
+              filled={true}
+              onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={confirmPassword}
           />
 
           <StyledButton
-              title="CADASTRAR"
-              onPress={() => handleRegister(email, password, name)}
+            title="CADASTRAR"
+            onPress={() => handleRegister(email, password, name)}
           />
           
         </View>

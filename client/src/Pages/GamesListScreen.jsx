@@ -1,9 +1,8 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import {ScreenNames} from "../enums/ScreenNames";
 import GoBackButton from '../components/GoBackButton';
-import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
+import globalStyles from '../Styles/GlobalStyle';
 import BaseGameCard from '../components/BasesComponents/baseGameCard';
 
 

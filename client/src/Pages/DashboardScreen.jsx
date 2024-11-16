@@ -2,7 +2,6 @@ import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, FlatList
 import React, { useState } from 'react';
 import TaskList from '../components/Dashboard/DashboardTasks';
 import Card from '../components/Dashboard/DashboardCard';
-import ButtonCards from '../components/Dashboard/DashboardCard/buttonCards';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import PinDialog from './PinDialog';

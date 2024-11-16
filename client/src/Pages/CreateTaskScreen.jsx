@@ -15,7 +15,7 @@ const CreateTaskScreen = ({ route, navigation }) => {
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date().toISOString());
     const [startTime, setStartTime] = useState(new Date().toISOString());
-    const [endTime, setEndTime] = useState(new Date(new Date().getTime() + 5 * 60 * 1000).toISOString()); // 5 minutos à frente
+    const [endTime, setEndTime] = useState(new Date(new Date().getTime() + 5 * 60 * 1000).toISOString()); 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showStartTimePicker, setShowStartTimePicker] = useState(false);
     const [showEndTimePicker, setShowEndTimePicker] = useState(false);
