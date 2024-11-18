@@ -18,8 +18,6 @@ const ViewTasksScreen = ({ navigation }) => {
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [expandedTaskId, setExpandedTaskId] = useState(null);
 
-  
-
   const daysOfWeek = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
 
   const handleDayChange = (day) => {
@@ -63,7 +61,7 @@ const ViewTasksScreen = ({ navigation }) => {
     setExpandedTaskId(expandedTaskId === taskId ? null : taskId);
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <BaseTaskCard
         task={item}
@@ -74,9 +72,11 @@ const ViewTasksScreen = ({ navigation }) => {
         onDelete={() => deleteTask(item.id)}
         onFavorite={() => favoriteTask(item.id)}
         onSpeak={() => speakTask(item.name, item.description)}
+        index={index} // Passando o índice aqui
       />
     );
   };
+  
 
   return (
     <SafeAreaView style={globalStyles.outerContainer}>
@@ -190,21 +190,26 @@ const styles = StyleSheet.create({
   dayButtonWithTasks: {
     backgroundColor: '#E8F5E9',
   },
+
   dayButtonSelected: {
     backgroundColor: '#FF6B6B',
   },
+
   dayButtonText: {
     fontSize: sizeFonts.SMALL,
     color: colors.WHITE,
     fontFamily: 'MinhaFonte',
     textAlign: 'center',
   },
+
   dayButtonTextSelected: {
     color: 'white',
   },
+
   taskIndicator: {
     marginLeft: 5,
   },
+
   dateText: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -212,50 +217,62 @@ const styles = StyleSheet.create({
     color: '#4A4A4A',
     marginVertical: 10,
   },
+
   list: {
     paddingHorizontal: 20,
   },
+
   listDisabled: {
     opacity: 0.5,
   },
+
   taskContainer: {
     backgroundColor: '#6B5B95',
     borderRadius: 10,
     padding: 10,
     marginVertical: 5,
   },
+
   taskContainerExpanded: {
     paddingBottom: 20,
   },
+
   taskHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+
   taskTitle: {
     fontSize: 14,
     fontWeight: 'bold',
     color: 'white',
   },
+
   taskDate: {
     fontSize: 12,
     color: 'white',
   },
+
   favoriteIcon: {
     marginLeft: 10,
   },
+
   taskContent: {
     marginTop: 10,
   },
+
   taskDescription: {
     fontSize: 12,
     color: 'white',
     marginBottom: 10,
   },
+
   taskButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+
   taskButton: {
     backgroundColor: '#FF6B6B',
     padding: 5,
@@ -263,6 +280,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+
   taskButtonText: {
     color: 'white',
     fontSize: 12,

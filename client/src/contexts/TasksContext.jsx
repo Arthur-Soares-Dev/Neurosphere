@@ -178,6 +178,7 @@ export function TasksProvider({ children }) {
         return colors[index];
     };
 
+
     return (
         <TasksContext.Provider
             value={{

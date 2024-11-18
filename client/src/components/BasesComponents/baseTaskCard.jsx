@@ -12,19 +12,25 @@ const BaseTaskCard = ({
   onDelete,
   onFavorite,
   onConclude,
+  index, // Adiciona o índice da tarefa
 }) => {
   const startTime = new Date(task.startTime);
   const endTime = new Date(task.endTime);
 
+  const colorSequence = [colors.BLUE, colors.PINK, colors.PURPLE, colors.GREEN];
+
+  // Seleciona a cor com base no índice da tarefa
+  const backgroundColor = colorSequence[index % colorSequence.length];
+
   return (
     <TouchableOpacity
-      style={[styles.taskContainer, isExpanded && styles.taskContainerExpanded]}
+      style={[styles.taskContainer, { backgroundColor }, isExpanded && styles.taskContainerExpanded]} // Aplica a cor dinamicamente
       onPress={onExpand}
     >
       <View style={styles.taskHeader}>
         <Text style={styles.taskTitle}>{task.name.toUpperCase()}</Text>
         <TouchableOpacity onPress={onSpeak} style={[styles.iconWrapper, { marginRight: 120 }]}>
-          <Ionicons name="volume-high" size={18} color={colors.PINK} />
+          <Ionicons name="volume-high" size={18} color={backgroundColor} />
         </TouchableOpacity>
         <Text style={[styles.taskDate]}>
           {new Date(task.date).toLocaleDateString('pt-BR')}
@@ -38,9 +44,9 @@ const BaseTaskCard = ({
 
       {!isExpanded && (
         <View style={styles.footer}>
-            <TouchableOpacity onPress={onExpand} style={styles.iconWrapper}>
-                <Ionicons name="chevron-down-outline" size={18} color={colors.PINK} />
-            </TouchableOpacity>
+          <TouchableOpacity onPress={onExpand} style={styles.iconWrapper}>
+            <Ionicons name="chevron-down-outline" size={18} color={backgroundColor} />
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={onFavorite}>
             <Ionicons
@@ -49,7 +55,6 @@ const BaseTaskCard = ({
               color={colors.YELLOW}
             />
           </TouchableOpacity>
-          
         </View>
       )}
 
@@ -57,25 +62,35 @@ const BaseTaskCard = ({
         <View style={styles.taskContent}>
           <Text style={styles.taskDescription}>{task.description}</Text>
 
+          {/* Exibir as tags */}
+          {task.tags && task.tags.length > 0 && (
+            <View style={styles.tagContainer}>
+              {task.tags.map((tag, index) => (
+                <View key={index} style={[styles.tag, { backgroundColor: tag.color }]}>
+                  <Text style={styles.tagText}>{tag.text}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
           <View style={styles.taskButtons}>
             <TouchableOpacity onPress={onConclude} style={styles.taskButton}>
-              <Text style={styles.taskButtonText}>Concluir</Text>
-              <Ionicons name="checkmark-circle" size={16} color={colors.PINK} />
+              <Text style={[styles.taskButtonText, { color: backgroundColor }]}>Concluir</Text>
+              <Ionicons name="checkmark-circle" size={16} color={backgroundColor} />
             </TouchableOpacity>
             <TouchableOpacity onPress={onEdit} style={styles.taskButton}>
-              <Text style={styles.taskButtonText}>Editar</Text>
-              <Ionicons name="create" size={16} color={colors.PINK} />
+              <Text style={[styles.taskButtonText, { color: backgroundColor }]}>Editar</Text>
+              <Ionicons name="create" size={16} color={backgroundColor} />
             </TouchableOpacity>
             <TouchableOpacity onPress={onDelete} style={styles.taskButton}>
-              <Text style={styles.taskButtonText}>Deletar</Text>
-              <Ionicons name="trash" size={16} color={colors.PINK} />
+              <Text style={[styles.taskButtonText, { color: backgroundColor }]}>Deletar</Text>
+              <Ionicons name="trash" size={16} color={backgroundColor} />
             </TouchableOpacity>
 
             {/* Footer dentro do taskButtons */}
             <View style={styles.footerInButtons}>
-             
               <TouchableOpacity onPress={onExpand} style={styles.iconWrapper}>
-                <Ionicons name="chevron-up-outline" size={18} color={colors.PINK} />
+                <Ionicons name="chevron-up-outline" size={18} color={backgroundColor} />
               </TouchableOpacity>
 
               <TouchableOpacity onPress={onFavorite}>
@@ -84,7 +99,6 @@ const BaseTaskCard = ({
                   size={24}
                   color={colors.YELLOW}
                 />
-
               </TouchableOpacity>
             </View>
           </View>
@@ -165,6 +179,29 @@ const styles = StyleSheet.create({
     fontFamily: 'MinhaFonte',
   },
 
+  tagContainer: {
+    padding: 5,
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 10,
+  },
+
+  tag:{
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    marginRight: 5,
+    borderWidth: 2,
+    borderColor: colors.WHITE,
+    marginBottom: 5 ,
+  },
+
+  tagText: {
+    color: colors.WHITE,
+    fontFamily: 'MinhaFonte',
+  },
+
   footer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -187,6 +224,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
 });
 
 export default BaseTaskCard;

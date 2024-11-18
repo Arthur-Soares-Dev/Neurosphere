@@ -35,14 +35,15 @@ const AudioDialogueScreen = () => {
     });
   };
 
-  /**
-   * Adiciona um card ao topo da lista de cards selecionados.
-   * @param {Object} card - O card a ser adicionado.
-   */
   const addCardToTop = (card) => {
     if (selectedCards.length < 3) {
-      setSelectedCards([...selectedCards, card]);
+      const cardWithId = { ...card, id: Date.now() + Math.random() }; // Adiciona um ID único
+      setSelectedCards([...selectedCards, cardWithId]);
     }
+  };
+
+  const removeCard = (id) => {
+    setSelectedCards(selectedCards.filter(card => card.id !== id));
   };
 
   const clearCards = () => {
@@ -63,47 +64,53 @@ const AudioDialogueScreen = () => {
   };
 
   const categories = [
+    { key: 'responses', icon: 'chatbox-outline', label: 'RESPOSTAS' },
     { key: 'emotions', icon: 'happy-outline', label: 'EMOÇÕES' },
     { key: 'food', icon: 'pizza-outline', label: 'COMIDAS' },
     { key: 'actions', icon: 'hand-left-outline', label: 'AÇÕES' },
     { key: 'health', icon: 'medkit-outline', label: 'SAÚDE' },
     { key: 'places', icon: 'home-outline', label: 'LUGARES' },
-    { key: 'responses', icon: 'chatbox-outline', label: 'RESPOSTAS' }
   ];
 
   const renderSelectedItem = ({ item, index, drag, isActive }) => {
     return (
-      <TouchableOpacity
-        style={[styles.selectedCard, { opacity: isActive ? 0.5 : 1 }]}
-        onLongPress={drag}
-        delayLongPress={0}
-        onPressOut={drag}
-        onPress={() => {
-          if (index === 0) {
-            speakCard(item);
-          }
-        }}
-      >
-        <Text style={styles.selectedCardText}>{item.title}</Text>
-        <Image style={styles.tinyLogo} source={item.uri} />
-      </TouchableOpacity>
+      <View style={[styles.selectedCardContainer, { opacity: isActive ? 0.5 : 1 }]}>
+        <TouchableOpacity
+          style={styles.selectedCard}
+          onLongPress={drag}
+          delayLongPress={0}
+          onPressOut={drag}
+          onPress={() => {
+            if (index === 0) {
+              speakCard(item);
+            }
+          }}
+        >
+          <Text style={styles.selectedCardText}>{item.title}</Text>
+          <Image style={styles.tinyLogo} source={item.uri} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.removeButton}
+          onPress={() => removeCard(item.id)} // Passa o ID único para a função de remoção
+        >
+          <Ionicons name="close" size={16} color={colors.WHITE} />
+        </TouchableOpacity>
+      </View>
     );
   };
 
   return (
     <SafeAreaView style={globalStyles.outerContainer}>
-
-      <View style={[globalStyles.scrollContainer, { flexGrow: 0}]}>
-        <GoBackButton title={"PAINEL DE FRASES"}/>
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0 }]}>
+        <GoBackButton title={"PAINEL DE FRASES"} />
       </View>
 
-      <View style={[globalStyles.scrollContainer, {paddingTop: 0}]}>
-
+      <View style={[globalStyles.scrollContainer, { paddingTop: 0 }]}>
         <View style={styles.topSection}>
           <DraggableFlatList
             data={selectedCards}
             renderItem={renderSelectedItem}
-            keyExtractor={(item, index) => `draggable-item-${item.title}`}
+            keyExtractor={(item, index) => `draggable-item-${item.id}`}
             onDragEnd={({ data }) => setSelectedCards(data)}
             horizontal={true}
           />
@@ -117,11 +124,6 @@ const AudioDialogueScreen = () => {
           <TouchableOpacity style={styles.actionButton} onPress={speakAll}>
             <Ionicons name="play" size={30} color={colors.WHITE} />
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.trashButton} onPress={clearCards}>
-            <Ionicons name="star-outline" size={24} color={colors.PURPLE} />
-          </TouchableOpacity>
-          
         </View>
 
         <FlatList
@@ -133,8 +135,6 @@ const AudioDialogueScreen = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: '100%' }}
         />
-
-
       </View>
 
       <View style={styles.bottomBar}>
@@ -143,7 +143,7 @@ const AudioDialogueScreen = () => {
             <TouchableOpacity
               key={category.key}
               style={[styles.iconContainer,
-                selectedCategory === category.key, 
+                selectedCategory === category.key,
               ]}
               onPress={() => setSelectedCategory(category.key)}
             >
@@ -153,7 +153,6 @@ const AudioDialogueScreen = () => {
           ))}
         </ScrollView>
       </View>
-
     </SafeAreaView>
   );
 };
@@ -161,7 +160,6 @@ const AudioDialogueScreen = () => {
 export default AudioDialogueScreen;
 
 const styles = StyleSheet.create({
-
   row: {
     justifyContent: 'space-between',
     marginBottom: 20,
@@ -230,15 +228,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 
-  selectedCard: {
+  selectedCardContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
   },
 
+  selectedCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   selectedCardText: {
     fontSize: 16,
     color: colors.BLUE,
+  },
+
+  removeButton: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: colors.BLUE,
+    borderRadius: 50,
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5
   },
 
   actionButtons: {
@@ -254,7 +268,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: ' center',
     alignItems: 'center',
-    width: '50%',
+    width: '75%',
   },
 
   trashButton: {
@@ -265,5 +279,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 10,
   },
-
 });
