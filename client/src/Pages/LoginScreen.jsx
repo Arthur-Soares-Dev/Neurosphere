@@ -15,6 +15,17 @@ const LoginScreen = () => {
   const [error, setError] = useState();
   const { login, forgetPassword, user } = useAuth();
 
+    const [clicked, setClicked] = useState(false);
+
+    // Função que altera o estado e o valor global
+    const handleClick = () => {
+        // Inverte o estado do clique
+        setClicked(!clicked);
+
+        // Altera o valor global
+        global.testServer = !clicked;
+    };
+
   useEffect(() => {
     if (user) {
       navigation.navigate(ScreenNames.DASHBOARD);
@@ -86,6 +97,15 @@ const LoginScreen = () => {
                   style={[]}
                   textStyle={[]}
               />
+
+              <TouchableOpacity
+                  onPress={handleClick}
+              >
+                  <Text>
+                      {clicked ? 'Desmarcar Test Server' : 'Marcar Test Server'}
+                  </Text>
+              </TouchableOpacity>
+              <Text>Global.testServer: {global.testServer ? 'True' : 'False'}</Text>
 
           </View>
         </ScrollView>

@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { ScreenNames } from "../enums/ScreenNames";
 import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AlertsUtils from "../utils/AlertsUtils";
 
 const PinDialog = ({ isOpen, onClose, navigation }) => {
   const [pin, setPin] = useState('');
@@ -19,17 +20,17 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
     try {
       if (user?.pin) {
         if (pin === user.pin) {
-          Alert.alert('Sucesso', 'PIN correto!');
+          // AlertsUtils.successAlert('Sucesso', 'PIN correto!');
           navigation.navigate(ScreenNames.PROFILE);
           onClose();
         } else {
-          Alert.alert('Erro', 'PIN incorreto. Tente novamente.');
+            AlertsUtils.dangerToast('Erro', 'PIN incorreto. Tente novamente.');
           setPin('');
         }
       } else {
         if (pin.length === 4) {
           await updateUser(user.uid, { pin });
-          Alert.alert('Sucesso', 'Novo PIN criado com sucesso!');
+          AlertsUtils.successToast('Sucesso', 'Novo PIN criado com sucesso!');
           onClose();
           navigation.navigate(ScreenNames.PROFILE);
         } else {
@@ -37,6 +38,7 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
         }
       }
     } catch (error) {
+      AlertsUtils.dangerToast(error.title ?? 'Erro ao processar PIN:', error.message ?? "");
       console.error('Erro ao processar PIN:', error);
       Alert.alert('Erro', 'Ocorreu um erro ao processar sua solicitação.');
     }

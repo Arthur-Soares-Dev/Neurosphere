@@ -9,6 +9,7 @@ import Loading from './src/components/Loading';
 import LaunchScreen from './src/Pages/LaunchScreen';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
+import {AlertNotificationRoot} from "react-native-alert-notification";
 
 function App() {
     const [isLaunchVisible, setIsLaunchVisible] = useState(true);
@@ -26,6 +27,7 @@ function App() {
     }
 
     return (
+      <AlertNotificationRoot>
         <LoadingProvider>
             <AuthProvider>
                 <TasksProvider>
@@ -38,6 +40,7 @@ function App() {
             </AuthProvider>
             <StatusBar style="dark" translucent={true} backgroundColor="transparent" />
         </LoadingProvider>
+        </AlertNotificationRoot>
     );
 }
 

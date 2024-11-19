@@ -42,7 +42,14 @@
     "extra": {
       "eas": {
         "projectId": "b454efae-4366-4f3d-9582-51b758b3fbd3"
-      }
+      },
+      "FIREBASE_API_KEY": "AIzaSyAKZauoVxK0mS311h40VXgIWJ5JxSpMyTQ",
+      "FIREBASE_AUTH_DOMAIN": "neurosphere-132f0.firebaseapp.com",
+      "FIREBASE_PROJECT_ID": "neurosphere-132f0",
+      "FIREBASE_STORAGE_BUCKET": "neurosphere-132f0.appspot.com",
+      "FIREBASE_MESSAGING_SENDER_ID": "970304876059",
+      "FIREBASE_APP_ID": "1:970304876059:web:5d130b3b36cf4301f592be",
+      "FIREBASE_MEASUREMENT_ID": "G-RHFBV6FTME"
     }
   }
 }

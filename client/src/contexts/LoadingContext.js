@@ -4,12 +4,13 @@ const LoadingContext = createContext();
 
 export function LoadingProvider({ children }) {
     const [isLoading, setIsLoading] = useState(false);
+    const [testServer, setTestServer] = useState(false);
 
     const startLoading = () => setIsLoading(true);
     const stopLoading = () => setIsLoading(false);
 
     return (
-        <LoadingContext.Provider value={{ isLoading, startLoading, stopLoading }}>
+        <LoadingContext.Provider value={{ isLoading, startLoading, stopLoading, testServer, setTestServer }}>
             {children}
         </LoadingContext.Provider>
     );

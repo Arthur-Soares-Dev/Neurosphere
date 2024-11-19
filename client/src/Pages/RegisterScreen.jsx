@@ -53,7 +53,7 @@ const RegisterScreen = () => {
         setError('Preencha todos os campos');
       }
     } catch (error) {
-      setError(error.message);
+      // setError(error.message);
     }
   };
 

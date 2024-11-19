@@ -1,9 +1,10 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useRef, useState} from 'react';
 import {Task} from '../models/Task';
 import api from '../service/api';
 import {useAuth} from './AuthContext';
 import Utils from '../utils/Utils';
 import { useLoading } from './LoadingContext';
+import AlertsUtils from "../utils/AlertsUtils";
 
 const TasksContext = createContext();
 
@@ -15,8 +16,32 @@ export function TasksProvider({ children }) {
     console.log('tasks',tasks)
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
     const { startLoading, stopLoading } = useLoading();
+
+    const [error, setError] = useState({title: null, message: null});
+    const [success, setSuccess] = useState({title: null, message: null});
+    const firstRender = useRef(true);
+    useEffect(() => {
+        console.log('error',error)
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
+        if (error?.title || error?.message) {
+            AlertsUtils.dangerToast(error.title, error.message);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        console.log('success',success)
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
+        if (error?.title || error?.message) {
+            AlertsUtils.successToast(success.title, success.message);
+        }
+    }, [success]);
 
 
     useEffect(() => {
@@ -26,7 +51,7 @@ export function TasksProvider({ children }) {
 
             try {
                 const response = await api.get(`/tasks?userId=${userId}`);
-                const tasksList = response.data.map((taskData) => new Task(
+                const tasksList = response.data.tasks.map((taskData) => new Task(
                     taskData.id,
                     taskData.name,
                     taskData.description,
@@ -40,10 +65,17 @@ export function TasksProvider({ children }) {
                     taskData.emoji
                 ));
                 setTasks(tasksList);
+                // setSuccess({
+                //   title: response.data?.title ?? "Sucesso",
+                //   message: response.data?.message ?? "",
+                // })
                 console.log('tasksList',tasksList)
             } catch (error) {
+                setError({
+                  title: error.title ?? "Erro",
+                  message: error.message ?? "Tente novamente mais tarde.",
+                })
                 console.error("Erro ao carregar tarefas:", error);
-                setError("Erro ao carregar tarefas.");
             } finally {
                 stopLoading();
             }
@@ -55,14 +87,23 @@ export function TasksProvider({ children }) {
     const updateTaskMessageAndEmoji = async (taskId, mensagem, emoji, completed = true) => {
         startLoading();
         try {
-            await api.put(`/tasks/${taskId}`, { mensagem, emoji, userId, completed });
+            const response = await api.put(`/tasks/${taskId}?completed=${completed}`, { mensagem, emoji, userId, completed });
+            console.log('response.data',response.data)
             setTasks((prevTasks) =>
                 prevTasks.map((task) =>
                     task.id === taskId ? { ...task, mensagem, emoji, completed } : task
                 )
             );
+            setSuccess({
+                title: response.data?.title ?? "Sucesso",
+                message: response.data?.message ?? "",
+            })
         } catch (error) {
             console.error('Erro ao atualizar mensagem e emoji:', error);
+            setError({
+              title: error.title ?? "Erro",
+              message: error.message ?? "Tente novamente mais tarde.",
+            })
             setError("Erro ao atualizar a tarefa.");
         } finally {
             stopLoading();
@@ -70,37 +111,53 @@ export function TasksProvider({ children }) {
     };
 
     const toggleCompleted = async (taskId) => {
+        let response = null
         setTasks((prevTasks) =>
             prevTasks.map((task) => {
                 startLoading();
                 try {
                     if (task.id === taskId) {
                         const completed = true;
-                        api.put(`/tasks/${taskId}?completed=${completed}`, {completed, userId});
+                        response = api.put(`/tasks/${taskId}?completed=${completed}`, {completed, userId});
                         return {...task, completed: completed};
                     }
-                    return task;
+
+                    return Utils.removeTitleAndMessage(task);
                 } catch (e) {
+                    setError({
+                      title: error.title ?? "Erro",
+                      message: error.message ?? "Tente novamente mais tarde.",
+                    })
                     console.log('Erro ao completar tarefa', e)
                 } finally {
                     stopLoading();
                 }
             })
         );
+
+        setSuccess({
+            title: response?.data?.title ?? "Sucesso",
+            message: response?.data?.message ?? "",
+        })
     };
 
     const favoriteTask = async (taskId) => {
+        let response = null;
         setTasks((prevTasks) =>
             prevTasks.map((task) => {
                 startLoading();
                 try {
                     if (task.id === taskId) {
                         const favoriteStatus = !task.favorite;
-                        api.put(`/tasks/${taskId}`, { favorite: favoriteStatus, userId });
+                        response = api.put(`/tasks/${taskId}`, { favorite: favoriteStatus, userId });
                         return { ...task, favorite: favoriteStatus };
                     }
                     return task;
                 } catch (e) {
+                    setError({
+                      title: error.title ?? "Erro",
+                      message: error.message ?? "Tente novamente mais tarde.",
+                    })
                     console.log('Erro ao favoritar tarefa', e)
                 } finally {
                     stopLoading();
@@ -108,14 +165,26 @@ export function TasksProvider({ children }) {
 
             })
         );
+        setSuccess({
+            title: response?.data?.title ?? "Sucesso",
+            message: response?.data?.message ?? "",
+        })
     };
 
     const deleteTask = async (taskId) => {
         startLoading();
         try {
-            await api.delete(`/tasks/${taskId}?userId=${userId}`);
+            const response = await api.delete(`/tasks/${taskId}?userId=${userId}`);
             setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+            setSuccess({
+                title: response.data?.title ?? "Sucesso",
+                message: response.data?.message ?? "",
+            })
         } catch (error) {
+            setError({
+              title: error.title ?? "Erro",
+              message: error.message ?? "Tente novamente mais tarde.",
+            })
             console.error('Erro ao deletar tarefa:', error);
             setError("Erro ao deletar a tarefa.");
         } finally {
@@ -127,8 +196,9 @@ export function TasksProvider({ children }) {
         startLoading();
         try {
             const response = await api.post('/tasks', { ...newTaskData, userId });
+            console.log('ADD TASK response',response.data)
             const newTask = new Task(
-                response.data.id,
+                response.data.taskId,
                 newTaskData.name || '',
                 newTaskData.description || '',
                 newTaskData.date || '',
@@ -138,8 +208,16 @@ export function TasksProvider({ children }) {
                 newTaskData.favorite !== undefined ? newTaskData.favorite : false,
                 Array.isArray(newTaskData.tags) ? newTaskData.tags : []
             );
+            setSuccess({
+                title: response.data?.title ?? "Sucesso",
+                message: response.data?.message ?? "",
+            })
             setTasks((prevTasks) => [...prevTasks, newTask]);
         } catch (error) {
+            setError({
+              title: error.title ?? "Erro",
+              message: error.message ?? "Tente novamente mais tarde.",
+            })
             console.error('Erro ao adicionar tarefa:', error);
             setError("Erro ao adicionar a tarefa.");
         } finally {
@@ -150,13 +228,21 @@ export function TasksProvider({ children }) {
     const updateTask = async (taskId, updatedData) => {
         startLoading();
         try {
-            await api.put(`/tasks/${taskId}`, { ...updatedData, userId });
+            const response = await api.put(`/tasks/${taskId}`, { ...updatedData, userId });
             setTasks((prevTasks) =>
                 prevTasks.map((task) =>
                     task.id === taskId ? { ...task, ...updatedData } : task
                 )
             );
+            setSuccess({
+                title: response.data?.title ?? "Sucesso",
+                message: response.data?.message ?? "",
+            })
         } catch (error) {
+            setError({
+              title: error.title ?? "Erro",
+              message: error.message ?? "Tente novamente mais tarde.",
+            })
             console.error('Erro ao atualizar tarefa:', error);
             setError("Erro ao atualizar a tarefa.");
         } finally {
