@@ -1,36 +1,47 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import globalStyles, {colors, sizeFonts} from '../../Styles/GlobalStyle';
 import DashGif from '../../../assets/DashGif.gif';
+import DashStatic from '../../../assets/DashStatic.png';
 
 const Card = () => {
-  const [restartKey, setRestartKey] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true); // Começa reproduzindo o GIF automaticamente
 
-  const gifDuration = 4350; // Duração do GIF em milissegundos (ajuste conforme necessário)
+  const gifDuration = 4350; // Duração do GIF em milissegundos
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPlaying(false); // Troca para a imagem estática após o GIF terminar
+    }, gifDuration);
+
+    return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente
+  }, []);
 
   const restartGif = () => {
-    // Atualiza a chave para recriar o componente Image
-    setRestartKey((prevKey) => prevKey + 1);
-
-    // Opcional: Para manter a consistência visual, podemos esperar o término da reprodução.
+    setIsPlaying(true); // Reinicia o GIF ao clicar
     setTimeout(() => {
-      // Aqui você pode adicionar lógica adicional, se necessário
+      setIsPlaying(false); // Troca para a imagem estática após o GIF terminar
     }, gifDuration);
   };
 
   return (
-    <View style={{width: "100%"}}>
+    <View style={{width: '100%'}}>
       <View style={styles.menuContainer}>
-        <Text style={{fontSize: sizeFonts.MEDIUM, color: colors.YELLOW, fontFamily: 'MinhaFonte',}}>
-          INÍCIO (clique no card abaixo)
+        <Text
+          style={{
+            fontSize: sizeFonts.MEDIUM,
+            color: colors.YELLOW,
+            fontFamily: 'MinhaFonte',
+          }}>
+          INÍCIO
         </Text>
       </View>
       <TouchableOpacity style={styles.gifButton} onPress={restartGif}>
-        <Image
-          key={restartKey} // Força a recriação do componente para reiniciar o GIF
-          source={DashGif}
-          style={styles.gif}
-        />
+        {isPlaying ? (
+          <Image source={DashGif} style={styles.gif} /> // Exibe o GIF enquanto reproduz
+        ) : (
+          <Image source={DashStatic} style={styles.gif} /> // Exibe a imagem estática após o GIF
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -58,9 +69,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: colors.BLUE,
     marginBottom: 17,
     paddingTop: 25,
   },
