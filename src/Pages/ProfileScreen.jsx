@@ -12,7 +12,7 @@ import api from '../service/api'
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-  const { user, logout, updateUserProfileImage } = useAuth();
+  const { user, logout, updateUserProfileImage, forgetPassword } = useAuth();
   const [profileImage, setProfileImage] = useState(user?.profileImage || ''); // Usando o encadeamento opcional
 
   useEffect(() => {
@@ -93,10 +93,9 @@ const ProfileScreen = () => {
 
   const handleForgetPassword = async () => {
     try {
-      await forgetPassword(email);
-      alert("Email para troca de senha enviado");
+      await forgetPassword(user.email);
     } catch (error) {
-      setError(error.message);
+      console.error(error.message);
     }
   };
 

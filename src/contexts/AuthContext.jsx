@@ -2,8 +2,8 @@ import React, {createContext, useContext, useEffect, useRef, useState} from 'rea
 import api from '../service/api'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useLoading} from './LoadingContext';
-import { auth, db } from '../firebase/firebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {auth} from '../firebase/firebaseConfig';
+import {sendPasswordResetEmail, signInWithEmailAndPassword} from 'firebase/auth';
 import AlertsUtils from "../utils/AlertsUtils";
 import Utils from "../utils/Utils";
 
@@ -146,29 +146,34 @@ export function AuthProvider({children}) {
   }
 };
 
-  const forgetPassword = async (email) => {
-    startLoading();
-    try {
-      if (!email) {
-        alert("Email inválido");
-        return;
-      }
-      const response = await api.post(`/auth/forget-password`, {email});
-      setSuccess({
-        title: response.data?.title ?? "Sucesso",
-        message: response.data?.message ?? "",
-      })
-    } catch (error) {
-      setError({
-        title: error.title ?? "Erro",
-        message: error.message ?? "Tente novamente mais tarde.",
-      })
-      console.error("Erro ao enviar email de redefinição de senha:", error);
-      throw new Error(error.message);
-    } finally {
-      stopLoading();
-    }
-  };
+    const forgetPassword = async (email) => {
+        startLoading();
+        try {
+            if (!email) {
+                setError({
+                    title: "Email inválido",
+                    message: "Digite o email no campo adequado.",
+                });
+                return;
+            }
+
+            await sendPasswordResetEmail(auth, email);
+
+            setSuccess({
+                title: "Sucesso",
+                message: "Instruções de redefinição de senha foram enviadas para o seu e-mail.",
+            });
+        } catch (error) {
+            setError({
+                title: "Erro",
+                message: error.message ?? "Tente novamente mais tarde.",
+            });
+            console.error("Erro ao enviar email de redefinição de senha:", error);
+            throw new Error(error.message);
+        } finally {
+            stopLoading();
+        }
+    };
 
   const registerUser = async (email, password, name) => {
     startLoading();

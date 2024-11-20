@@ -44,7 +44,6 @@ const LoginScreen = () => {
   const handleForgetPassword = async () => {
     try {
       await forgetPassword(email);
-      alert("Email para troca de senha enviado");
     } catch (error) {
       setError(error.message);
     }
@@ -98,14 +97,14 @@ const LoginScreen = () => {
                   textStyle={[]}
               />
 
-              <TouchableOpacity
-                  onPress={handleClick}
-              >
-                  <Text>
-                      {clicked ? 'Desmarcar Test Server' : 'Marcar Test Server'}
-                  </Text>
-              </TouchableOpacity>
-              <Text>Global.testServer: {global.testServer ? 'True' : 'False'}</Text>
+              {/*<TouchableOpacity*/}
+              {/*    onPress={handleClick}*/}
+              {/*>*/}
+              {/*    <Text>*/}
+              {/*        {clicked ? 'Desmarcar Test Server' : 'Marcar Test Server'}*/}
+              {/*    </Text>*/}
+              {/*</TouchableOpacity>*/}
+              {/*<Text>Global.testServer: {global.testServer ? 'True' : 'False'}</Text>*/}
 
           </View>
         </ScrollView>
