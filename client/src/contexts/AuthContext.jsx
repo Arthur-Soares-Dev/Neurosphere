@@ -23,6 +23,7 @@ export function AuthProvider({children}) {
       }
       if (error?.title || error?.message) {
           AlertsUtils.dangerToast(error.title, error.message);
+          setError({title: null, message: null})
       }
   }, [error]);
 
@@ -31,8 +32,9 @@ export function AuthProvider({children}) {
           firstRender.current = false;
           return;
       }
-      if (error?.title || error?.message) {
+      if (success?.title || success?.message) {
           AlertsUtils.successToast(success.title, success.message);
+          setSuccess({title: null, message: null})
       }
   }, [success]);
 
@@ -75,10 +77,6 @@ export function AuthProvider({children}) {
       );
       setUser(Utils.removeTitleAndMessage(response.data));
       await AsyncStorage.setItem('userId', response.data.uid);
-      setSuccess({
-        title: response.data.title ?? "Sucesso",
-        message: response.data.message ?? "Você logou com sucesso no sistema.",
-      })
       return Utils.removeTitleAndMessage(response.data);
     } catch (error) {
       console.error("Erro ao fazer login:", error);
