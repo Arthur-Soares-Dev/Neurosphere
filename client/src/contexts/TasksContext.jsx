@@ -29,6 +29,7 @@ export function TasksProvider({ children }) {
         }
         if (error?.title || error?.message) {
             AlertsUtils.dangerToast(error.title, error.message);
+            setError({title: null, message: null})
         }
     }, [error]);
 
@@ -38,8 +39,9 @@ export function TasksProvider({ children }) {
             firstRender.current = false;
             return;
         }
-        if (error?.title || error?.message) {
+        if (success?.title || success?.message) {
             AlertsUtils.successToast(success.title, success.message);
+            setSuccess({title: null, message: null})
         }
     }, [success]);
 
@@ -165,10 +167,6 @@ export function TasksProvider({ children }) {
 
             })
         );
-        setSuccess({
-            title: response?.data?.title ?? "Sucesso",
-            message: response?.data?.message ?? "",
-        })
     };
 
     const deleteTask = async (taskId) => {
