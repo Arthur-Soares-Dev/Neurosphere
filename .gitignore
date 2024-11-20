@@ -3,3 +3,4 @@ server/firebaseKey/serviceAccount.json
 client/src/service/ipLocal.js
 server/config/serviceAccount.json
 /server/node_modules
+/node_modules
