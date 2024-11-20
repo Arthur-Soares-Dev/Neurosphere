@@ -28,8 +28,6 @@ const LandingScreen = ({ navigation }) => {
         textStyle={[globalStyles.buttonText, styles.loginText]}
       />
 
-      <View style={styles.line} />
-
       <NeuroSphereLandingPage style={styles.iconBottom}/>
     </View>
   );

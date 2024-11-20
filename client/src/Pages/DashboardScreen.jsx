@@ -1,6 +1,5 @@
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import React, { useState } from 'react';
-import Card from '../components/Dashboard/DashboardCard';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import PinDialog from './PinDialog';
@@ -11,6 +10,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import BaseTaskCard from '../components/BasesComponents/baseTaskCard';
 import { useTasks } from '../contexts/TasksContext';
 import DialogTask from "../components/DialogTask";
+import Card from '../components/Dashboard';
 
 const DashboardScreen = () => {
   const navigation = useNavigation();

@@ -10,7 +10,7 @@ import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 
 const AudioDialogueScreen = () => {
   const navigation = useNavigation();
-  const [selectedCategory, setSelectedCategory] = useState('emotions');
+  const [selectedCategory, setSelectedCategory] = useState('responses');
   const [selectedCards, setSelectedCards] = useState([]);
 
   const borderColors = [colors.BLUE, colors.PINK, colors.PURPLE, colors.YELLOW, colors.GREEN];
@@ -66,8 +66,8 @@ const AudioDialogueScreen = () => {
   const categories = [
     { key: 'responses', icon: 'chatbox-outline', label: 'RESPOSTAS' },
     { key: 'emotions', icon: 'happy-outline', label: 'EMOÇÕES' },
-    { key: 'food', icon: 'pizza-outline', label: 'COMIDAS' },
     { key: 'actions', icon: 'hand-left-outline', label: 'AÇÕES' },
+    { key: 'food', icon: 'pizza-outline', label: 'COMIDAS' },
     { key: 'health', icon: 'medkit-outline', label: 'SAÚDE' },
     { key: 'places', icon: 'home-outline', label: 'LUGARES' },
   ];

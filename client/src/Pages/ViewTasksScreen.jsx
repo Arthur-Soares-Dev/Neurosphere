@@ -80,7 +80,7 @@ const ViewTasksScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={globalStyles.outerContainer}>
-      <View style={[globalStyles.scrollContainer, { flexGrow: 0, paddingHorizontal: 20 }]}>
+      <View style={[globalStyles.scrollContainer, { flexGrow: 0, paddingHorizontal: 15 }]}>
         <GoBackButton title={"TAREFAS"} />
         <View style={styles.header}>
           {Array.from({ length: 4 }, (_, i) => {
