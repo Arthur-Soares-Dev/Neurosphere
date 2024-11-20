@@ -1,11 +1,11 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
 # dependencies
-client/node_modules/
+node_modules/
 
 # Expo
-../.expo/
-../dist/
+.expo/
+dist/
 web-build/
 
 # Native
@@ -36,8 +36,6 @@ yarn-error.*
 
 # configurações banco de dados
 config.js
-.idea/php.xml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea/
 
 .web-build/

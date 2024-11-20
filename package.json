@@ -7,7 +7,8 @@
     "android": "node_modules/.bin/cross-env CI=1 expo start --android --port 8082",
     "ios": "node_modules/.bin/cross-env CI=1 expo start --ios --port 8082",
     "web": "node_modules/.bin/expo start --web --non-interactive",
-    "build": "node_modules/.bin/expo export"
+    "build": "node_modules/.bin/expo export",
+    "build android": "eas build -p android --profile preview"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
