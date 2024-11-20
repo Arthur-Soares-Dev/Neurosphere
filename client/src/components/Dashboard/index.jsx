@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 17,
-    paddingTop: 25,
+    // paddingTop: 25,
   },
 
   gif: {

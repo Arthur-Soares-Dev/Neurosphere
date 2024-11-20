@@ -112,6 +112,7 @@ const DashboardScreen = () => {
               )}
               keyExtractor={(item) => item.id.toString()}
               nestedScrollEnabled={true}
+              showsVerticalScrollIndicator={false}
               ListEmptyComponent={
                 <Text style={[globalStyles.tittle, {textAlign: 'center', marginTop: 10}]}>NENHUMA TAREFA FAVORITADA AINDA</Text>
               }
