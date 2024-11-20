@@ -1,0 +1,17 @@
+export const ScreenNames = Object.freeze({
+  DASHBOARD: 'DashboardScreen',
+  LOGIN: 'LoginScreen',
+  REGISTER: 'RegisterScreen',
+  VIEW_TASKS: 'ViewTasksScreen',
+  CREATE_TASK: 'CreateTaskScreen',
+  PROFILE: 'ProfileScreen',
+  AUDIO_DIALOGUE: 'AudioDialogueScreen',
+  GAMES_LIST: 'GamesListScreen',
+  MATH_GAME: 'MathGameScreen',
+  WORD_GAME: 'WordGameScreen',
+  EMOTION_GAME: 'EmotionGameScreen',
+  COLOR_GAME: 'ColorGameScreen',
+  FEEDBACK_LIST: 'FeedbackListScreen',
+  LANDING: 'LandingScreen',
+  EDIT_PROFILE: 'EditProfileScreen',
+});
