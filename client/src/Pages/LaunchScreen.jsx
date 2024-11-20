@@ -17,7 +17,7 @@ const LaunchScreen = ({ onHide }) => {
         }, launchDuration);
 
         return () => clearTimeout(timer);
-    }, [launchDuration]);
+    }, [isLoading, launchDuration]);
 
     useEffect(() => {
         if (!isVisible) {

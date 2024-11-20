@@ -42,7 +42,6 @@ export function AuthProvider({children}) {
   useEffect(() => {
     const checkUserLoggedIn = async () => {
       try {
-        startLoading()
         const savedUserId = await AsyncStorage.getItem('userId');
         if (savedUserId) {
           const response = await api.get(`/auth/user/${savedUserId}`);
@@ -53,9 +52,6 @@ export function AuthProvider({children}) {
       } catch (error) {
         console.error('Erro ao verificar login persistido:', error);
         setUser(null);
-      }
-      finally {
-        stopLoading()
       }
     };
     checkUserLoggedIn();
