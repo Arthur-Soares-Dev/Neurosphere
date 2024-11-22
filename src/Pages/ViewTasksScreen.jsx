@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
 
   listDisabled: {
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fundo semitransparente
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 1,
   },
 

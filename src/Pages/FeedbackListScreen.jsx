@@ -64,18 +64,23 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        marginBottom: 5,
     },
 
     taskName: {
         fontSize: sizeFonts.SMALL,
         color: colors.WHITE,
-        fontFamily: 'MinhaFonte'
+        fontFamily: 'MinhaFonte',
+        marginBottom: 10,
+        textAlign: 'justify',
     },
 
     taskDate: {
         fontSize: sizeFonts.SMALL,
         color: colors.WHITE,
-        fontFamily: 'MinhaFonte'
+        fontFamily: 'MinhaFonte',
+        textAlign: 'right', 
     },
 
     satisfactionRow: {
