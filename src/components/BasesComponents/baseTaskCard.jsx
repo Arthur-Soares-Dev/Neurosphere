@@ -12,19 +12,18 @@ const BaseTaskCard = ({
   onDelete,
   onFavorite,
   onConclude,
-  index, // Adiciona o índice da tarefa
+  index,
 }) => {
   const startTime = new Date(task.startTime);
   const endTime = new Date(task.endTime);
 
   const colorSequence = [colors.BLUE, colors.PINK, colors.PURPLE, colors.GREEN];
 
-  // Seleciona a cor com base no índice da tarefa
   const backgroundColor = colorSequence[index % colorSequence.length];
 
   return (
     <TouchableOpacity
-      style={[styles.taskContainer, { backgroundColor }, isExpanded && styles.taskContainerExpanded]} // Aplica a cor dinamicamente
+      style={[styles.taskContainer, { backgroundColor }, isExpanded && styles.taskContainerExpanded]}
       onPress={onExpand}
     >
       <View style={styles.taskHeader}>
@@ -62,7 +61,6 @@ const BaseTaskCard = ({
         <View style={styles.taskContent}>
           <Text style={styles.taskDescription}>{task.description}</Text>
 
-          {/* Exibir as tags */}
           {task.tags && task.tags.length > 0 && (
             <View style={styles.tagContainer}>
               {task.tags.map((tag, index) => (
@@ -87,7 +85,6 @@ const BaseTaskCard = ({
               <Ionicons name="trash" size={16} color={backgroundColor} />
             </TouchableOpacity>
 
-            {/* Footer dentro do taskButtons */}
             <View style={styles.footerInButtons}>
               <TouchableOpacity onPress={onExpand} style={styles.iconWrapper}>
                 <Ionicons name="chevron-up-outline" size={18} color={backgroundColor} />
@@ -124,19 +121,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    marginBottom: 5,
   },
 
   taskTitle: {
     fontSize: sizeFonts.MEDIUM,
     fontFamily: 'MinhaFonte',
     color: colors.WHITE,
+    flexWrap: 'wrap',
+    marginBottom: 13,
+    marginRight: 10,
   },
 
   taskDate: {
     fontSize: sizeFonts.SMALL,
     color: colors.WHITE,
     fontFamily: 'MinhaFonte',
-    marginTop: 10,
   },
 
   taskTime: {
@@ -187,14 +188,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  tag:{
+  tag: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 10,
     marginRight: 5,
     borderWidth: 2,
     borderColor: colors.WHITE,
-    marginBottom: 5 ,
+    marginBottom: 5,
   },
 
   tagText: {
@@ -224,7 +225,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
 });
 
 export default BaseTaskCard;
