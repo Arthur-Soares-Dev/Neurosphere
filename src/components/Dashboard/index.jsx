@@ -5,26 +5,26 @@ import DashGif from '../../../assets/DashGif.gif';
 import DashStatic from '../../../assets/DashStatic.png';
 
 const Card = () => {
-  const [isPlaying, setIsPlaying] = useState(true); // Começa reproduzindo o GIF automaticamente
-  const [isDisabled, setIsDisabled] = useState(true); // Desabilita o botão enquanto o GIF está ativo
+  const [isPlaying, setIsPlaying] = useState(true); 
+  const [isDisabled, setIsDisabled] = useState(true); 
 
   const gifDuration = 4350; // Duração do GIF em milissegundos
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsPlaying(false); // Troca para a imagem estática após o GIF terminar
-      setIsDisabled(false); // Habilita o botão
+      setIsPlaying(false); 
+      setIsDisabled(false); 
     }, gifDuration);
 
-    return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente
+    return () => clearTimeout(timer); 
   }, []);
 
   const restartGif = () => {
-    setIsPlaying(true); // Reinicia o GIF ao clicar
-    setIsDisabled(true); // Desabilita o botão enquanto o GIF está ativo
+    setIsPlaying(true); 
+    setIsDisabled(true); 
     setTimeout(() => {
-      setIsPlaying(false); // Troca para a imagem estática após o GIF terminar
-      setIsDisabled(false); // Habilita o botão
+      setIsPlaying(false); 
+      setIsDisabled(false); 
     }, gifDuration);
   };
 
@@ -44,12 +44,12 @@ const Card = () => {
       <TouchableOpacity
         style={[styles.gifButton, isDisabled && styles.disabledButton]}
         onPress={restartGif}
-        disabled={isDisabled} // Desabilita o botão enquanto o GIF está ativo
+        disabled={isDisabled} 
       >
         {isPlaying ? (
-          <Image source={DashGif} style={styles.gif} /> // Exibe o GIF enquanto reproduz
+          <Image source={DashGif} style={styles.gif} /> 
         ) : (
-          <Image source={DashStatic} style={styles.gif} /> // Exibe a imagem estática após o GIF
+          <Image source={DashStatic} style={styles.gif} /> 
         )}
       </TouchableOpacity>
     </View>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
 
   disabledButton: {
-    opacity: 1, // Adiciona um efeito visual para indicar que o botão está desabilitado
+    opacity: 1,
   },
 
   gif: {
