@@ -72,11 +72,10 @@ const ViewTasksScreen = ({ navigation }) => {
         onDelete={() => deleteTask(item.id)}
         onFavorite={() => favoriteTask(item.id)}
         onSpeak={() => speakTask(item.name, item.description)}
-        index={index} // Passando o índice aqui
+        index={index}
       />
     );
   };
-  
 
   return (
     <SafeAreaView style={globalStyles.outerContainer}>
@@ -116,16 +115,18 @@ const ViewTasksScreen = ({ navigation }) => {
       </View>
 
       {showCalendar && (
-        <View style={styles.calendarDialog}>
-          <MyCalendar
-            onDayChange={handleCalendarChange}
-            markedDates={markedDates}
-          />
-          <StyledButton
-            title="FECHAR"
-            onPress={() => setShowCalendar(false)}
-            style={{ marginTop: 10 }}
-          />
+        <View style={styles.calendarOverlay}>
+          <View style={styles.calendarDialog}>
+            <MyCalendar
+              onDayChange={handleCalendarChange}
+              markedDates={markedDates}
+            />
+            <StyledButton
+              title="FECHAR"
+              onPress={() => setShowCalendar(false)}
+              style={{ marginTop: 10 }}
+            />
+          </View>
         </View>
       )}
 
@@ -153,7 +154,6 @@ const ViewTasksScreen = ({ navigation }) => {
 export default ViewTasksScreen;
 
 const styles = StyleSheet.create({
-
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
 
   dayButton: {
-    width:"20%",
+    width: "20%",
     padding: 10,
     borderRadius: 5,
     backgroundColor: colors.PINK,
@@ -177,45 +177,13 @@ const styles = StyleSheet.create({
     fontFamily: 'MinhaFonte',
     textAlign: 'center',
   },
-  
+
   dayNumberText: {
     fontSize: sizeFonts.SMALL,
     color: colors.WHITE,
     fontFamily: 'MinhaFonte',
     textAlign: 'center',
     marginTop: 2,
-  },
-  
-  
-  dayButtonWithTasks: {
-    backgroundColor: '#E8F5E9',
-  },
-
-  dayButtonSelected: {
-    backgroundColor: '#FF6B6B',
-  },
-
-  dayButtonText: {
-    fontSize: sizeFonts.SMALL,
-    color: colors.WHITE,
-    fontFamily: 'MinhaFonte',
-    textAlign: 'center',
-  },
-
-  dayButtonTextSelected: {
-    color: 'white',
-  },
-
-  taskIndicator: {
-    marginLeft: 5,
-  },
-
-  dateText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#4A4A4A',
-    marginVertical: 10,
   },
 
   list: {
@@ -226,80 +194,24 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 
-  taskContainer: {
-    backgroundColor: '#6B5B95',
-    borderRadius: 10,
-    padding: 10,
-    marginVertical: 5,
-  },
-
-  taskContainerExpanded: {
-    paddingBottom: 20,
-  },
-
-  taskHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  calendarOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  taskTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-
-  taskDate: {
-    fontSize: 12,
-    color: 'white',
-  },
-
-  favoriteIcon: {
-    marginLeft: 10,
-  },
-
-  taskContent: {
-    marginTop: 10,
-  },
-
-  taskDescription: {
-    fontSize: 12,
-    color: 'white',
-    marginBottom: 10,
-  },
-
-  taskButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-
-  taskButton: {
-    backgroundColor: '#FF6B6B',
-    padding: 5,
-    borderRadius: 5,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-
-  taskButtonText: {
-    color: 'white',
-    fontSize: 12,
-    marginRight: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fundo semitransparente
+    zIndex: 1,
   },
 
   calendarDialog: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -165 }, { translateY: -200 }],
-    width: '80%', 
+    width: '80%',
     backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 15,
     elevation: 10,
-    zIndex: 1,
   },
-  
-
 });
