@@ -96,7 +96,7 @@ export default function ColorGameScreen() {
         <View style={[globalStyles.scrollContainer, { paddingTop: 0, alignItems: 'center' }]}>
 
           <Text style={[globalStyles.label, {alignSelf: 'center', fontSize: sizeFonts.LARGE}]}>
-            {success ? 'PARABÉNS, VOCÊ GANHOU!\n' : 'VOCÊ PERDEU! TENTE DE NOVO!\n'}
+            {success ? 'PARABÉNS, VOCÊ GANHOU!\n' : 'NÃO FOI DESSA VEZ!\n TENTE DE NOVO\n'}
           </Text>
 
           <StyledButton title="REINICIAR JOGO" onPress={resetGame} />

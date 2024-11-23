@@ -107,7 +107,7 @@ export default function EmotionGameScreen() {
       <View style={[globalStyles.scrollContainer, { paddingTop: 0, alignItems: 'center' }]}>
 
         <Text style={[globalStyles.label, {alignSelf: 'center', fontSize: sizeFonts.LARGE}]}>
-          {success ? 'VOCÊ VENCEU!' : 'VOCÊ PERDEU!'}
+          {success ? 'VOCÊ VENCEU, PARABÉNS!' : 'NÃO FOI DESSA VEZ!\n TENTE DE NOVO'}
         </Text>
         <Text style={[gameStyle.points,  {alignSelf: 'center', fontSize: sizeFonts.LARGE, marginBottom: 30}]}>
           PONTOS: {points}
@@ -148,8 +148,10 @@ export default function EmotionGameScreen() {
 
           <Text style={gameStyle.points}> RODADA: {round} / 5</Text>
 
-          <Text style={[gameStyle.points, {color: colors.PINK, fontSize: sizeFonts.MEDIUM}]}> TEMPO: {timer}s</Text>
-
+          <View style = {{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <Ionicons name="time-outline" size={30} color={colors.PINK} style={gameStyle.icon} />
+            <Text style={[gameStyle.points, {color: colors.PINK, fontSize: sizeFonts.MEDIUM}]}> TEMPO: {timer}s</Text>
+          </View>
         </View>
 
         <Text style={gameStyle.points}> PONTOS: {points}</Text>
