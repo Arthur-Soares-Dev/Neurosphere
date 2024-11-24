@@ -6,7 +6,7 @@ import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AlertsUtils from "../utils/AlertsUtils";
 
-const PinDialog = ({ isOpen, onClose, navigation }) => {
+const PinDialog = ({ isOpen, onClose, navigation, onPass, item }) => {
   const [pin, setPin] = useState('');
   const { user, updateUser } = useAuth();
 
@@ -21,7 +21,12 @@ const PinDialog = ({ isOpen, onClose, navigation }) => {
       if (user?.pin) {
         if (pin === user.pin) {
           // AlertsUtils.successAlert('Sucesso', 'PIN correto!');
-          navigation.navigate(ScreenNames.PROFILE);
+          console.log('onPass', onPass);
+          if (onPass) {
+                onPass(item);
+            } else {
+                navigation.navigate(ScreenNames.PROFILE);
+            }
           onClose();
         } else {
             AlertsUtils.dangerToast('Erro', 'PIN incorreto. Tente novamente.');

@@ -9,6 +9,7 @@ import GoBackButton from '../components/GoBackButton';
 import globalStyles, { colors, sizeFonts } from '../Styles/GlobalStyle';
 import StyledButton from "../components/BasesComponents/baseButton";
 import BaseTaskCard from '../components/BasesComponents/baseTaskCard';
+import PinDialog from "./PinDialog";
 
 const ViewTasksScreen = ({ navigation }) => {
   const { tasks, toggleCompleted, favoriteTask, deleteTask, speakTask } = useTasks();
@@ -17,6 +18,9 @@ const ViewTasksScreen = ({ navigation }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
+  const [onPass, setOnPass] = useState('asd');
+  const [item, setItem] = useState(null);
 
   const daysOfWeek = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
 
@@ -61,6 +65,13 @@ const ViewTasksScreen = ({ navigation }) => {
     setExpandedTaskId(expandedTaskId === taskId ? null : taskId);
   };
 
+  function onEdit(item) {
+    navigation.navigate(ScreenNames.CREATE_TASK, { task: item })
+  }
+  function onDelete(item) {
+    deleteTask(item.id)
+  }
+
   const renderItem = ({ item, index }) => {
     return (
       <BaseTaskCard
@@ -68,11 +79,21 @@ const ViewTasksScreen = ({ navigation }) => {
         isExpanded={expandedTaskId === item.id}
         onExpand={() => handleExpandTask(item.id)}
         onConclude={() => handleConcludeTask(item.id)}
-        onEdit={() => navigation.navigate(ScreenNames.CREATE_TASK, { task: item })}
-        onDelete={() => deleteTask(item.id)}
+        // onEdit={() => navigation.navigate(ScreenNames.CREATE_TASK, { task: item })}
+        // onDelete={() => deleteTask(item.id)}
+        onEdit={() => {
+          setOnPass(() => (item) => onEdit(item))
+          setItem(item)
+          setIsPinDialogOpen(true)
+        }}
+        onDelete={() => {
+          setOnPass(() => (item) => onDelete(item))
+          setItem(item)
+          setIsPinDialogOpen(true)
+        }}
         onFavorite={() => favoriteTask(item.id)}
         onSpeak={() => speakTask(item.name, item.description)}
-        index={index} // Passando o índice aqui
+        index={index}
       />
     );
   };
@@ -146,6 +167,15 @@ const ViewTasksScreen = ({ navigation }) => {
         onClose={() => setDialogVisible(false)}
         taskId={selectedTaskId}
       />
+
+      <PinDialog
+          isOpen={isPinDialogOpen}
+          onClose={() => setIsPinDialogOpen(false)}
+          navigation={navigation}
+          onPass={onPass}
+          item={item}
+      />
+
     </SafeAreaView>
   );
 };
