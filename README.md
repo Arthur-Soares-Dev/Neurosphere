@@ -48,6 +48,9 @@ O **NeuroSphere** é um aplicativo desenvolvido para oferecer suporte a criança
    ```bash
    npx expo start
 
+---
+## Repositório do servidor
+https://github.com/Arthur-Soares-Dev/Neurosphere-server
 
 ---
 ## Autores
