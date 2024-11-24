@@ -2,17 +2,17 @@ export const cardProps = {
     "emotions": [
         {
             title: "TRISTE",
-            audio: "triste.",
+            audio: "triste",
             uri: require('./CardImages/triste.png')
         },
         {
             title: "FELIZ",
-            audio: "feliz.",
+            audio: "feliz",
             uri: require('./CardImages/feliz.png')
         },
         {
             title: "GOSTEI",
-            audio: "Eu gostei.",
+            audio: "Gostei",
             uri: require('./CardImages/gostei.png')
         }
     ],
@@ -20,22 +20,22 @@ export const cardProps = {
         
         {
             title: "CARNE",
-            audio: "carne.",
+            audio: "carne",
             uri: require('./CardImages/carne.png')
         },
         {
             title: "VEGETAIS",
-            audio: "vegetais.",
+            audio: "vegetais",
             uri: require('./CardImages/vegetais.png')
         },
         {
             title: "FRUTAS",
-            audio: "frutas.",
+            audio: "frutas",
             uri: require('./CardImages/frutas.png')
         },
         {
             title: "DOCES",
-            audio: "doces.",
+            audio: "doces",
             uri: require('./CardImages/doces.png')
         }
         
@@ -43,40 +43,40 @@ export const cardProps = {
     "actions": [
         {
             title: "COMER",
-            audio: "comer.",
+            audio: "comer",
             uri: require('./CardImages/comer.png')
         },
         {
             title: "BEBER",
-            audio: "beber.",
+            audio: "beber",
             uri: require('./CardImages/sede.png')
         },
         
         {
             title: "BRINCAR",
-            audio: "brincar.",
+            audio: "brincar",
             uri: require('./CardImages/brincar.png')
         },
         {
             title: "DESCANSAR",
-            audio: "descansar.",
+            audio: "descansar",
             uri: require('./CardImages/descansar.png')
         },
         {
             title: "DORMIR",
-            audio: "dormir.",
+            audio: "dormir",
             uri: require('./CardImages/dormir.png')
         }
     ],
     "health": [
         {
             title: "DOR",
-            audio: "Eu estou com dor.",
+            audio: "Dor",
             uri: require('./CardImages/dor.png')
         },
         {
             title: "AJUDA",
-            audio: "Eu quero ajuda.",
+            audio: "Ajuda",
             uri: require('./CardImages/ajuda.png')
         },
         
@@ -84,34 +84,34 @@ export const cardProps = {
     "places": [
         {
             title: "CASA",
-            audio: "ir para casa.",
+            audio: "ir para casa",
             uri: require('./CardImages/casa.png')
         },
         {
             title: "BANHEIRO",
-            audio: "ir para o banheiro.",
+            audio: "ir para o banheiro",
             uri: require('./CardImages/banheiro.png')
         },
         {
             title: "COZINHA",
-            audio: "ir para a cozinha.",
+            audio: "ir para a cozinha",
             uri: require('./CardImages/cozinha.png')
         },
     ],
     "responses": [
         {
             title: "SIM",
-            audio: "Sim.",
+            audio: "Sim",
             uri: require('./CardImages/check.png')
         },
         {
             title: "NAO",
-            audio: "Não.",
+            audio: "Não",
             uri: require('./CardImages/x.png')
         },
         {
             title: "QUERO",
-            audio: "Eu quero.",
+            audio: "Quero",
             uri: require('./CardImages/quero.png')
         }
     ]
