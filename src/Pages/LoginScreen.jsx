@@ -89,13 +89,13 @@ const LoginScreen = () => {
                   onPress={() => handleLogin(email, password)}
               />
 
-              <StyledButton
-                  title="Login Rápido"
-                  onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}
-                  loading={false}
-                  style={[]}
-                  textStyle={[]}
-              />
+              {/*<StyledButton*/}
+              {/*    title="Login Rápido"*/}
+              {/*    onPress={() => handleLogin('12201839@aluno.cotemig.com.br', 'senha123')}*/}
+              {/*    loading={false}*/}
+              {/*    style={[]}*/}
+              {/*    textStyle={[]}*/}
+              {/*/>*/}
 
               {/*<TouchableOpacity*/}
               {/*    onPress={handleClick}*/}
