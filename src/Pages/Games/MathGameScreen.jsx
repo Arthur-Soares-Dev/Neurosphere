@@ -14,14 +14,13 @@ function generateNumber() {
 
 // Função para gerar uma operação aleatória sem modificar o estado diretamente
 function generateOperation(num1, num2) {
-  const operations = ["+", "-", "*", "/"];
+  const operations = ["+", "-", "×", "/"];
   let op = operations[Math.floor(Math.random() * operations.length)];
 
-  // Garante que subtrações e divisões não resultem em números negativos ou quebrados
   if (op === '-' && num1 < num2) {
     [num1, num2] = [num2, num1];
   } else if (op === '/' && (num1 % num2 !== 0 || num1 < num2)) {
-    num1 = num1 * num2;  // Ajusta para uma divisão inteira e positiva
+    num1 = num1 * num2; 
   }
 
   return { num1, num2, op };
@@ -45,7 +44,7 @@ const MathGameScreen = () => {
         return number1 + number2;
       case '-':
         return number1 - number2;
-      case '*':
+      case '×':
         return number1 * number2;
       case '/':
         return number1 / number2;
@@ -78,8 +77,10 @@ const MathGameScreen = () => {
         Alert.alert("Errado!", `Tente outra vez.`);
       }
     }
-  };
 
+    // Limpa o campo de entrada após verificar a resposta
+    setUserAnswer("");
+  };
 
   // Função para reiniciar o jogo
   const resetGame = (resetAttempts = false) => {
@@ -89,7 +90,7 @@ const MathGameScreen = () => {
     setNumber2(num2);
     setOperation(op);
     setUserAnswer("");
-    setTestedAnswers([]); // Limpa as respostas testadas ao reiniciar o jogo
+    setTestedAnswers([]);
     if (resetAttempts) setAttempts(0);
   };
 

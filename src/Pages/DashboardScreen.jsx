@@ -103,7 +103,7 @@ const DashboardScreen = () => {
                   isExpanded={expandedTaskId === item.id}
                   onExpand={() => handleExpandTask(item.id)}
                   onConclude={() => handleConcludeTask(item.id)}
-                  onEdit={() => navigation.navigate(ScreenNames.CREATE_TASK, { task: item })}
+                  onEdit={() => navigation.navigate(ScreenNames.CREATE_TASK, { task: { ...item, favorite: item.favorite } })}
                   onDelete={() => deleteTask(item.id)}
                   onFavorite={() => favoriteTask(item.id)}
                   onSpeak={() => speakTask(item.name, item.description)}
