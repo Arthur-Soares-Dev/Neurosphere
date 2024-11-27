@@ -49,7 +49,7 @@ O **NeuroSphere** é um aplicativo desenvolvido para oferecer suporte a criança
    npx expo start
 
 ---
-## Prototipação
+## Prototipação do design
 https://www.figma.com/design/jsOXXAOnoZbU2VWMEZwkcN/NeuroSphere?node-id=0-1&node-type=canvas&t=cItaTFqHSEhnHg7b-0
 
 ---
